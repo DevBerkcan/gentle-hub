@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/*
+ * Brand palette (Gentle Group):
+ *   Aquamarine #01FFA9 · Tropical Indigo #A97AFF · Oxford Blue #010A30 · Ghost White #F0EFF4
+ * Brand colors are used as surfaces, rings and indicators. For text on light
+ * surfaces the darker *-fg variants are used to keep WCAG AA contrast.
+ */
+:root {
+  --bg: #f0eff4;
+  --surface: #ffffff;
+  --surface-hover: #ffffff;
+  --surface-muted: #e7e6ef;
+  --border: rgb(1 10 48 / 0.08);
+  --border-strong: rgb(1 10 48 / 0.18);
+  --fg: #010a30;
+  --fg-muted: #4a5170;
+  --fg-subtle: #5f6584;
+  --accent: #01ffa9;
+  --accent-fg: #00744e;
+  --accent-2: #a97aff;
+  --accent-2-fg: #6a3fd6;
+  --ring: #009966;
+  --overlay: rgb(1 10 48 / 0.32);
+  --shadow-card: 0 1px 2px rgb(1 10 48 / 0.04), 0 1px 1px rgb(1 10 48 / 0.02);
+  --shadow-card-hover: 0 12px 28px -12px rgb(1 10 48 / 0.18), 0 2px 6px rgb(1 10 48 / 0.05);
+  --shadow-popover: 0 24px 64px -16px rgb(1 10 48 / 0.28), 0 4px 12px rgb(1 10 48 / 0.08);
+
+  --container-max: 1280px;
+  --ease-hub: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 160ms;
+  --duration-medium: 240ms;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #010a30;
+    --surface: #08123c;
+    --surface-hover: #0c1848;
+    --surface-muted: #131f56;
+    --border: rgb(240 239 244 / 0.08);
+    --border-strong: rgb(240 239 244 / 0.18);
+    --fg: #f0eff4;
+    --fg-muted: #a7acc6;
+    --fg-subtle: #8a90ad;
+    --accent-fg: #01ffa9;
+    --accent-2-fg: #c4a5ff;
+    --ring: #01ffa9;
+    --overlay: rgb(0 4 20 / 0.6);
+    --shadow-card: 0 1px 0 rgb(240 239 244 / 0.03) inset;
+    --shadow-card-hover: 0 16px 36px -16px rgb(0 0 0 / 0.7), 0 1px 0 rgb(240 239 244 / 0.05) inset;
+    --shadow-popover: 0 24px 64px -16px rgb(0 0 0 / 0.7);
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-fg: var(--accent-2-fg);
+  --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
+  --color-oxford: #010a30;
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
+  --shadow-popover: var(--shadow-popover);
+  --radius-card: 14px;
+  --radius-control: 10px;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent);
+  color: #010a30;
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Hides the scrollbar of horizontally scrolling chip rows on mobile. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
