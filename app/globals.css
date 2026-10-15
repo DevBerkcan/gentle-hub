@@ -31,28 +31,7 @@
   --duration-fast: 160ms;
   --duration-medium: 240ms;
 
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #010a30;
-    --surface: #08123c;
-    --surface-hover: #0c1848;
-    --surface-muted: #131f56;
-    --border: rgb(240 239 244 / 0.08);
-    --border-strong: rgb(240 239 244 / 0.18);
-    --fg: #f0eff4;
-    --fg-muted: #a7acc6;
-    --fg-subtle: #8a90ad;
-    --accent-fg: #01ffa9;
-    --accent-2-fg: #c4a5ff;
-    --ring: #01ffa9;
-    --overlay: rgb(0 4 20 / 0.6);
-    --shadow-card: 0 1px 0 rgb(240 239 244 / 0.03) inset;
-    --shadow-card-hover: 0 16px 36px -16px rgb(0 0 0 / 0.7), 0 1px 0 rgb(240 239 244 / 0.05) inset;
-    --shadow-popover: 0 24px 64px -16px rgb(0 0 0 / 0.7);
-  }
+  color-scheme: light;
 }
 
 @theme inline {

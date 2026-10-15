@@ -12,7 +12,7 @@ Der zentrale Application Launcher der Gentle Group: Alle Anwendungen (GentleBook
 - Kategorie-Filter mit Trefferanzahl
 - Clientseitige Suche (Name, Beschreibung, Kategorie, Tags; Groß-/Kleinschreibung und Umlaute werden ignoriert)
 - Schnellsuche mit `⌘ K` / `Strg K` (zeigt Favoriten und „Zuletzt geöffnet“ an), `/` fokussiert die Suche
-- Hell-/Dunkelmodus nach Systemeinstellung, `prefers-reduced-motion` wird berücksichtigt
+- Helles Design (Ghost White / Oxford Blue), `prefers-reduced-motion` wird berücksichtigt
 - Tastaturbedienbar, sichtbare Fokuszustände, semantische Links
 
 ## Setup
