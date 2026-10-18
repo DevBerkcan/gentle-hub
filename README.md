@@ -12,7 +12,7 @@ Der zentrale, geschützte Application Launcher der Gentle Group: alle Anwendunge
   - **Info** (unten rechts) öffnet ein Seitenpanel mit Link, Notizen, Zugangsdaten, Details und einer Option zum Löschen.
 - **Kacheln im UI verwalten:** Mit „+ Anwendung“ anlegen, im Info-Panel bearbeiten und löschen.
 - **Gemeinsame Daten:** Alle Freigegebenen sehen dieselben Kacheln, Links und Notizen. Favoriten gelten pro Person.
-- **Notizen:** Werden automatisch gespeichert, mit Anzeige „Zuletzt geändert von …“, und sind durchsuchbar.
+- **Notizen:** Werden automatisch gespeichert, mit Anzeige „Zuletzt geändert von …“, und sind durchsuchbar. Links in Notizen erscheinen als klickbare Liste (bei „Name: https://…“ wird „Name“ zur Beschriftung).
 - **Tresor:** Benutzer, Passwort und Hinweis werden **im Browser** mit einem gemeinsamen Master-Passwort verschlüsselt (PBKDF2-SHA-256 mit 600 000 Iterationen, AES-256-GCM). Server und Datenbank sehen nur Chiffretext. Der Tresor sperrt sich nach 10 Minuten Inaktivität.
 - **Suche, Filter und Schnellsuche:** Suche, Kategorie-Filter und Schnellsuche (`⌘ K` / `Strg K`); `/` fokussiert die Suche.
 - **Bedienung:** Helles Design, responsiv, per Tastatur bedienbar. `prefers-reduced-motion` wird berücksichtigt.
@@ -77,6 +77,7 @@ npm run lint         # ESLint
 npm run test         # Vitest
 npm run db:migrate   # Schema anlegen/aktualisieren (idempotent)
 npm run user:password -- <email>   # Konto anlegen oder Passwort zurücksetzen (meldet überall ab)
+npm run db:import -- <datei.json>  # Kacheln inkl. Link und Notizen aus JSON anlegen/aktualisieren
 ```
 
 ## Zugriff verwalten
@@ -85,6 +86,30 @@ npm run user:password -- <email>   # Konto anlegen oder Passwort zurücksetzen (
 - **Passwort ändern:** Im Hub über das Konto-Menü (oben rechts) → „Passwort ändern“. Andere Geräte werden abgemeldet.
 - **Passwort vergessen:** `npm run user:password -- <email>` setzt ein neues Passwort (es wird keine Mail verschickt).
 - **Zugriff entziehen:** Adresse aus `ALLOWED_EMAILS` entfernen. Bestehende Sitzungen werden danach bei jedem Aufruf abgewiesen, weil `requireUser()` die Allowlist erneut prüft.
+
+## Daten importieren
+
+Mehrere Kacheln oder lange Link-Listen lassen sich per JSON einspielen (gleiche `id` = aktualisieren, neue `id` = anlegen):
+
+```json
+[
+  {
+    "id": "gentlebook",
+    "name": "GentleBook",
+    "description": "SaaS für Online-Terminbuchungen.",
+    "url": "https://www.gentlebook.de/superadmin/login",
+    "category": "saas",
+    "notes": "Dashboard: https://…
+Umsatz: https://…"
+  }
+]
+```
+
+```bash
+npm run db:import -- data/private/gentlebook.json
+```
+
+> **Das Repository ist öffentlich.** Import-Dateien mit internen Links gehören nach `data/private/` – der Ordner ist in `.gitignore` und wird nie committet. Passwörter gehören in keine Datei, sondern in den Tresor im Hub.
 
 ## Tresor – wichtig
 
@@ -103,7 +128,8 @@ npm run user:password -- <email>   # Konto anlegen oder Passwort zurücksetzen (
 /data/applications.ts   Kategorien
 /db/schema.sql          App-Tabellen (applications, favorites, vault)
 /lib                    Auth, Session, DB, Repository, Validierung, Tresor, Suche, Utilities
-/scripts                migrate.mjs (Schema + Startdaten), set-password.mjs (Konten/Passwörter)
+/scripts                migrate.mjs (Schema + Startdaten), set-password.mjs (Konten/Passwörter), import.mjs (JSON-Import)
+/data/private           Lokale Import-Dateien (gitignored, nie committen)
 /proxy.ts               Weiterleitung auf /login ohne Session
 /tests                  Vitest-Tests
 ```

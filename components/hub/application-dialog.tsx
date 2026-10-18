@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Application, ApplicationInput } from "@/types";
 import { CATEGORY_LABELS } from "@/data/applications";
 import {
@@ -12,6 +12,7 @@ import {
 import type { VaultController } from "@/lib/use-vault";
 import { displayNameFromEmail } from "@/lib/allowlist";
 import { LIMITS } from "@/lib/validation";
+import { extractLinks } from "@/lib/notes";
 import { formatRelativeTime, isValidExternalUrl } from "@/lib/utils";
 import { ApplicationForm, buttonClass, inputClass } from "@/components/hub/application-form";
 import { VaultSection } from "@/components/hub/vault-section";
@@ -51,6 +52,7 @@ function toInput(application: Application): ApplicationInput {
 function NotesEditor({ application }: { application: Application }) {
   const [value, setValue] = useState(application.notes ?? "");
   const [status, setStatus] = useState<"idle" | "pending" | "saving" | "saved" | "error">("idle");
+  const links = useMemo(() => extractLinks(value), [value]);
   const pending = useRef<string | null>(null);
 
   async function flush() {
@@ -84,6 +86,24 @@ function NotesEditor({ application }: { application: Application }) {
 
   return (
     <div className="flex flex-col gap-2">
+      {links.length > 0 && (
+        <ul aria-label="Links aus den Notizen" className="mb-2 grid gap-1 sm:grid-cols-2">
+          {links.map((link) => (
+            <li key={link.url} className="min-w-0">
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={link.url}
+                className="focus-ring group flex items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-[13px] text-fg hover:bg-surface-muted"
+              >
+                <span className="truncate">{link.label}</span>
+                <IconArrow className="h-3.5 w-3.5 shrink-0 text-fg-subtle transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-fg" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
       <textarea
         aria-label={`Notizen zu ${application.name}`}
         rows={6}

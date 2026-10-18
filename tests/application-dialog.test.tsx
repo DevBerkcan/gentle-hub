@@ -150,3 +150,27 @@ describe("ApplicationDialog – Link ändern", () => {
     expect(screen.getByLabelText(/^Link/)).toHaveFocus();
   });
 });
+
+describe("ApplicationDialog – Links in Notizen", () => {
+  it("shows links from the notes as clickable new-tab links", () => {
+    function WithNotes() {
+      const vault = useVault(null);
+      return (
+        <ApplicationDialog
+          state={{ mode: "view", id: app.id }}
+          application={{ ...app, notes: "Umsatz: https://www.gentlebook.de/superadmin/revenue" }}
+          vault={vault}
+          onClose={() => {}}
+          onCreated={() => {}}
+          onOpen={() => {}}
+        />
+      );
+    }
+    render(<WithNotes />);
+    const list = screen.getByRole("list", { name: "Links aus den Notizen" });
+    const link = within(list).getByRole("link", { name: /Umsatz/ });
+    expect(link).toHaveAttribute("href", "https://www.gentlebook.de/superadmin/revenue");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
+  });
+});

@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run --config vitest.config.mts",
     "db:migrate": "node --env-file-if-exists=.env.local scripts/migrate.mjs",
-    "user:password": "node --env-file-if-exists=.env.local scripts/set-password.mjs"
+    "user:password": "node --env-file-if-exists=.env.local scripts/set-password.mjs",
+    "db:import": "node --env-file-if-exists=.env.local scripts/import.mjs"
   },
   "dependencies": {
     "better-auth": "^1.7.10",
