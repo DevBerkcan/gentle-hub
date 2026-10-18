@@ -19,3 +19,16 @@ export function toMonogram(name: string): string {
   if (capitals.length >= 2) return capitals.slice(0, 2);
   return name.trim().slice(0, 2).toUpperCase();
 }
+
+const RELATIVE = new Intl.RelativeTimeFormat("de", { numeric: "auto" });
+
+/** "vor 5 Minuten", "gestern", … for an ISO timestamp. */
+export function formatRelativeTime(iso: string, now = Date.now()): string {
+  const seconds = Math.round((Date.parse(iso) - now) / 1000);
+  const abs = Math.abs(seconds);
+  if (abs < 45) return "gerade eben";
+  if (abs < 3600) return RELATIVE.format(Math.round(seconds / 60), "minute");
+  if (abs < 86_400) return RELATIVE.format(Math.round(seconds / 3600), "hour");
+  if (abs < 2_592_000) return RELATIVE.format(Math.round(seconds / 86_400), "day");
+  return new Date(iso).toLocaleDateString("de-DE");
+}

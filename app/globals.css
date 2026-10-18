@@ -127,3 +127,25 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+/* Native <dialog> used as a right-side sheet (full screen on mobile). */
+dialog.sheet {
+  margin: 0 0 0 auto;
+  max-height: 100dvh;
+  height: 100dvh;
+  max-width: 100%;
+}
+dialog.sheet[open] {
+  animation: sheet-in var(--duration-medium) var(--ease-hub);
+}
+dialog.sheet::backdrop {
+  background: var(--overlay);
+  backdrop-filter: blur(2px);
+}

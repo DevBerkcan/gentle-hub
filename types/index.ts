@@ -3,15 +3,15 @@ export type ApplicationCategory = "saas" | "crm" | "internal" | "customer" | "to
 export type ApplicationEnvironment = "production" | "staging" | "development";
 
 export type Application = {
-  /** Stable, url-safe identifier. Used as the React key and for localStorage entries. */
+  /** Stable identifier. Used as the React key, for favorites and vault entries. */
   id: string;
   /** Display name shown on the card. */
   name: string;
   /** One short sentence describing what the application does. */
   description: string;
-  /** Absolute URL the application opens at. Must be a valid http(s) URL. */
+  /** Absolute URL the "Öffnen" button opens. Must be a valid http(s) URL. */
   url: string;
-  /** Optional logo: a path under /public (e.g. "/apps/gentlebook.svg") or an absolute https URL. Falls back to a monogram. */
+  /** Optional logo: a path under /public or an absolute https URL. Falls back to a monogram. */
   icon?: string;
   /** Category used for filtering. */
   category: ApplicationCategory;
@@ -19,11 +19,17 @@ export type Application = {
   tags?: string[];
   /** Deployment environment. Only non-production environments are labelled on the card. */
   environment?: ApplicationEnvironment;
-  /** Default favorite — applies until the user has set favorites of their own. */
-  isFavorite?: boolean;
+  /** Shared, unencrypted notes (ideas, hints). Secrets belong in the vault. */
+  notes?: string;
+  /** ISO timestamp and e-mail of the last change. */
+  updatedAt?: string;
+  updatedBy?: string | null;
   /** Disabled applications are shown but not clickable, and excluded from the command palette. */
   disabled?: boolean;
 };
+
+/** Editable fields of an application. */
+export type ApplicationInput = Pick<Application, "name" | "description" | "url" | "icon" | "category" | "environment">;
 
 /** A locally-stored reference to an application the user opened. */
 export type RecentEntry = {

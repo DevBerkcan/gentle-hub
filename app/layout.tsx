@@ -11,6 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "GentleHub",
   description: "Der zentrale Zugang zu allen Anwendungen der Gentle Group.",
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

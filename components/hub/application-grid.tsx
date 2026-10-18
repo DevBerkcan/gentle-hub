@@ -7,6 +7,7 @@ type ApplicationGridProps = {
   favorites: string[];
   onToggleFavorite: (id: string) => void;
   onOpen: (id: string) => void;
+  onInfo: (id: string) => void;
   variant?: "default" | "compact";
 };
 
@@ -15,6 +16,7 @@ export function ApplicationGrid({
   favorites,
   onToggleFavorite,
   onOpen,
+  onInfo,
   variant = "default",
 }: ApplicationGridProps) {
   return (
@@ -33,6 +35,7 @@ export function ApplicationGrid({
             isFavorite={favorites.includes(application.id)}
             onToggleFavorite={onToggleFavorite}
             onOpen={onOpen}
+            onInfo={onInfo}
             variant={variant}
           />
         </li>

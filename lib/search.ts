@@ -11,7 +11,7 @@ function normalize(value: string): string {
     .replace(/[̀-ͯ]/g, "");
 }
 
-/** True if the application matches the free-text query across name, description, category and tags. */
+/** True if the application matches the free-text query across name, description, category, tags and notes. */
 export function matchesQuery(application: Application, query: string): boolean {
   const q = normalize(query.trim());
   if (!q) return true;
@@ -22,6 +22,7 @@ export function matchesQuery(application: Application, query: string): boolean {
       application.description,
       CATEGORY_LABELS[application.category],
       ...(application.tags ?? []),
+      application.notes ?? "",
     ].join(" ")
   );
   return haystack.includes(q);
