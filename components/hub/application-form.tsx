@@ -101,11 +101,15 @@ export function ApplicationForm({ initial, submitLabel, onSubmit }: ApplicationF
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
-      <Field label="Link (wird mit „Öffnen“ aufgerufen)" error={errors.url}>
+      <Field
+        label="Link (wird mit „Öffnen“ aufgerufen)"
+        error={errors.url}
+        hint="Die Adresse, die beim Klick auf die Kachel geöffnet wird. https:// wird automatisch ergänzt."
+      >
         {(props) => (
           <input
             {...props}
-            type="url"
+            type="text"
             inputMode="url"
             autoComplete="off"
             spellCheck={false}

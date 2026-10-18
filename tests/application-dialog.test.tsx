@@ -140,3 +140,13 @@ describe("ApplicationDialog", () => {
     expect(screen.getByLabelText("Passwort")).toHaveAttribute("type", "password");
   }, 30_000);
 });
+
+describe("ApplicationDialog – Link ändern", () => {
+  it("jumps to and focuses the link field", async () => {
+    const user = userEvent.setup();
+    Element.prototype.scrollIntoView = vi.fn();
+    render(<Harness stored={null} />);
+    await user.click(screen.getByRole("button", { name: "Link ändern" }));
+    expect(screen.getByLabelText(/^Link/)).toHaveFocus();
+  });
+});

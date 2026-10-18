@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LIMITS, validateApplicationInput, validateNotes } from "@/lib/validation";
+import { LIMITS, normalizeUrl, validateApplicationInput, validateNotes } from "@/lib/validation";
 
 const valid = {
   name: " GentleBook ",
@@ -26,8 +26,13 @@ describe("validateApplicationInput", () => {
     });
   });
 
+  it("adds https:// to bare addresses", () => {
+    const result = validateApplicationInput({ ...valid, url: "www.gentlebook.de/superadmin/login" });
+    expect(result.ok && result.value.url).toBe("https://www.gentlebook.de/superadmin/login");
+  });
+
   it("rejects unsafe or missing links", () => {
-    for (const url of ["javascript:alert(1)", "data:text/html,x", "www.ohne-protokoll.de", ""]) {
+    for (const url of ["javascript:alert(1)", "JavaScript:alert(1)", "data:text/html,x", "ftp://x.de", "nicht gültig", ""]) {
       const result = validateApplicationInput({ ...valid, url });
       expect(result.ok).toBe(false);
       if (!result.ok) expect(result.errors.url).toBeDefined();
@@ -56,6 +61,16 @@ describe("validateApplicationInput", () => {
 
   it("treats non-object input as empty", () => {
     expect(validateApplicationInput(null).ok).toBe(false);
+  });
+});
+
+describe("normalizeUrl", () => {
+  it("only prefixes addresses without a scheme", () => {
+    expect(normalizeUrl(" gentlebook.de ")).toBe("https://gentlebook.de");
+    expect(normalizeUrl("//gentlebook.de")).toBe("https://gentlebook.de");
+    expect(normalizeUrl("http://intern.local")).toBe("http://intern.local");
+    expect(normalizeUrl("javascript:alert(1)")).toBe("javascript:alert(1)");
+    expect(normalizeUrl("")).toBe("");
   });
 });
 

@@ -23,6 +23,17 @@ function str(value: unknown): string {
 }
 
 /**
+ * Adds "https://" when the user typed a bare address like
+ * "www.gentlebook.de/login". Anything with an explicit scheme (including
+ * "javascript:") is left untouched and then rejected by the URL check.
+ */
+export function normalizeUrl(value: string): string {
+  const url = value.trim();
+  if (!url || /^[a-z][a-z0-9+.-]*:/i.test(url)) return url;
+  return `https://${url.replace(/^\/+/, "")}`;
+}
+
+/**
  * Validates and normalizes application input. Shared by the form (instant
  * feedback) and the server actions (authoritative check).
  */
@@ -30,7 +41,7 @@ export function validateApplicationInput(raw: unknown): ValidationResult {
   const input = (typeof raw === "object" && raw !== null ? raw : {}) as Record<string, unknown>;
   const name = str(input.name);
   const description = str(input.description);
-  const url = str(input.url);
+  const url = normalizeUrl(str(input.url));
   const icon = str(input.icon);
   const category = str(input.category);
   const environment = str(input.environment);
@@ -43,7 +54,7 @@ export function validateApplicationInput(raw: unknown): ValidationResult {
 
   if (!url) errors.url = "Bitte einen Link angeben.";
   else if (url.length > LIMITS.url || !isValidExternalUrl(url))
-    errors.url = "Bitte eine vollständige Adresse mit https:// angeben.";
+    errors.url = "Bitte eine gültige Web-Adresse angeben, z. B. www.gentlebook.de/login.";
 
   if (icon && (icon.length > LIMITS.icon || !isValidIconSource(icon)))
     errors.icon = "Icon muss ein Pfad wie /apps/logo.svg oder eine https-Adresse sein.";

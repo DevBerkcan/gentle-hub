@@ -33,9 +33,9 @@ type ApplicationDialogProps = {
 
 const NOTES_DEBOUNCE_MS = 800;
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, id, children }: { title: string; id?: string; children: React.ReactNode }) {
   return (
-    <section className="border-t border-line px-5 py-5 sm:px-6">
+    <section id={id} className="scroll-mt-20 border-t border-line px-5 py-5 sm:px-6">
       <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-wider text-fg-subtle">{title}</h3>
       {children}
     </section>
@@ -142,7 +142,15 @@ function DeleteZone({ application, vault, onDeleted }: { application: Applicatio
   );
 }
 
-function LinkActions({ application, onOpen }: { application: Application; onOpen: (id: string) => void }) {
+function LinkActions({
+  application,
+  onOpen,
+  onEditLink,
+}: {
+  application: Application;
+  onOpen: (id: string) => void;
+  onEditLink: () => void;
+}) {
   const [copied, setCopied] = useState(false);
   const valid = isValidExternalUrl(application.url);
   return (
@@ -170,6 +178,9 @@ function LinkActions({ application, onOpen }: { application: Application; onOpen
       >
         <IconCopy className="h-3.5 w-3.5" />
         {copied ? "Kopiert" : "Link kopieren"}
+      </button>
+      <button type="button" onClick={onEditLink} className={buttonClass.secondary}>
+        Link ändern
       </button>
       <span className="min-w-0 basis-full truncate text-xs text-fg-subtle" title={application.url}>
         {application.url}
@@ -236,7 +247,16 @@ export function ApplicationDialog({ state, application, vault, onClose, onCreate
         <>
           <div className="px-5 py-5 sm:px-6">
             {application.description && <p className="mb-4 text-sm text-fg-muted">{application.description}</p>}
-            <LinkActions application={application} onOpen={onOpen} />
+            <LinkActions
+              application={application}
+              onOpen={onOpen}
+              onEditLink={() => {
+                const field = ref.current?.querySelector<HTMLInputElement>("#edit-details input");
+                field?.scrollIntoView({ block: "center", behavior: "smooth" });
+                field?.focus({ preventScroll: true });
+                field?.select();
+              }}
+            />
           </div>
           <Section title="Notizen">
             <NotesEditor key={application.id} application={application} />
@@ -244,7 +264,7 @@ export function ApplicationDialog({ state, application, vault, onClose, onCreate
           <Section title="Zugangsdaten">
             <VaultSection vault={vault} applicationId={application.id} />
           </Section>
-          <Section title="Link & Details bearbeiten">
+          <Section id="edit-details" title="Link & Details bearbeiten">
             <ApplicationForm
               key={application.id}
               initial={toInput(application)}
