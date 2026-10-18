@@ -97,7 +97,7 @@ Mehrere Kacheln oder lange Link-Listen lassen sich per JSON einspielen (gleiche 
     "id": "gentlebook",
     "name": "GentleBook",
     "description": "SaaS für Online-Terminbuchungen.",
-    "url": "https://www.gentlebook.de/superadmin/login",
+    "url": "https://app.example.com/admin/login",
     "category": "saas",
     "notes": "Dashboard: https://…
 Umsatz: https://…"
@@ -106,7 +106,7 @@ Umsatz: https://…"
 ```
 
 ```bash
-npm run db:import -- data/private/gentlebook.json
+npm run db:import -- data/private/meine-apps.json
 ```
 
 > **Das Repository ist öffentlich.** Import-Dateien mit internen Links gehören nach `data/private/` – der Ordner ist in `.gitignore` und wird nie committet. Passwörter gehören in keine Datei, sondern in den Tresor im Hub.

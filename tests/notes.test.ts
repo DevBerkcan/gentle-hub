@@ -3,8 +3,8 @@ import { extractLinks } from "@/lib/notes";
 
 describe("extractLinks", () => {
   it("uses the text before the link as label", () => {
-    expect(extractLinks("Dashboard: https://www.gentlebook.de/superadmin/dashboard")).toEqual([
-      { label: "Dashboard", url: "https://www.gentlebook.de/superadmin/dashboard" },
+    expect(extractLinks("Dashboard: https://app.example.com/admin/dashboard")).toEqual([
+      { label: "Dashboard", url: "https://app.example.com/admin/dashboard" },
     ]);
   });
 

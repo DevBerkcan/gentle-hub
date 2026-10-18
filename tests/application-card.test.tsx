@@ -8,7 +8,7 @@ const baseApp: Application = {
   id: "gentlebook",
   name: "GentleBook",
   description: "SaaS für Online-Terminbuchungen.",
-  url: "https://www.gentlebook.de/superadmin/login",
+  url: "https://app.example.com/admin/login",
   category: "saas",
 };
 

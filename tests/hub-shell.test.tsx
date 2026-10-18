@@ -26,7 +26,7 @@ const apps: Application[] = [
     id: "gentlebook",
     name: "GentleBook",
     description: "Online-Terminbuchung.",
-    url: "https://www.gentlebook.de/superadmin/login",
+    url: "https://app.example.com/admin/login",
     category: "saas",
   },
   {

@@ -28,7 +28,7 @@ const app: Application = {
   id: "gentlebook",
   name: "GentleBook",
   description: "SaaS für Online-Terminbuchungen.",
-  url: "https://www.gentlebook.de/superadmin/login",
+  url: "https://app.example.com/admin/login",
   category: "saas",
   notes: "",
 };
@@ -158,7 +158,7 @@ describe("ApplicationDialog – Links in Notizen", () => {
       return (
         <ApplicationDialog
           state={{ mode: "view", id: app.id }}
-          application={{ ...app, notes: "Umsatz: https://www.gentlebook.de/superadmin/revenue" }}
+          application={{ ...app, notes: "Umsatz: https://app.example.com/admin/revenue" }}
           vault={vault}
           onClose={() => {}}
           onCreated={() => {}}
@@ -169,7 +169,7 @@ describe("ApplicationDialog – Links in Notizen", () => {
     render(<WithNotes />);
     const list = screen.getByRole("list", { name: "Links aus den Notizen" });
     const link = within(list).getByRole("link", { name: /Umsatz/ });
-    expect(link).toHaveAttribute("href", "https://www.gentlebook.de/superadmin/revenue");
+    expect(link).toHaveAttribute("href", "https://app.example.com/admin/revenue");
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"));
   });

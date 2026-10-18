@@ -20,7 +20,7 @@ const user = { id: "u1", email: "berkcan@gentlegroup.de", name: "" };
 const input = {
   name: "GentleBook",
   description: "",
-  url: "https://www.gentlebook.de/superadmin/login",
+  url: "https://app.example.com/admin/login",
   category: "saas",
 };
 const blob = { v: 1, iter: 600_000, salt: "c2FsdA==", iv: "aXY=", data: "ZGF0YQ==" };

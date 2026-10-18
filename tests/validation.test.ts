@@ -4,7 +4,7 @@ import { LIMITS, normalizeUrl, validateApplicationInput, validateNotes } from "@
 const valid = {
   name: " GentleBook ",
   description: "SaaS für Online-Terminbuchungen.",
-  url: "https://www.gentlebook.de/superadmin/login",
+  url: "https://app.example.com/admin/login",
   category: "saas",
   environment: "",
   icon: "",
@@ -18,7 +18,7 @@ describe("validateApplicationInput", () => {
       value: {
         name: "GentleBook",
         description: "SaaS für Online-Terminbuchungen.",
-        url: "https://www.gentlebook.de/superadmin/login",
+        url: "https://app.example.com/admin/login",
         category: "saas",
         environment: undefined,
         icon: undefined,
@@ -27,8 +27,8 @@ describe("validateApplicationInput", () => {
   });
 
   it("adds https:// to bare addresses", () => {
-    const result = validateApplicationInput({ ...valid, url: "www.gentlebook.de/superadmin/login" });
-    expect(result.ok && result.value.url).toBe("https://www.gentlebook.de/superadmin/login");
+    const result = validateApplicationInput({ ...valid, url: "app.example.com/admin/login" });
+    expect(result.ok && result.value.url).toBe("https://app.example.com/admin/login");
   });
 
   it("rejects unsafe or missing links", () => {

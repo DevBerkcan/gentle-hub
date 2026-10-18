@@ -114,7 +114,7 @@ export function ApplicationForm({ initial, submitLabel, onSubmit }: ApplicationF
             autoComplete="off"
             spellCheck={false}
             maxLength={LIMITS.url}
-            placeholder="https://www.gentlebook.de/superadmin/login"
+            placeholder="https://app.example.com/admin/login"
             value={values.url}
             onChange={(event) => set("url", event.target.value)}
             className={inputClass}

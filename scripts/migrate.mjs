@@ -9,7 +9,7 @@ const SEED = [
     id: "gentlebook",
     name: "GentleBook",
     description: "SaaS für Online-Terminbuchungen.",
-    url: "https://www.gentlebook.de/superadmin/login",
+    url: "https://www.gentlebook.de",
     category: "saas",
   },
 ];
