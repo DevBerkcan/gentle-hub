@@ -6,9 +6,11 @@ import { authClient } from "@/lib/auth-client";
 import { displayNameFromEmail } from "@/lib/allowlist";
 import type { VaultController } from "@/lib/use-vault";
 import { IconLock } from "@/components/ui/icons";
+import { ChangePasswordDialog } from "@/components/auth/change-password-dialog";
 
 export function UserMenu({ email, vault }: { email: string; vault: VaultController }) {
   const [open, setOpen] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const name = displayNameFromEmail(email);
@@ -74,11 +76,23 @@ export function UserMenu({ email, vault }: { email: string; vault: VaultControll
               <IconLock className="h-3.5 w-3.5" /> Tresor sperren
             </button>
           )}
+          <button
+            type="button"
+            role="menuitem"
+            className={itemClass}
+            onClick={() => {
+              setChangingPassword(true);
+              setOpen(false);
+            }}
+          >
+            Passwort ändern
+          </button>
           <button type="button" role="menuitem" className={itemClass} onClick={signOut}>
             Abmelden
           </button>
         </div>
       )}
+      {changingPassword && <ChangePasswordDialog onClose={() => setChangingPassword(false)} />}
     </div>
   );
 }

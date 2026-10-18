@@ -3,7 +3,6 @@
 import { readFileSync } from "node:fs";
 import pg from "pg";
 import { getMigrations } from "better-auth/db/migration";
-import { magicLink } from "better-auth/plugins/magic-link";
 
 const SEED = [
   {
@@ -23,10 +22,10 @@ if (!process.env.DATABASE_URL) {
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 
 try {
-  // Same plugins as lib/auth.ts — they define the auth schema.
+  // Same auth features as lib/auth.ts — they define the auth schema.
   const { runMigrations, toBeCreated, toBeAdded } = await getMigrations({
     database: pool,
-    plugins: [magicLink({ sendMagicLink: async () => {} })],
+    emailAndPassword: { enabled: true },
   });
   console.log(`Better Auth: ${toBeCreated.length} neue Tabellen, ${toBeAdded.length} Tabellen mit neuen Spalten`);
   await runMigrations();

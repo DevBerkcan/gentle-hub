@@ -1,5 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
-import { createMagicLinkSender, displayNameFromEmail, isAllowedEmail, parseAllowedEmails } from "@/lib/allowlist";
+import { describe, expect, it } from "vitest";
+import { displayNameFromEmail, isAllowedEmail, parseAllowedEmails } from "@/lib/allowlist";
+import { checkPassword } from "@/lib/password-policy";
 
 describe("parseAllowedEmails", () => {
   it("normalizes case and separators", () => {
@@ -28,24 +29,11 @@ describe("isAllowedEmail", () => {
   });
 });
 
-describe("createMagicLinkSender", () => {
-  const allowed = () => parseAllowedEmails("berkcan@gentlegroup.de");
-
-  it("sends only to allowlisted addresses", async () => {
-    const send = vi.fn().mockResolvedValue(undefined);
-    const sender = createMagicLinkSender(send, allowed);
-
-    await sender({ email: "Berkcan@gentlegroup.de", url: "https://hub/verify?token=a" });
-    await sender({ email: "intruder@example.com", url: "https://hub/verify?token=b" });
-
-    expect(send).toHaveBeenCalledTimes(1);
-    expect(send).toHaveBeenCalledWith({ to: "berkcan@gentlegroup.de", url: "https://hub/verify?token=a" });
-  });
-
-  it("resolves identically for unknown addresses (no allowlist probing)", async () => {
-    const sender = createMagicLinkSender(vi.fn().mockResolvedValue(undefined), allowed);
-    await expect(sender({ email: "intruder@example.com", url: "x" })).resolves.toBeUndefined();
-    await expect(sender({ email: "berkcan@gentlegroup.de", url: "x" })).resolves.toBeUndefined();
+describe("checkPassword", () => {
+  it("requires 12 to 128 characters", () => {
+    expect(checkPassword("kurz")).toMatch(/12/);
+    expect(checkPassword("x".repeat(129))).toMatch(/128/);
+    expect(checkPassword("lang-genug-1234")).toBeNull();
   });
 });
 

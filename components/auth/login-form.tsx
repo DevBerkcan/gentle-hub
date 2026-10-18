@@ -1,71 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { buttonClass, inputClass } from "@/components/hub/application-form";
 
+/**
+ * Uncontrolled on purpose: values are read from the form on submit, so
+ * password-manager autofill (which can happen before hydration) always works.
+ */
 export function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const router = useRouter();
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setState("sending");
+    const data = new FormData(event.currentTarget);
+    const email = String(data.get("email") ?? "").trim();
+    const password = String(data.get("password") ?? "");
+    if (!email || !password) return setError("Bitte E-Mail-Adresse und Passwort eingeben.");
+
+    setPending(true);
     setError(null);
-    const { error } = await authClient.signIn.magicLink({
-      email: email.trim(),
-      callbackURL: "/",
-      errorCallbackURL: "/login",
-    });
+    const { error } = await authClient.signIn.email({ email, password, rememberMe: true });
     if (error) {
-      setState("error");
+      setPending(false);
+      if (passwordRef.current) passwordRef.current.value = "";
+      passwordRef.current?.focus();
       setError(
         error.status === 429
-          ? "Zu viele Versuche. Bitte warte kurz und versuche es erneut."
-          : "Der Link konnte nicht versendet werden. Bitte versuche es später erneut."
+          ? "Zu viele Versuche. Bitte warte eine Minute."
+          : "E-Mail-Adresse oder Passwort ist falsch."
       );
       return;
     }
-    setState("sent");
-  }
-
-  if (state === "sent") {
-    return (
-      <div role="status" className="mt-6 rounded-control border border-line bg-surface-muted/60 px-4 py-3 text-sm text-fg">
-        <p className="font-medium">Schau in dein Postfach.</p>
-        <p className="mt-1 text-fg-muted">
-          Falls <strong>{email.trim()}</strong> freigegeben ist, ist ein Anmeldelink unterwegs. Er ist 10 Minuten gültig.
-        </p>
-        <button
-          type="button"
-          onClick={() => setState("idle")}
-          className="focus-ring mt-3 rounded text-xs font-medium text-fg-muted underline-offset-2 hover:text-fg hover:underline"
-        >
-          Andere Adresse verwenden
-        </button>
-      </div>
-    );
+    router.replace("/");
+    router.refresh();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
-      <label htmlFor="email" className="text-[13px] font-medium text-fg">
-        E-Mail-Adresse
-      </label>
-      <input
-        id="email"
-        type="email"
-        required
-        autoComplete="email"
-        autoFocus
-        placeholder="name@gentlegroup.de"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        className={inputClass}
-      />
-      <button type="submit" disabled={state === "sending" || !email.trim()} className={`${buttonClass.primary} h-10`}>
-        {state === "sending" ? "Wird gesendet…" : "Anmeldelink senden"}
+    <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="email" className="text-[13px] font-medium text-fg">
+          E-Mail-Adresse
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autoComplete="username"
+          autoFocus
+          placeholder="name@gentlegroup.de"
+          className={inputClass}
+        />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="password" className="text-[13px] font-medium text-fg">
+          Passwort
+        </label>
+        <input
+          ref={passwordRef}
+          id="password"
+          name="password"
+          type="password"
+          required
+          autoComplete="current-password"
+          className={inputClass}
+        />
+      </div>
+      <button type="submit" disabled={pending} className={`${buttonClass.primary} h-10`}>
+        {pending ? "Anmelden…" : "Anmelden"}
       </button>
       {error && (
         <p role="alert" className="text-sm text-red-600">
