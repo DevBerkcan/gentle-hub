@@ -6,7 +6,7 @@ import { getProjectData } from "@/lib/data";
 import { requireAuth } from "@/lib/session";
 import { accentOf, ASSET_GROUPS } from "@/lib/constants";
 import { cn } from "@/lib/cn";
-import { formatDate, formatDateTime } from "@/lib/format";
+import { formatDate, formatDateTime, formatRelative } from "@/lib/format";
 import { AssetSection } from "@/components/assets/asset-section";
 import { NotesEditor } from "@/components/notes/notes-editor";
 import { ProjectActions } from "@/components/projects/project-actions";
@@ -150,8 +150,11 @@ export default async function ProjectPage({ params }: PageParams) {
           <NotesEditor
             projectSlug={project.slug}
             initialNotes={project.notes}
-            updatedAt={project.updatedAt}
-            updatedBy={project.updatedBy}
+            meta={
+              project.updatedBy
+                ? `Zuletzt geändert von ${project.updatedBy.split("@")[0]} · ${formatRelative(project.updatedAt)}`
+                : `Zuletzt geändert ${formatRelative(project.updatedAt)}`
+            }
           />
         </div>
 

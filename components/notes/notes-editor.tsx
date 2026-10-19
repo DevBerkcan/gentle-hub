@@ -1,21 +1,18 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { saveNotesAction } from "@/app/actions";
-import { formatRelative } from "@/lib/format";
 import { FormError } from "@/components/ui/field";
 import { IconCheck, IconLoader, IconPencil } from "@/components/ui/icons";
 
 export function NotesEditor({
   projectSlug,
   initialNotes,
-  updatedAt,
-  updatedBy,
+  meta,
 }: {
   projectSlug: string;
   initialNotes: string;
-  updatedAt: string;
-  updatedBy: string | null;
+  meta: string;
 }) {
   const [value, setValue] = useState(initialNotes);
   const [savedValue, setSavedValue] = useState(initialNotes);
@@ -24,13 +21,6 @@ export function NotesEditor({
   const [pending, startTransition] = useTransition();
 
   const dirty = value !== savedValue;
-  const meta = useMemo(
-    () =>
-      updatedBy
-        ? `Zuletzt geändert von ${updatedBy.split("@")[0]} · ${formatRelative(updatedAt)}`
-        : `Zuletzt geändert ${formatRelative(updatedAt)}`,
-    [updatedAt, updatedBy],
-  );
 
   function save() {
     if (!dirty) return;
