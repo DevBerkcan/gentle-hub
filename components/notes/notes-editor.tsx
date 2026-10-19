@@ -55,7 +55,7 @@ export function NotesEditor({
           className="btn btn-secondary h-8 text-[11.5px]"
         >
           {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconCheck className="h-3.5 w-3.5" />}
-          {pending ? "Speichert â€¦" : dirty ? "Speichern" : "Gespeichert"}
+          {pending ? "Speichert …" : dirty ? "Speichern" : "Gespeichert"}
         </button>
       </div>
 
@@ -75,14 +75,14 @@ export function NotesEditor({
             save();
           }
         }}
-        placeholder="Hinweise, Ansprechpartner, To-dos, wichtige Entscheidungen â€¦"
+        placeholder="Hinweise, Ansprechpartner, To-dos, wichtige Entscheidungen …"
         className="textarea min-h-28 text-[12.5px] leading-relaxed"
         rows={4}
         maxLength={50_000}
         aria-label="Notizen zum Projekt"
       />
       <p className="mt-2 text-[10.5px] text-subtle">
-        Strg + Enter speichert. PasswÃ¶rter gehÃ¶ren in einen Zugang, nicht in die Notizen.
+        Strg + Enter speichert. Passwörter gehören in einen Zugang, nicht in die Notizen.
       </p>
     </section>
   );

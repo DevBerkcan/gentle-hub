@@ -29,7 +29,7 @@ type NavItem = {
 export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
   const sections: { title: string; items: NavItem[] }[] = [
     {
-      title: "Ãœbersicht",
+      title: "Übersicht",
       items: [
         {
           href: "/",

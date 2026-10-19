@@ -59,7 +59,7 @@ export default async function LoginPage({
             Interner Zugang
           </h1>
           <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-white/50">
-            Alle Produkte, Kundenprojekte, Repositories und ZugÃ¤nge der Gentle Group an einem
+            Alle Produkte, Kundenprojekte, Repositories und Zugänge der Gentle Group an einem
             Ort.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default async function LoginPage({
         </div>
 
         <div className="relative mt-auto flex items-center justify-between border-t border-white/[0.08] pt-5 text-[10px] text-white/30">
-          <span>Gentle Group Â· Internes Werkzeug</span>
+          <span>Gentle Group · Internes Werkzeug</span>
           <span className="inline-flex items-center gap-1.5">
             <IconLockCheck className="h-3 w-3 text-brand/70" />
             Nur freigegebene Konten
@@ -131,7 +131,7 @@ export default async function LoginPage({
           </div>
 
           <p className="mt-4 text-center text-[10px] text-subtle">
-            Nur fÃ¼r freigegebene Gentle-Group-Konten Â· Sitzung 30 Tage
+            Nur für freigegebene Gentle-Group-Konten · Sitzung 30 Tage
           </p>
         </div>
       </section>

@@ -71,7 +71,7 @@ export function SecretValue({
     <div className="mt-2 flex flex-wrap items-center gap-2">
       <span className="inline-flex items-center gap-1.5 rounded-[8px] border border-line bg-surface-2 px-2.5 py-1.5 font-mono text-[12px] tracking-[0.12em] text-subtle">
         <IconLock className="h-3.5 w-3.5" />
-        â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
+        ••••••••••••
       </span>
       <button
         type="button"
@@ -80,7 +80,7 @@ export function SecretValue({
         className="inline-flex h-8 items-center gap-1.5 rounded-[8px] border border-line bg-surface px-2.5 text-[11.5px] font-semibold text-ink transition hover:border-line-strong hover:bg-surface-2 disabled:opacity-50"
       >
         {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconEye className="h-3.5 w-3.5" />}
-        {pending ? "EntschlÃ¼sselt â€¦" : "Anzeigen"}
+        {pending ? "Entschlüsselt …" : "Anzeigen"}
       </button>
       {error && <span className="text-[11px] font-medium text-rose-600">{error}</span>}
     </div>

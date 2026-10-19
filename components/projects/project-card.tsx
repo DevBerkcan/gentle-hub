@@ -81,7 +81,7 @@ export function ProjectCard({
 
       <div className={cn("mt-auto flex items-center justify-between gap-3", isCompact ? "pt-2.5" : "pt-4")}>
         <div className="flex min-w-0 items-center gap-2.5 text-[10.5px] font-medium text-subtle">
-          <span className="inline-flex items-center gap-1" title={`${project.assetCount} EintrÃ¤ge`}>
+          <span className="inline-flex items-center gap-1" title={`${project.assetCount} Einträge`}>
             <IconLink className="h-3 w-3" />
             {project.assetCount}
           </span>
@@ -98,7 +98,7 @@ export function ProjectCard({
             rel="noopener noreferrer"
             className="relative z-10 inline-flex h-7 shrink-0 items-center gap-1 rounded-[6px] border border-line bg-surface px-2 text-[10.5px] font-semibold text-ink transition hover:border-line-strong hover:bg-surface-2"
           >
-            Ã–ffnen
+            Öffnen
             <IconArrowUpRight className="h-3 w-3" />
           </a>
         ) : (

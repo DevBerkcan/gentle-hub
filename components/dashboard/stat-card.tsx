@@ -29,7 +29,7 @@ export function StatCard({
         </span>
         {href && (
           <span className="text-[10px] font-semibold text-subtle transition group-hover:text-ink">
-            Ansehen â†’
+            Ansehen →
           </span>
         )}
       </div>

@@ -46,8 +46,8 @@ export default async function DashboardPage() {
     <div className="flex flex-col gap-7">
       <PageHeader
         eyebrow="Gentle Group"
-        title={`Ãœbersicht`}
-        description={`${todayLabel()} Â· ${counts.internal} Apps, ${counts.customers} Kunden und ${counts.projects} eigene Projekte im Hub.`}
+        title={`Übersicht`}
+        description={`${todayLabel()} · ${counts.internal} Apps, ${counts.customers} Kunden und ${counts.projects} eigene Projekte im Hub.`}
         action={
           <>
             <NewProjectButton kind="internal" label="Neue App" />
@@ -88,9 +88,9 @@ export default async function DashboardPage() {
           href="/projects"
         />
         <StatCard
-          label="EintrÃ¤ge gesamt"
+          label="Einträge gesamt"
           value={counts.assets}
-          hint={`${counts.repositories} Repos Â· ${counts.hostings} Hostings Â· ${counts.secrets} Secrets`}
+          hint={`${counts.repositories} Repos · ${counts.hostings} Hostings · ${counts.secrets} Secrets`}
           icon={<IconLink className="h-4 w-4" />}
         />
       </div>
@@ -121,7 +121,7 @@ export default async function DashboardPage() {
           <section aria-labelledby="customers-heading">
             <SectionHeader
               title="Kundenprojekte"
-              description="FÃ¼r Kunden entwickelte Websites und Anwendungen."
+              description="Für Kunden entwickelte Websites und Anwendungen."
               href="/customers"
             />
             <ProjectGrid projects={customersSorted.slice(0, 6)} />
@@ -130,7 +130,7 @@ export default async function DashboardPage() {
           <section aria-labelledby="projects-heading">
             <SectionHeader
               title="Eigene Projekte"
-              description="Games, Experimente und Portfolios auÃŸerhalb der Gentle Group."
+              description="Games, Experimente und Portfolios außerhalb der Gentle Group."
               href="/projects"
             />
             <ProjectGrid projects={projectsSorted.slice(0, 3)} />
@@ -172,7 +172,7 @@ export default async function DashboardPage() {
           <section className="card p-4" aria-labelledby="activity-heading">
             <div className="mb-3 flex items-center justify-between px-1">
               <h2 id="activity-heading" className="text-[12.5px] font-semibold text-ink">
-                AktivitÃ¤t
+                Aktivität
               </h2>
               <span className="inline-flex items-center gap-1 text-[9.5px] font-semibold text-emerald-700">
                 <span className="h-1 w-1 rounded-full bg-emerald-500" />

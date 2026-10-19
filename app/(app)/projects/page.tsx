@@ -37,9 +37,9 @@ export default async function ProjectsPage({
   return (
     <div className="flex flex-col gap-5">
       <PageHeader
-        eyebrow="UnabhÃ¤ngig von Gentle Group"
+        eyebrow="Unabhängig von Gentle Group"
         title="Eigene Projekte"
-        description="Games, Experimente, Portfolios und Werkzeuge, die nicht zu den Gentle-Group-Produkten oder Kundenprojekten gehÃ¶ren."
+        description="Games, Experimente, Portfolios und Werkzeuge, die nicht zu den Gentle-Group-Produkten oder Kundenprojekten gehören."
         action={<NewProjectButton kind="project" label="Neues Projekt" />}
       />
 
@@ -57,7 +57,7 @@ export default async function ProjectsPage({
         </p>
         {isFiltered && (
           <Link href="/projects" className="text-[11px] font-semibold text-muted transition hover:text-ink">
-            Filter zurÃ¼cksetzen
+            Filter zurücksetzen
           </Link>
         )}
       </div>
@@ -67,16 +67,16 @@ export default async function ProjectsPage({
       ) : (
         <EmptyState
           icon={<IconFolder className="h-4 w-4" />}
-          title={isFiltered ? "Keine Projekte fÃ¼r diesen Filter" : "Noch keine eigenen Projekte"}
+          title={isFiltered ? "Keine Projekte für diesen Filter" : "Noch keine eigenen Projekte"}
           description={
             isFiltered
-              ? "Passe den Filter an oder setze ihn zurÃ¼ck."
+              ? "Passe den Filter an oder setze ihn zurück."
               : "Lege das erste eigene Projekt an."
           }
           action={
             isFiltered ? (
               <Link href="/projects" className="btn btn-secondary">
-                Filter zurÃ¼cksetzen
+                Filter zurücksetzen
               </Link>
             ) : (
               <NewProjectButton kind="project" label="Erstes Projekt anlegen" />

@@ -17,7 +17,7 @@ export default function NotFound() {
             Seite nicht gefunden
           </h1>
           <p className="mt-2 text-[13px] leading-relaxed text-muted">
-            Dieser Eintrag existiert nicht oder wurde gelÃ¶scht.
+            Dieser Eintrag existiert nicht oder wurde gelöscht.
           </p>
           <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
             <Link href="/" className="btn btn-primary">
@@ -25,7 +25,7 @@ export default function NotFound() {
               <IconArrowRight className="h-4 w-4" />
             </Link>
             <Link href="/search" className="btn btn-secondary">
-              Suche Ã¶ffnen
+              Suche öffnen
             </Link>
           </div>
         </div>

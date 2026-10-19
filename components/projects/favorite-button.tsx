@@ -44,8 +44,8 @@ export function FavoriteButton({
       onClick={toggle}
       disabled={pending}
       aria-pressed={favorite}
-      aria-label={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufÃ¼gen"}
-      title={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufÃ¼gen"}
+      aria-label={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
+      title={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
       className={cn(
         "flex shrink-0 items-center justify-center rounded-[9px] transition",
         size === "sm" ? "h-7 w-7" : "h-8 w-8",

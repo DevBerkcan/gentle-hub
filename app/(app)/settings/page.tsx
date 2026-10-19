@@ -73,7 +73,7 @@ export default async function SettingsPage() {
                   Konten mit Zugriff
                 </dt>
                 <dd className="mt-0.5 text-[12px] font-medium text-ink">
-                  medin@gentlegroup.de Â· berkcan@gentlegroup.de
+                  medin@gentlegroup.de · berkcan@gentlegroup.de
                 </dd>
               </div>
             </dl>
@@ -86,10 +86,10 @@ export default async function SettingsPage() {
               </span>
               <div>
                 <h2 id="password-heading" className="text-[13.5px] font-semibold text-ink">
-                  Passwort Ã¤ndern
+                  Passwort ändern
                 </h2>
                 <p className="text-[11px] text-muted">
-                  Nach der Ã„nderung werden andere Sitzungen abgemeldet.
+                  Nach der Änderung werden andere Sitzungen abgemeldet.
                 </p>
               </div>
             </div>
@@ -129,22 +129,22 @@ export default async function SettingsPage() {
                 </span>
               </Row>
               <Row icon={<IconServer className="h-3.5 w-3.5" />} label="Umgebung">
-                {health?.environment ?? "â€“"}
+                {health?.environment ?? "–"}
               </Row>
               <Row icon={<IconDatabase className="h-3.5 w-3.5" />} label="Datenbank">
                 {online ? "Verbunden" : "Unbekannt"}
               </Row>
               <Row icon={<IconActivity className="h-3.5 w-3.5" />} label="Projekte">
-                {health?.projects ?? "â€“"}
+                {health?.projects ?? "–"}
               </Row>
               <Row icon={<IconShield className="h-3.5 w-3.5" />} label="Schema">
-                v{health?.schemaVersion ?? "â€“"}
+                v{health?.schemaVersion ?? "–"}
               </Row>
             </dl>
             {!online && (
               <p className="mt-3 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
                 Das Backend antwortet gerade nicht. Gespeicherte Daten bleiben erhalten; bitte
-                spÃ¤ter erneut versuchen.
+                später erneut versuchen.
               </p>
             )}
           </section>
@@ -155,7 +155,7 @@ export default async function SettingsPage() {
               Sicherheit
             </div>
             <ul className="mt-2.5 flex flex-col gap-1.5 text-[10.5px] leading-relaxed text-muted">
-              <li>Geheimnisse sind mit AES-256-GCM verschlÃ¼sselt.</li>
+              <li>Geheimnisse sind mit AES-256-GCM verschlüsselt.</li>
               <li>Die Anzeige eines Geheimnisses wird protokolliert.</li>
               <li>Sitzungen laufen nach 30 Tagen ab.</li>
               <li>Nur zwei freigegebene Konten haben Zugriff.</li>

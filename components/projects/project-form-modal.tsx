@@ -41,9 +41,9 @@ export function ProjectFormModal({
       title={title}
       description={
         mode === "edit"
-          ? "Ã„nderungen sind sofort fÃ¼r alle freigegebenen Personen sichtbar."
+          ? "Änderungen sind sofort für alle freigegebenen Personen sichtbar."
           : kind === "customer"
-            ? "Lege ein Kundenprojekt an. ZugÃ¤nge und Repositories kommen danach auf der Detailseite dazu."
+            ? "Lege ein Kundenprojekt an. Zugänge und Repositories kommen danach auf der Detailseite dazu."
             : kind === "project"
               ? "Lege ein eigenes Projekt, Spiel oder Experiment an."
               : "Lege ein Gentle-Group-Produkt oder eine interne App an."

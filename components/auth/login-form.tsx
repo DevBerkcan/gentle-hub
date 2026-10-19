@@ -61,7 +61,7 @@ export function LoginForm({ backendOnline = true }: { backendOnline?: boolean })
             type={showPassword ? "text" : "password"}
             required
             autoComplete="current-password"
-            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+            placeholder="••••••••••••"
             className="input pr-11"
           />
           <button
@@ -77,7 +77,7 @@ export function LoginForm({ backendOnline = true }: { backendOnline?: boolean })
 
       <button type="submit" disabled={pending} className="btn btn-primary btn-lg mt-1 w-full">
         {pending ? <IconLoader className="h-4 w-4" /> : <IconLockCheck className="h-4 w-4" />}
-        {pending ? "Anmelden â€¦" : "Anmelden"}
+        {pending ? "Anmelden …" : "Anmelden"}
       </button>
 
       <div
@@ -95,7 +95,7 @@ export function LoginForm({ backendOnline = true }: { backendOnline?: boolean })
         ) : (
           <>
             <IconWifiOff className="h-3 w-3" />
-            Backend nicht erreichbar â€“ Anmeldung eventuell nicht mÃ¶glich
+            Backend nicht erreichbar – Anmeldung eventuell nicht möglich
           </>
         )}
       </div>

@@ -37,9 +37,9 @@ export default async function CustomersPage({
   return (
     <div className="flex flex-col gap-5">
       <PageHeader
-        eyebrow="FÃ¼r Kunden entwickelt"
+        eyebrow="Für Kunden entwickelt"
         title="Kundenprojekte"
-        description="Websites, Shops und Anwendungen, die wir fÃ¼r Kunden umgesetzt haben â€“ inklusive Repositories, Hosting und ZugÃ¤ngen."
+        description="Websites, Shops und Anwendungen, die wir für Kunden umgesetzt haben – inklusive Repositories, Hosting und Zugängen."
         action={<NewProjectButton kind="customer" label="Neuer Kunde" />}
       />
 
@@ -57,7 +57,7 @@ export default async function CustomersPage({
         </p>
         {isFiltered && (
           <Link href="/customers" className="text-[11px] font-semibold text-muted transition hover:text-ink">
-            Filter zurÃ¼cksetzen
+            Filter zurücksetzen
           </Link>
         )}
       </div>
@@ -67,16 +67,16 @@ export default async function CustomersPage({
       ) : (
         <EmptyState
           icon={<IconUsers className="h-4 w-4" />}
-          title={isFiltered ? "Keine Kunden fÃ¼r diesen Filter" : "Noch keine Kundenprojekte"}
+          title={isFiltered ? "Keine Kunden für diesen Filter" : "Noch keine Kundenprojekte"}
           description={
             isFiltered
-              ? "Passe den Filter an oder setze ihn zurÃ¼ck."
+              ? "Passe den Filter an oder setze ihn zurück."
               : "Lege das erste Kundenprojekt an."
           }
           action={
             isFiltered ? (
               <Link href="/customers" className="btn btn-secondary">
-                Filter zurÃ¼cksetzen
+                Filter zurücksetzen
               </Link>
             ) : (
               <NewProjectButton kind="customer" label="Ersten Kunden anlegen" />

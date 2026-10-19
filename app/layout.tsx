@@ -17,9 +17,9 @@ const geist = Geist({
 export const metadata: Metadata = {
   title: {
     default: "GentleHub",
-    template: "%s Â· GentleHub",
+    template: "%s · GentleHub",
   },
-  description: "Apps, Kundenprojekte und ZugÃ¤nge der Gentle Group.",
+  description: "Apps, Kundenprojekte und Zugänge der Gentle Group.",
   applicationName: "GentleHub",
   robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/favicon.svg" },

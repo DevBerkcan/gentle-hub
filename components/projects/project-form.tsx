@@ -96,7 +96,7 @@ export function ProjectForm({
         : form.kind === "customer"
           ? "Kunde anlegen"
           : "Projekt anlegen"
-      : "Ã„nderungen speichern";
+      : "Änderungen speichern";
 
   function update<K extends keyof ProjectInput>(key: K, value: ProjectInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -117,12 +117,12 @@ export function ProjectForm({
 
     const primaryUrl = normalizeUrl(form.primaryUrl);
     if (primaryUrl && !isValidHttpUrl(primaryUrl)) {
-      nextErrors.primaryUrl = "Bitte eine gÃ¼ltige Adresse angeben, z. B. https://example.com.";
+      nextErrors.primaryUrl = "Bitte eine gültige Adresse angeben, z. B. https://example.com.";
     }
 
     const companyWebsite = normalizeUrl(form.companyWebsite);
     if (isCustomer && companyWebsite && !isValidHttpUrl(companyWebsite)) {
-      nextErrors.companyWebsite = "Bitte eine gÃ¼ltige Web-Adresse angeben.";
+      nextErrors.companyWebsite = "Bitte eine gültige Web-Adresse angeben.";
     }
 
     if (
@@ -130,7 +130,7 @@ export function ProjectForm({
       form.contactEmail.trim() &&
       !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(form.contactEmail.trim())
     ) {
-      nextErrors.contactEmail = "Bitte eine gÃ¼ltige E-Mail-Adresse angeben.";
+      nextErrors.contactEmail = "Bitte eine gültige E-Mail-Adresse angeben.";
     }
 
     if (Object.keys(nextErrors).length > 0) {
@@ -245,7 +245,7 @@ export function ProjectForm({
           id={`${formId}-description`}
           value={form.description}
           onChange={(event) => update("description", event.target.value)}
-          placeholder="Ein bis zwei SÃ¤tze."
+          placeholder="Ein bis zwei Sätze."
           className="textarea min-h-[70px]"
           maxLength={800}
           rows={2}
@@ -255,14 +255,14 @@ export function ProjectForm({
       <Field
         label={isCustomer ? "Website" : isProject ? "Haupt-Link" : "Produkt-Link"}
         htmlFor={`${formId}-url`}
-        hint="Ohne https:// wird automatisch ergÃ¤nzt."
+        hint="Ohne https:// wird automatisch ergänzt."
         error={errors.primaryUrl}
       >
         <input
           id={`${formId}-url`}
           value={form.primaryUrl}
           onChange={(event) => update("primaryUrl", event.target.value)}
-          placeholder="https://â€¦"
+          placeholder="https://…"
           className="input"
           inputMode="url"
         />
@@ -285,7 +285,7 @@ export function ProjectForm({
             id={`${formId}-icon`}
             value={form.icon}
             onChange={(event) => update("icon", event.target.value)}
-            placeholder="/apps/â€¦ oder https://â€¦"
+            placeholder="/apps/… oder https://…"
             className="input flex-1"
             maxLength={1000}
           />
@@ -324,7 +324,7 @@ export function ProjectForm({
                 id={`${formId}-phone`}
                 value={form.contactPhone}
                 onChange={(event) => update("contactPhone", event.target.value)}
-                placeholder="+49 â€¦"
+                placeholder="+49 …"
                 className="input"
                 inputMode="tel"
                 maxLength={80}
@@ -335,7 +335,7 @@ export function ProjectForm({
                 id={`${formId}-company`}
                 value={form.companyWebsite}
                 onChange={(event) => update("companyWebsite", event.target.value)}
-                placeholder="https://â€¦"
+                placeholder="https://…"
                 className="input"
                 inputMode="url"
               />
@@ -345,9 +345,9 @@ export function ProjectForm({
       )}
 
       <Field
-        label="SchlagwÃ¶rter"
+        label="Schlagwörter"
         htmlFor={`${formId}-tags`}
-        hint="Kommagetrennt, maximal 10 StÃ¼ck."
+        hint="Kommagetrennt, maximal 10 Stück."
         error={errors.tags}
       >
         <input
@@ -362,7 +362,7 @@ export function ProjectForm({
       <Field
         label="Notizen"
         htmlFor={`${formId}-notes`}
-        hint="Hinweise und To-dos. Secrets gehÃ¶ren unter ZugÃ¤nge & Infrastruktur."
+        hint="Hinweise und To-dos. Secrets gehören unter Zugänge & Infrastruktur."
         error={errors.notes}
       >
         <textarea
@@ -381,7 +381,7 @@ export function ProjectForm({
         </button>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending ? "Speichert â€¦" : submitLabel}
+          {pending ? "Speichert …" : submitLabel}
         </button>
       </div>
     </form>

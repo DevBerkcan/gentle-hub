@@ -88,17 +88,17 @@ function secretLabel(type: AssetType): string {
 function detailsPlaceholder(type: AssetType): string {
   switch (type) {
     case "repo":
-      return "Branch, Sprache, Besonderheiten â€¦";
+      return "Branch, Sprache, Besonderheiten …";
     case "hosting":
-      return "Projekt, Plan, Region, Deploy-Branch â€¦";
+      return "Projekt, Plan, Region, Deploy-Branch …";
     case "database":
-      return "Datenbankname, Port, Collation â€¦";
+      return "Datenbankname, Port, Collation …";
     case "account":
-      return "2FA, Rolle, wofÃ¼r der Zugang ist â€¦";
+      return "2FA, Rolle, wofür der Zugang ist …";
     case "secret":
-      return "WofÃ¼r ist der Wert? Umgebung, Ablaufdatum â€¦";
+      return "Wofür ist der Wert? Umgebung, Ablaufdatum …";
     default:
-      return "ZusÃ¤tzliche Informationen â€¦";
+      return "Zusätzliche Informationen …";
   }
 }
 
@@ -165,7 +165,7 @@ export function AssetForm({
     if ((type === "link" || type === "repo") && !normalizedUrl) {
       nextErrors.url = "Bitte eine URL angeben.";
     } else if (normalizedUrl && type !== "database" && !isValidHttpUrl(normalizedUrl)) {
-      nextErrors.url = "Bitte eine gÃ¼ltige Web-Adresse angeben.";
+      nextErrors.url = "Bitte eine gültige Web-Adresse angeben.";
     }
 
     if (type === "secret" && mode === "create" && !form.secret.trim()) {
@@ -283,7 +283,7 @@ export function AssetForm({
             label={urlLabel(type)}
             htmlFor={`${formId}-url`}
             error={errors.url}
-            hint={type === "database" ? "Hostname oder Serveradresse, z. B. db123.example.net" : "Ohne https:// wird automatisch ergÃ¤nzt."}
+            hint={type === "database" ? "Hostname oder Serveradresse, z. B. db123.example.net" : "Ohne https:// wird automatisch ergänzt."}
             required={type === "link" || type === "repo"}
           >
             <input
@@ -294,8 +294,8 @@ export function AssetForm({
                 type === "database"
                   ? "db74483.databaseasp.net"
                   : type === "repo"
-                    ? "https://github.com/â€¦"
-                    : "https://â€¦"
+                    ? "https://github.com/…"
+                    : "https://…"
               }
               className="input"
               inputMode={type === "database" ? "text" : "url"}
@@ -328,7 +328,7 @@ export function AssetForm({
             id={`${formId}-provider`}
             value={form.provider}
             onChange={(event) => update("provider", event.target.value)}
-            placeholder="Vercel, GitHub, MonsterASP â€¦"
+            placeholder="Vercel, GitHub, MonsterASP …"
             className="input"
             list={`${formId}-providers`}
             maxLength={120}
@@ -365,8 +365,8 @@ export function AssetForm({
         error={errors.secret}
         hint={
           hasStoredSecret
-            ? "Leer lassen, um das gespeicherte Geheimnis unverÃ¤ndert zu lassen."
-            : "Wird verschlÃ¼sselt gespeichert und nur nach ausdrÃ¼cklicher Anzeige entschlÃ¼sselt."
+            ? "Leer lassen, um das gespeicherte Geheimnis unverändert zu lassen."
+            : "Wird verschlüsselt gespeichert und nur nach ausdrücklicher Anzeige entschlüsselt."
         }
       >
         <div className="relative">
@@ -377,8 +377,8 @@ export function AssetForm({
               onChange={(event) => update("secret", event.target.value)}
               placeholder={
                 hasStoredSecret
-                  ? "UnverÃ¤ndert lassen â€¦"
-                  : "Server=â€¦;Database=â€¦;User Id=â€¦;Password=â€¦;"
+                  ? "Unverändert lassen …"
+                  : "Server=…;Database=…;User Id=…;Password=…;"
               }
               className="textarea min-h-28 pr-10 font-mono text-[12px]"
               autoComplete="off"
@@ -390,7 +390,7 @@ export function AssetForm({
               type={showSecret ? "text" : "password"}
               value={form.secret}
               onChange={(event) => update("secret", event.target.value)}
-              placeholder={hasStoredSecret ? "UnverÃ¤ndert lassen â€¦" : "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"}
+              placeholder={hasStoredSecret ? "Unverändert lassen …" : "••••••••••••"}
               className="input pr-11 font-mono text-[12px]"
               autoComplete="new-password"
               maxLength={20_000}
@@ -415,7 +415,7 @@ export function AssetForm({
               onChange={(event) => update("clearSecret", event.target.checked)}
               className="h-3.5 w-3.5 rounded border-rose-300 accent-rose-600"
             />
-            Gespeichertes Geheimnis lÃ¶schen
+            Gespeichertes Geheimnis löschen
           </label>
         )}
       </Field>
@@ -436,7 +436,7 @@ export function AssetForm({
           id={`${formId}-notes`}
           value={form.notes}
           onChange={(event) => update("notes", event.target.value)}
-          placeholder="Interne Hinweise, Ansprechpartner, Ablaufdatum â€¦"
+          placeholder="Interne Hinweise, Ansprechpartner, Ablaufdatum …"
           className="textarea min-h-20"
           rows={2}
         />
@@ -448,7 +448,7 @@ export function AssetForm({
         </button>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending ? "Speichert â€¦" : mode === "create" ? "Eintrag hinzufÃ¼gen" : "Ã„nderungen speichern"}
+          {pending ? "Speichert …" : mode === "create" ? "Eintrag hinzufügen" : "Änderungen speichern"}
         </button>
       </div>
     </form>

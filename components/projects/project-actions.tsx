@@ -26,7 +26,7 @@ export function ProjectActions({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="btn btn-primary btn-lg"
           >
-            Website Ã¶ffnen
+            Website öffnen
             <IconExternal className="h-4 w-4" />
           </a>
         )}
@@ -45,8 +45,8 @@ export function ProjectActions({ project }: { project: Project }) {
         <button
           type="button"
           onClick={() => setDeleteOpen(true)}
-          aria-label="Projekt lÃ¶schen"
-          title="Projekt lÃ¶schen"
+          aria-label="Projekt löschen"
+          title="Projekt löschen"
           className="btn btn-secondary btn-lg btn-icon text-subtle hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
         >
           <IconTrash className="h-4 w-4" />
@@ -100,13 +100,13 @@ function DeleteProjectDialog({
     <Modal
       open={open}
       onClose={onClose}
-      title={`â€ž${project.name}â€œ lÃ¶schen?`}
-      description="Dieser Vorgang kann nicht rÃ¼ckgÃ¤ngig gemacht werden."
+      title={`„${project.name}“ löschen?`}
+      description="Dieser Vorgang kann nicht rückgängig gemacht werden."
       dismissible={!pending}
     >
       <div className="flex flex-col gap-4">
         <div className="rounded-[14px] border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] leading-relaxed text-rose-900">
-          GelÃ¶scht werden das Projekt, alle Links, Repositories, ZugÃ¤nge, Geheimnisse und
+          Gelöscht werden das Projekt, alle Links, Repositories, Zugänge, Geheimnisse und
           Favoriten. Diese Aktion betrifft alle freigegebenen Personen.
         </div>
         <FormError message={error} />
@@ -116,7 +116,7 @@ function DeleteProjectDialog({
           </button>
           <button type="button" onClick={remove} className="btn btn-danger" disabled={pending}>
             {pending && <IconLoader className="h-4 w-4" />}
-            {pending ? "LÃ¶scht â€¦" : "EndgÃ¼ltig lÃ¶schen"}
+            {pending ? "Löscht …" : "Endgültig löschen"}
           </button>
         </div>
       </div>

@@ -72,8 +72,8 @@ export function AssetSection({
         <button
           type="button"
           onClick={() => setAddOpen(true)}
-          aria-label={`${group.title}: Eintrag hinzufÃ¼gen`}
-          title="Eintrag hinzufÃ¼gen"
+          aria-label={`${group.title}: Eintrag hinzufügen`}
+          title="Eintrag hinzufügen"
           className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface text-muted transition hover:border-line-strong hover:text-ink"
         >
           <IconPlus className="h-3.5 w-3.5" />
@@ -82,13 +82,13 @@ export function AssetSection({
 
       {assets.length === 0 ? (
         <div className="flex items-center justify-between gap-3 rounded-[8px] border border-dashed border-line-strong bg-surface px-3.5 py-2.5">
-          <p className="text-[11px] text-muted">Noch keine EintrÃ¤ge in dieser Kategorie.</p>
+          <p className="text-[11px] text-muted">Noch keine Einträge in dieser Kategorie.</p>
           <button
             type="button"
             onClick={() => setAddOpen(true)}
             className="shrink-0 text-[11px] font-semibold text-ink transition hover:text-accent"
           >
-            + HinzufÃ¼gen
+            + Hinzufügen
           </button>
         </div>
       ) : (

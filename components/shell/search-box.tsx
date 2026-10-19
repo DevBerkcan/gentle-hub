@@ -54,7 +54,7 @@ export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
         type="search"
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        placeholder="Projekte, Kunden, ZugÃ¤nge â€¦"
+        placeholder="Projekte, Kunden, Zugänge …"
         aria-label="GentleHub durchsuchen"
         className="h-9 w-full rounded-[8px] border border-line bg-surface pl-9 pr-16 text-[12.5px] text-ink outline-none transition placeholder:text-subtle/80 focus:border-[#5eead4] focus:ring-4 focus:ring-[#ccfbf1]"
       />

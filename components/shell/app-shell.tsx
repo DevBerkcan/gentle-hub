@@ -31,7 +31,7 @@ export function AppShell({
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              aria-label="Navigation Ã¶ffnen"
+              aria-label="Navigation öffnen"
               className={cn(
                 "flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border border-line bg-surface text-ink transition hover:bg-surface-2 lg:hidden",
               )}

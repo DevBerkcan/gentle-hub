@@ -33,7 +33,7 @@ export function ChangePasswordForm() {
     const nextErrors: FieldErrors = {};
     if (!currentPassword) nextErrors.currentPassword = "Bitte das aktuelle Passwort eingeben.";
     if (newPassword.length < 12) nextErrors.newPassword = "Mindestens 12 Zeichen.";
-    if (newPassword !== confirmPassword) nextErrors.confirmPassword = "Die PasswÃ¶rter stimmen nicht Ã¼berein.";
+    if (newPassword !== confirmPassword) nextErrors.confirmPassword = "Die Passwörter stimmen nicht überein.";
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       return;
@@ -145,7 +145,7 @@ export function ChangePasswordForm() {
       <ul className="grid gap-1 text-[11px] text-muted sm:grid-cols-2">
         {[
           { ok: checks[0], label: "Mindestens 12 Zeichen" },
-          { ok: checks[1], label: "GroÃŸ- und Kleinbuchstaben" },
+          { ok: checks[1], label: "Groß- und Kleinbuchstaben" },
           { ok: checks[2], label: "Mindestens eine Zahl" },
           { ok: checks[3], label: "Ein Sonderzeichen" },
         ].map((item) => (
@@ -166,11 +166,11 @@ export function ChangePasswordForm() {
       <div className="flex items-center justify-between gap-3 border-t border-line pt-4">
         <p className="inline-flex items-center gap-1.5 text-[11px] text-muted">
           <IconShield className="h-3.5 w-3.5" />
-          Andere GerÃ¤te werden abgemeldet.
+          Andere Geräte werden abgemeldet.
         </p>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending ? "Speichert â€¦" : "Passwort Ã¤ndern"}
+          {pending ? "Speichert …" : "Passwort ändern"}
         </button>
       </div>
     </form>

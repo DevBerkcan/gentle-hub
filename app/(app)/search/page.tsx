@@ -29,7 +29,7 @@ export default async function SearchPage({
       <PageHeader
         eyebrow="Alles durchsuchen"
         title="Suche"
-        description="Finde Apps, Kunden, Repositories, Hosting-EintrÃ¤ge und ZugÃ¤nge an einem Ort."
+        description="Finde Apps, Kunden, Repositories, Hosting-Einträge und Zugänge an einem Ort."
       />
 
       <form action="/search" className="relative max-w-2xl" role="search">
@@ -38,7 +38,7 @@ export default async function SearchPage({
           type="search"
           name="q"
           defaultValue={query}
-          placeholder="z. B. Vercel, Skinbloom, Datenbank, Connection String â€¦"
+          placeholder="z. B. Vercel, Skinbloom, Datenbank, Connection String …"
           aria-label="Suche"
           autoFocus={!query}
           className="h-12 w-full rounded-[14px] border border-line bg-surface pl-11 pr-28 text-[14px] text-ink shadow-card outline-none transition placeholder:text-subtle/80 focus:border-[#8fe6c3] focus:ring-4 focus:ring-[#d9fff0]"
@@ -58,8 +58,8 @@ export default async function SearchPage({
       ) : projectCount === 0 && assetCount === 0 ? (
         <EmptyState
           icon={<IconSearch className="h-5 w-5" />}
-          title={`Keine Treffer fÃ¼r â€ž${query}â€œ`}
-          description="PrÃ¼fe die Schreibweise oder suche nach Anbieter, Kunde oder Eintragsbezeichnung."
+          title={`Keine Treffer für „${query}“`}
+          description="Prüfe die Schreibweise oder suche nach Anbieter, Kunde oder Eintragsbezeichnung."
           action={
             <Link href="/search" className="btn btn-secondary">
               Neue Suche
@@ -69,8 +69,8 @@ export default async function SearchPage({
       ) : (
         <div className="flex flex-col gap-8">
           <p className="text-[11.5px] font-semibold uppercase tracking-wide text-subtle">
-            {projectCount} {projectCount === 1 ? "Projekt" : "Projekte"} Â· {assetCount}{" "}
-            {assetCount === 1 ? "Eintrag" : "EintrÃ¤ge"} fÃ¼r â€ž{query}â€œ
+            {projectCount} {projectCount === 1 ? "Projekt" : "Projekte"} · {assetCount}{" "}
+            {assetCount === 1 ? "Eintrag" : "Einträge"} für „{query}“
           </p>
 
           {projectCount > 0 && (
@@ -85,7 +85,7 @@ export default async function SearchPage({
           {assetCount > 0 && (
             <section aria-labelledby="search-assets">
               <h2 id="search-assets" className="mb-4 font-display text-[16px] font-bold text-ink">
-                EintrÃ¤ge
+                Einträge
               </h2>
               <div className="card divide-y divide-line overflow-hidden">
                 {results.assets.map(({ asset, project }) => (
@@ -105,12 +105,12 @@ export default async function SearchPage({
                       </div>
                       <p className="mt-0.5 truncate text-[11px] text-muted">
                         {project.name}
-                        {asset.url ? ` Â· ${shortUrl(asset.url)}` : ""}
-                        {asset.username ? ` Â· ${asset.username}` : ""}
+                        {asset.url ? ` · ${shortUrl(asset.url)}` : ""}
+                        {asset.username ? ` · ${asset.username}` : ""}
                       </p>
                     </div>
                     <span className="mt-1 shrink-0 text-[10.5px] font-semibold text-subtle">
-                      Ã–ffnen â†’
+                      Öffnen →
                     </span>
                   </Link>
                 ))}

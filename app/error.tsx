@@ -30,7 +30,7 @@ export default function GlobalError({
             Etwas ist schiefgelaufen
           </h1>
           <p className="mt-2 text-[13px] leading-relaxed text-muted">
-            Die Anfrage konnte nicht abgeschlossen werden. PrÃ¼fe kurz die Verbindung und versuche
+            Die Anfrage konnte nicht abgeschlossen werden. Prüfe kurz die Verbindung und versuche
             es erneut.
           </p>
           {error.digest && (
