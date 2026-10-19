@@ -1,135 +1,120 @@
 # GentleHub
 
-Der zentrale, geschützte Application Launcher der Gentle Group: alle Anwendungen auf einer Seite, jede mit einem Klick erreichbar, mit gemeinsamen Notizen und einem verschlüsselten Tresor für Zugangsdaten.
+Der zentrale Hub der Gentle Group: eigene Apps, Kundenprojekte, Repositories, Hosting und sensible Zugänge an einem Ort.
 
 **One Hub. All Applications. One Click.**
 
-## Features
+- Frontend: <https://gentle-hub.vercel.app>
+- Backend/API: <https://gentlehub.runasp.net>
+- Backend-Repository: <https://github.com/metur100/gentle-hub-api>
 
-- **Login nur für Freigegebene:** E-Mail-Adresse + Passwort, ohne E-Mail-Versand. Selbst registrieren ist nicht möglich; Konten legt `npm run user:password` an, und nur Adressen in `ALLOWED_EMAILS` kommen rein. Nach 5 Fehlversuchen pro Minute greift eine Sperre.
-- **Kacheln:**
-  - **Öffnen** (unten links) startet den hinterlegten Link in einem neuen Tab. Ein Klick auf die Kachel macht dasselbe.
-  - **Info** (unten rechts) öffnet ein Seitenpanel mit Link, Notizen, Zugangsdaten, Details und einer Option zum Löschen.
-- **Kacheln im UI verwalten:** Mit „+ Anwendung“ anlegen, im Info-Panel bearbeiten und löschen.
-- **Gemeinsame Daten:** Alle Freigegebenen sehen dieselben Kacheln, Links und Notizen. Favoriten gelten pro Person.
-- **Notizen:** Werden automatisch gespeichert, mit Anzeige „Zuletzt geändert von …“, und sind durchsuchbar. Links in Notizen erscheinen als klickbare Liste (bei „Name: https://…“ wird „Name“ zur Beschriftung).
-- **Tresor:** Benutzer, Passwort und Hinweis werden **im Browser** mit einem gemeinsamen Master-Passwort verschlüsselt (PBKDF2-SHA-256 mit 600 000 Iterationen, AES-256-GCM). Server und Datenbank sehen nur Chiffretext. Der Tresor sperrt sich nach 10 Minuten Inaktivität.
-- **Suche, Filter und Schnellsuche:** Suche, Kategorie-Filter und Schnellsuche (`⌘ K` / `Strg K`); `/` fokussiert die Suche.
-- **Bedienung:** Helles Design, responsiv, per Tastatur bedienbar. `prefers-reduced-motion` wird berücksichtigt.
+## Was GentleHub kann
+
+- **Zwei klare Bereiche:** eigene Apps der Gentle Group und Kundenprojekte – getrennt in Navigation, Listen und Filtern.
+- **Alles zu einem Projekt an einem Ort:** Links, Repositories, Hosting, Datenbanken, Konten und Geheimnisse.
+- **Sensible Daten verschlüsselt:** Passwörter, Connection Strings, Publish-Profile und API-Keys werden mit AES-256-GCM verschlüsselt gespeichert und erst nach einem Klick entschlüsselt.
+- **Schnell finden:** globale Suche über Projekte, Links, Repositories, Anbieter, Benutzernamen und Notizen; Favoriten für den direkten Zugriff.
+- **Aufgeräumtes Dashboard:** Kennzahlen, Favoriten, zuletzt aktualisierte Projekte und Aktivitätsprotokoll.
+- **Nur zwei Konten:** `medin@gentlegroup.de` und `berkcan@gentlegroup.de`. Es gibt keine Selbstregistrierung.
+- **Sicherheit:** PBKDF2-SHA256-Passwort-Hashes, undurchsichtige Session-Tokens (nur als Hash in der Datenbank), 30-Tage-Sitzungen, Login-Rate-Limit, protokollierte Anzeige von Geheimnissen.
 
 ## Architektur
 
 | Baustein | Umsetzung |
 | --- | --- |
-| Framework | Next.js 16 (App Router), React 19, Tailwind v4 |
-| Auth | [Better Auth](https://www.better-auth.com) mit E-Mail + Passwort (`lib/auth.ts`), Registrierung deaktiviert, Passwörter gehasht (scrypt), Sitzung 30 Tage im HttpOnly-Cookie |
-| Zugriffsschutz | `proxy.ts` (schnelle Cookie-Prüfung) **plus** `requireUser()` in jeder Seite und Server Action (`lib/session.ts`) |
-| Datenbank | Postgres (z. B. Neon), Treiber `pg`, parametrisiertes SQL (`lib/repo.ts`) |
-| Mutationen | Server Actions mit serverseitiger Validierung (`app/actions.ts`, `lib/validation.ts`) |
-| Tresor | Web Crypto im Browser (`lib/vault.ts`, `lib/use-vault.ts`) |
+| Frontend | Next.js 16 (App Router), React 19, Tailwind CSS 4, Vercel |
+| Backend | ASP.NET Core 8 Minimal API, IIS auf MonsterASP |
+| Datenbank | Microsoft SQL Server 2025 Express (MonsterASP) |
+| Auth | E-Mail + Passwort, PBKDF2, opake Bearer-Sessions, HttpOnly-Cookie im Frontend |
+| Secrets | AES-256-GCM serverseitig; Schlüssel nur in der Backend-Konfiguration |
+| Datenzugriff | Dapper mit parametrisierten Queries; Schema wird beim Start idempotent angelegt |
 
-## Umgebungsvariablen
-
-Siehe `.env.example`. Lokal in `.env.local` eintragen, auf Vercel unter *Settings → Environment Variables*.
-
-| Variable | Zweck |
-| --- | --- |
-| `DATABASE_URL` | Postgres-Verbindung (Neon über Vercel Storage setzt sie automatisch) |
-| `BETTER_AUTH_SECRET` | Zufälliges Secret, mindestens 32 Zeichen: `openssl rand -base64 32` |
-| `BETTER_AUTH_URL` | Öffentliche URL des Hubs, z. B. `https://hub.gentlegroup.de` |
-| `ALLOWED_EMAILS` | Kommagetrennte Liste aller zugelassenen Adressen |
-
-## Setup lokal
-
-```bash
-npm install
-cp .env.example .env.local     # Werte eintragen (DATABASE_URL, BETTER_AUTH_SECRET, …)
-npm run db:migrate             # Tabellen anlegen + Startkachel GentleBook
-npm run user:password -- berkcan@gentlegroup.de   # Konto anlegen, Passwort wird abgefragt
-npm run dev                    # http://localhost:3000
-```
-
-Postgres lokal per Docker:
-
-```bash
-docker run -d --name gentlehub-pg -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=gentlehub -p 5432:5432 postgres:17-alpine
-# DATABASE_URL=postgres://postgres:dev@localhost:5432/gentlehub
-```
-
-## Deployment (Vercel)
-
-1. Das Repo `DevBerkcan/gentle-hub` in Vercel importieren.
-2. Unter *Storage → Create → Neon* eine Datenbank anlegen und mit dem Projekt verbinden.
-3. Die Umgebungsvariablen setzen (siehe oben).
-4. Einmalig gegen die Produktions-DB ausführen (`DATABASE_URL` und `ALLOWED_EMAILS` in `.env.local`):
-   - `npm run db:migrate`
-   - `npm run user:password -- berkcan@gentlegroup.de`
-   - `npm run user:password -- medin@gentlegroup.de`
-5. Deployen.
-
-## Scripts
-
-```bash
-npm run dev          # Entwicklungsserver
-npm run build        # Produktions-Build
-npm run start        # Produktions-Build lokal starten
-npm run lint         # ESLint
-npm run test         # Vitest
-npm run db:migrate   # Schema anlegen/aktualisieren (idempotent)
-npm run user:password -- <email>   # Konto anlegen oder Passwort zurücksetzen (meldet überall ab)
-npm run db:import -- <datei.json>  # Kacheln inkl. Link und Notizen aus JSON anlegen/aktualisieren
-```
-
-## Zugriff verwalten
-
-- **Person freigeben:** E-Mail-Adresse zu `ALLOWED_EMAILS` hinzufügen, neu deployen und `npm run user:password -- <email>` ausführen.
-- **Passwort ändern:** Im Hub über das Konto-Menü (oben rechts) → „Passwort ändern“. Andere Geräte werden abgemeldet.
-- **Passwort vergessen:** `npm run user:password -- <email>` setzt ein neues Passwort (es wird keine Mail verschickt).
-- **Zugriff entziehen:** Adresse aus `ALLOWED_EMAILS` entfernen. Bestehende Sitzungen werden danach bei jedem Aufruf abgewiesen, weil `requireUser()` die Allowlist erneut prüft.
-
-## Daten importieren
-
-Mehrere Kacheln oder lange Link-Listen lassen sich per JSON einspielen (gleiche `id` = aktualisieren, neue `id` = anlegen):
-
-```json
-[
-  {
-    "id": "gentlebook",
-    "name": "GentleBook",
-    "description": "SaaS für Online-Terminbuchungen.",
-    "url": "https://app.example.com/admin/login",
-    "category": "saas",
-    "notes": "Dashboard: https://…
-Umsatz: https://…"
-  }
-]
-```
-
-```bash
-npm run db:import -- data/private/meine-apps.json
-```
-
-> **Das Repository ist öffentlich.** Import-Dateien mit internen Links gehören nach `data/private/` – der Ordner ist in `.gitignore` und wird nie committet. Passwörter gehören in keine Datei, sondern in den Tresor im Hub.
-
-## Tresor – wichtig
-
-- Das Master-Passwort wird nirgends gespeichert. **Vergessen bedeutet, dass die Zugangsdaten verloren sind.** Notizen sind davon nicht betroffen.
-- Teilt das Master-Passwort persönlich, nicht per E-Mail oder Chat.
-- Ändern zwei Personen gleichzeitig den Tresor, wird der Konflikt erkannt: neu laden und erneut speichern.
-- Für besonders kritische Zugänge bleibt ein Passwort-Manager die erste Wahl.
+Das Frontend spricht nie direkt aus dem Browser mit der API: Server Components und Server Actions rufen das Backend mit dem Session-Token auf. Dadurch gibt es keine CORS-Probleme und das Token bleibt in einem HttpOnly-Cookie.
 
 ## Projektstruktur
 
 ```text
-/app                    Seiten (Hub, Login), Server Actions, Auth-Route, Design-Tokens
-/components/hub         Header, Suche, Filter, Kachel, Info-Dialog, Formular, Tresor, Schnellsuche
-/components/auth        Login-Formular, Passwort ändern
-/components/ui          Kleine Bausteine (AppIcon, Icons, Badges, Kbd)
-/data/applications.ts   Kategorien
-/db/schema.sql          App-Tabellen (applications, favorites, vault)
-/lib                    Auth, Session, DB, Repository, Validierung, Tresor, Suche, Utilities
-/scripts                migrate.mjs (Schema + Startdaten), set-password.mjs (Konten/Passwörter), import.mjs (JSON-Import)
-/data/private           Lokale Import-Dateien (gitignored, nie committen)
-/proxy.ts               Weiterleitung auf /login ohne Session
-/tests                  Vitest-Tests
+app/
+  (app)/                 geschützter Bereich (Dashboard, Apps, Kunden, Detail, Suche, Einstellungen)
+  login/                 Anmeldung
+  actions.ts             Server Actions (Login, CRUD, Secrets)
+components/
+  shell/                 Sidebar, Topbar, Suche, Benutzermenü
+  projects/              Projektkarten, Filter, Formulare
+  assets/                Links, Repos, Hosting, Datenbanken, Konten, Geheimnisse
+  dashboard/             Kennzahlen und Aktivitätsfeed
+  ui/                    Design-Bausteine
+lib/
+  api.ts                 typisierter API-Client
+  session.ts             Session-/Auth-Helfer
+  data.ts                gecachte Server-Datenzugriffe
+  constants.ts           Status, Farben, Asset-Typen
+proxy.ts                 optimistischer Cookie-Schutz
 ```
+
+Das Backend liegt in einem separaten Repository: `metur100/gentle-hub-api`.
+
+## Lokale Entwicklung
+
+```bash
+npm install
+npm run dev
+```
+
+Standardmäßig spricht das Frontend mit `https://gentlehub.runasp.net`. Für eine andere API:
+
+```bash
+# .env.local
+GENTLEHUB_API_URL=http://localhost:5149
+```
+
+Weitere Befehle:
+
+```bash
+npm run build
+npm run lint
+```
+
+## Backend & Datenbank
+
+Das Backend erstellt beim Start alle Tabellen (`Users`, `Sessions`, `Projects`, `Assets`, `Favorites`, `Activity`, `SchemaVersions`) und legt beim ersten Start die zwei freigegebenen Konten sowie den Projektkatalog an. Der Vorgang ist idempotent.
+
+Deployment auf MonsterASP (Web Deploy):
+
+```bash
+dotnet publish backend/GentleHub.Api -c Release -o publish/backend
+msdeploy -verb:sync ^
+  -source:contentPath="publish\backend" ^
+  -dest:contentPath=site100070,computerName="https://site100070.siteasp.net:8172/msdeploy.axd?site=site100070",userName="site100070",password="…",authType=Basic ^
+  -allowUntrusted
+```
+
+Die Produktions-Verbindung nutzt den internen MSSQL-Host `db74483.databaseasp.net`. Von außen (SSMS) ist die Datenbank über `db74483.public.databaseasp.net` erreichbar.
+
+## Zugänge
+
+| Konto | Zweck |
+| --- | --- |
+| `medin@gentlegroup.de` | Vollzugriff |
+| `berkcan@gentlegroup.de` | Vollzugriff |
+
+Passwörter stehen bewusst nicht in diesem Repository. Sie werden beim Setup separat übergeben und können unter **Einstellungen → Passwort ändern** geändert werden.
+
+## Datenmodell (Kurzfassung)
+
+- **Projects**: Name, Slug, Typ (`internal`/`customer`), Status, URL, Icon, Farbe, Tags, Notizen, Kundenkontakt.
+- **Assets**: pro Projekt beliebig viele Einträge vom Typ `link`, `repo`, `hosting`, `database`, `account` oder `secret` – mit URL, Anbieter, Umgebung, Benutzername, Details, Notizen und optional einem verschlüsselten Geheimnis.
+- **Favorites**: pro Benutzer.
+- **Activity**: protokolliert Anmeldungen, Änderungen und die Anzeige von Geheimnissen.
+
+## Sicherheit
+
+- Keine Registrierung, keine Einladungslinks; nur die zwei Adressen in `Auth:AllowedEmails` kommen durch.
+- Login-Sperre nach 8 Fehlversuchen pro E-Mail + IP für 5 Minuten.
+- Session-Tokens werden nur als SHA-256-Hash gespeichert; Abmeldung und Passwortänderung widerrufen Sitzungen.
+- Geheimnisse verlassen den Server nur nach einer authentifizierten `reveal`-Anfrage; jede Anzeige wird protokolliert.
+- Das Frontend-Repository enthält keine Backend-Secrets.
+
+## Hinweis zum Repository
+
+Dieses Repository ist öffentlich. Interne Links, Zugangsdaten und Publish-Profile gehören nicht in Dateien, sondern in GentleHub selbst – dort werden sie verschlüsselt gespeichert.

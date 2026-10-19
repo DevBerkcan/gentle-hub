@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local QA artifacts and backend subproject:
+    "qa/**",
+    "screenshots/**",
+    "backend/**",
+    "publish/**",
   ]),
 ]);
 
