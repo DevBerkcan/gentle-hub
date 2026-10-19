@@ -79,15 +79,18 @@ npm run lint
 
 Das Backend erstellt beim Start alle Tabellen (`Users`, `Sessions`, `Projects`, `Assets`, `Favorites`, `Activity`, `SchemaVersions`) und legt beim ersten Start die zwei freigegebenen Konten sowie den Projektkatalog an. Der Vorgang ist idempotent.
 
-Deployment auf MonsterASP (Web Deploy):
+Deployment auf MonsterASP (im separaten Backend-Repository `metur100/gentle-hub-api`):
 
 ```bash
-dotnet publish backend/GentleHub.Api -c Release -o publish/backend
+dotnet publish -c Release -o publish/backend
 msdeploy -verb:sync ^
   -source:contentPath="publish\backend" ^
   -dest:contentPath=site100070,computerName="https://site100070.siteasp.net:8172/msdeploy.axd?site=site100070",userName="site100070",password="…",authType=Basic ^
+  -enableRule:AppOffline ^
   -allowUntrusted
 ```
+
+`-enableRule:AppOffline` gibt die laufende `GentleHub.Api.dll` für das Update frei.
 
 Die Produktions-Verbindung nutzt den internen MSSQL-Host `db74483.databaseasp.net`. Von außen (SSMS) ist die Datenbank über `db74483.public.databaseasp.net` erreichbar.
 
