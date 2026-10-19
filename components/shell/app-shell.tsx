@@ -8,6 +8,7 @@ import { IconMenu } from "@/components/ui/icons";
 import { Sidebar } from "@/components/shell/sidebar";
 import { SearchBox } from "@/components/shell/search-box";
 import { UserMenu } from "@/components/shell/user-menu";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function AppShell({
   user,
@@ -30,9 +31,9 @@ export function AppShell({
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              aria-label="Navigation öffnen"
+              aria-label="Navigation Ã¶ffnen"
               className={cn(
-                "flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border border-line bg-white text-ink transition hover:bg-surface-2 lg:hidden",
+                "flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] border border-line bg-surface text-ink transition hover:bg-surface-2 lg:hidden",
               )}
             >
               <IconMenu className="h-4 w-4" />
@@ -44,7 +45,8 @@ export function AppShell({
               </Suspense>
             </div>
 
-            <div className="ml-auto flex shrink-0 items-center gap-2">
+            <div className="ml-auto flex shrink-0 items-center gap-1.5">
+              <ThemeToggle />
               <UserMenu user={user} />
             </div>
           </div>

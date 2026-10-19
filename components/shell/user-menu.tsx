@@ -39,7 +39,7 @@ export function UserMenu({ user }: { user: User }) {
         aria-haspopup="menu"
         aria-expanded={open}
         className={cn(
-          "flex h-9 items-center gap-2 rounded-[8px] border border-line bg-white px-1.5 pr-2 text-left transition hover:border-line-strong hover:bg-surface-2",
+          "flex h-9 items-center gap-2 rounded-[8px] border border-line bg-surface px-1.5 pr-2 text-left transition hover:border-line-strong hover:bg-surface-2",
           open && "border-line-strong bg-surface-2",
         )}
       >
@@ -58,7 +58,7 @@ export function UserMenu({ user }: { user: User }) {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-[calc(100%+6px)] z-50 w-60 overflow-hidden rounded-[10px] border border-line bg-white shadow-pop"
+          className="absolute right-0 top-[calc(100%+6px)] z-50 w-60 overflow-hidden rounded-[10px] border border-line bg-surface shadow-pop"
         >
           <div className="border-b border-line px-3.5 py-3">
             <p className="truncate text-[12.5px] font-semibold text-ink">{user.displayName}</p>
@@ -82,7 +82,7 @@ export function UserMenu({ user }: { user: User }) {
               <button
                 type="submit"
                 role="menuitem"
-                className="flex w-full items-center gap-2 rounded-[6px] px-2.5 py-2 text-left text-[12px] font-medium text-[#b42318] transition hover:bg-[#fef3f2]"
+                className="flex w-full items-center gap-2 rounded-[6px] px-2.5 py-2 text-left text-[12px] font-medium text-rose-600 dark:text-rose-300 transition hover:bg-rose-50 dark:hover:bg-rose-500/10"
               >
                 <IconLogout className="h-3.5 w-3.5" />
                 Abmelden

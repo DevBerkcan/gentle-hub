@@ -61,14 +61,14 @@ export function LoginForm({ backendOnline = true }: { backendOnline?: boolean })
             type={showPassword ? "text" : "password"}
             required
             autoComplete="current-password"
-            placeholder="••••••••••••"
+            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             className="input pr-11"
           />
           <button
             type="button"
             onClick={() => setShowPassword((current) => !current)}
             aria-label={showPassword ? "Passwort verbergen" : "Passwort anzeigen"}
-            className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[8px] text-subtle transition hover:bg-[#f0edf6] hover:text-ink"
+            className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[8px] text-subtle transition hover:bg-surface-2 hover:text-ink"
           >
             {showPassword ? <IconEyeOff className="h-4 w-4" /> : <IconEye className="h-4 w-4" />}
           </button>
@@ -77,7 +77,7 @@ export function LoginForm({ backendOnline = true }: { backendOnline?: boolean })
 
       <button type="submit" disabled={pending} className="btn btn-primary btn-lg mt-1 w-full">
         {pending ? <IconLoader className="h-4 w-4" /> : <IconLockCheck className="h-4 w-4" />}
-        {pending ? "Anmelden …" : "Anmelden"}
+        {pending ? "Anmelden â€¦" : "Anmelden"}
       </button>
 
       <div
@@ -95,7 +95,7 @@ export function LoginForm({ backendOnline = true }: { backendOnline?: boolean })
         ) : (
           <>
             <IconWifiOff className="h-3 w-3" />
-            Backend nicht erreichbar – Anmeldung eventuell nicht möglich
+            Backend nicht erreichbar â€“ Anmeldung eventuell nicht mÃ¶glich
           </>
         )}
       </div>

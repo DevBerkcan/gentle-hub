@@ -33,7 +33,7 @@ export function ChangePasswordForm() {
     const nextErrors: FieldErrors = {};
     if (!currentPassword) nextErrors.currentPassword = "Bitte das aktuelle Passwort eingeben.";
     if (newPassword.length < 12) nextErrors.newPassword = "Mindestens 12 Zeichen.";
-    if (newPassword !== confirmPassword) nextErrors.confirmPassword = "Die Passwörter stimmen nicht überein.";
+    if (newPassword !== confirmPassword) nextErrors.confirmPassword = "Die PasswÃ¶rter stimmen nicht Ã¼berein.";
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       return;
@@ -97,7 +97,7 @@ export function ChangePasswordForm() {
               type="button"
               onClick={() => setShow((current) => !current)}
               aria-label={show ? "Passwort verbergen" : "Passwort anzeigen"}
-              className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[8px] text-subtle transition hover:bg-[#f0edf6] hover:text-ink"
+              className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[8px] text-subtle transition hover:bg-surface-2 hover:text-ink"
             >
               {show ? <IconEyeOff className="h-4 w-4" /> : <IconEye className="h-4 w-4" />}
             </button>
@@ -145,7 +145,7 @@ export function ChangePasswordForm() {
       <ul className="grid gap-1 text-[11px] text-muted sm:grid-cols-2">
         {[
           { ok: checks[0], label: "Mindestens 12 Zeichen" },
-          { ok: checks[1], label: "Groß- und Kleinbuchstaben" },
+          { ok: checks[1], label: "GroÃŸ- und Kleinbuchstaben" },
           { ok: checks[2], label: "Mindestens eine Zahl" },
           { ok: checks[3], label: "Ein Sonderzeichen" },
         ].map((item) => (
@@ -153,7 +153,7 @@ export function ChangePasswordForm() {
             <span
               className={cn(
                 "flex h-3.5 w-3.5 items-center justify-center rounded-full",
-                item.ok ? "bg-emerald-100 text-emerald-700" : "bg-[#f0edf6] text-subtle",
+                item.ok ? "bg-emerald-100 text-emerald-700" : "bg-surface-2 text-subtle",
               )}
             >
               <IconCheck className="h-2.5 w-2.5" />
@@ -166,11 +166,11 @@ export function ChangePasswordForm() {
       <div className="flex items-center justify-between gap-3 border-t border-line pt-4">
         <p className="inline-flex items-center gap-1.5 text-[11px] text-muted">
           <IconShield className="h-3.5 w-3.5" />
-          Andere Geräte werden abgemeldet.
+          Andere GerÃ¤te werden abgemeldet.
         </p>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending ? "Speichert …" : "Passwort ändern"}
+          {pending ? "Speichert â€¦" : "Passwort Ã¤ndern"}
         </button>
       </div>
     </form>

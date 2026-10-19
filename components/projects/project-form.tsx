@@ -96,7 +96,7 @@ export function ProjectForm({
         : form.kind === "customer"
           ? "Kunde anlegen"
           : "Projekt anlegen"
-      : "Änderungen speichern";
+      : "Ã„nderungen speichern";
 
   function update<K extends keyof ProjectInput>(key: K, value: ProjectInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -117,12 +117,12 @@ export function ProjectForm({
 
     const primaryUrl = normalizeUrl(form.primaryUrl);
     if (primaryUrl && !isValidHttpUrl(primaryUrl)) {
-      nextErrors.primaryUrl = "Bitte eine gültige Adresse angeben, z. B. https://example.com.";
+      nextErrors.primaryUrl = "Bitte eine gÃ¼ltige Adresse angeben, z. B. https://example.com.";
     }
 
     const companyWebsite = normalizeUrl(form.companyWebsite);
     if (isCustomer && companyWebsite && !isValidHttpUrl(companyWebsite)) {
-      nextErrors.companyWebsite = "Bitte eine gültige Web-Adresse angeben.";
+      nextErrors.companyWebsite = "Bitte eine gÃ¼ltige Web-Adresse angeben.";
     }
 
     if (
@@ -130,7 +130,7 @@ export function ProjectForm({
       form.contactEmail.trim() &&
       !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(form.contactEmail.trim())
     ) {
-      nextErrors.contactEmail = "Bitte eine gültige E-Mail-Adresse angeben.";
+      nextErrors.contactEmail = "Bitte eine gÃ¼ltige E-Mail-Adresse angeben.";
     }
 
     if (Object.keys(nextErrors).length > 0) {
@@ -191,7 +191,7 @@ export function ProjectForm({
                   "flex items-center gap-2 rounded-[8px] border px-2.5 py-2 text-left transition",
                   active
                     ? "border-ink/20 bg-surface-2 ring-1 ring-inset ring-ink/5"
-                    : "border-line bg-white hover:border-line-strong hover:bg-surface-2",
+                    : "border-line bg-surface hover:border-line-strong hover:bg-surface-2",
                 )}
               >
                 <Icon className={cn("h-4 w-4", active ? "text-ink" : "text-muted")} />
@@ -245,7 +245,7 @@ export function ProjectForm({
           id={`${formId}-description`}
           value={form.description}
           onChange={(event) => update("description", event.target.value)}
-          placeholder="Ein bis zwei Sätze."
+          placeholder="Ein bis zwei SÃ¤tze."
           className="textarea min-h-[70px]"
           maxLength={800}
           rows={2}
@@ -255,14 +255,14 @@ export function ProjectForm({
       <Field
         label={isCustomer ? "Website" : isProject ? "Haupt-Link" : "Produkt-Link"}
         htmlFor={`${formId}-url`}
-        hint="Ohne https:// wird automatisch ergänzt."
+        hint="Ohne https:// wird automatisch ergÃ¤nzt."
         error={errors.primaryUrl}
       >
         <input
           id={`${formId}-url`}
           value={form.primaryUrl}
           onChange={(event) => update("primaryUrl", event.target.value)}
-          placeholder="https://…"
+          placeholder="https://â€¦"
           className="input"
           inputMode="url"
         />
@@ -285,7 +285,7 @@ export function ProjectForm({
             id={`${formId}-icon`}
             value={form.icon}
             onChange={(event) => update("icon", event.target.value)}
-            placeholder="/apps/… oder https://…"
+            placeholder="/apps/â€¦ oder https://â€¦"
             className="input flex-1"
             maxLength={1000}
           />
@@ -324,7 +324,7 @@ export function ProjectForm({
                 id={`${formId}-phone`}
                 value={form.contactPhone}
                 onChange={(event) => update("contactPhone", event.target.value)}
-                placeholder="+49 …"
+                placeholder="+49 â€¦"
                 className="input"
                 inputMode="tel"
                 maxLength={80}
@@ -335,7 +335,7 @@ export function ProjectForm({
                 id={`${formId}-company`}
                 value={form.companyWebsite}
                 onChange={(event) => update("companyWebsite", event.target.value)}
-                placeholder="https://…"
+                placeholder="https://â€¦"
                 className="input"
                 inputMode="url"
               />
@@ -345,9 +345,9 @@ export function ProjectForm({
       )}
 
       <Field
-        label="Schlagwörter"
+        label="SchlagwÃ¶rter"
         htmlFor={`${formId}-tags`}
-        hint="Kommagetrennt, maximal 10 Stück."
+        hint="Kommagetrennt, maximal 10 StÃ¼ck."
         error={errors.tags}
       >
         <input
@@ -362,7 +362,7 @@ export function ProjectForm({
       <Field
         label="Notizen"
         htmlFor={`${formId}-notes`}
-        hint="Hinweise und To-dos. Secrets gehören unter Zugänge & Infrastruktur."
+        hint="Hinweise und To-dos. Secrets gehÃ¶ren unter ZugÃ¤nge & Infrastruktur."
         error={errors.notes}
       >
         <textarea
@@ -381,7 +381,7 @@ export function ProjectForm({
         </button>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending ? "Speichert …" : submitLabel}
+          {pending ? "Speichert â€¦" : submitLabel}
         </button>
       </div>
     </form>

@@ -31,7 +31,7 @@ export function AssetTypeIcon({
   return (
     <span
       className={cn(
-        "flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface-2 text-[#475467]",
+        "flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface-2 text-muted",
         className,
       )}
       aria-hidden="true"

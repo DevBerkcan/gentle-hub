@@ -26,7 +26,7 @@ export function ProjectActions({ project }: { project: Project }) {
             rel="noopener noreferrer"
             className="btn btn-primary btn-lg"
           >
-            Website öffnen
+            Website Ã¶ffnen
             <IconExternal className="h-4 w-4" />
           </a>
         )}
@@ -39,14 +39,14 @@ export function ProjectActions({ project }: { project: Project }) {
         <FavoriteButton
           slug={project.slug}
           initial={project.isFavorite}
-          className="h-10 w-10 rounded-[12px] border border-line bg-white shadow-[0_1px_2px_rgb(11_16_42/0.03)]"
+          className="h-10 w-10 rounded-[12px] border border-line bg-surface shadow-[0_1px_2px_rgb(11_16_42/0.03)]"
         />
 
         <button
           type="button"
           onClick={() => setDeleteOpen(true)}
-          aria-label="Projekt löschen"
-          title="Projekt löschen"
+          aria-label="Projekt lÃ¶schen"
+          title="Projekt lÃ¶schen"
           className="btn btn-secondary btn-lg btn-icon text-subtle hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
         >
           <IconTrash className="h-4 w-4" />
@@ -100,13 +100,13 @@ function DeleteProjectDialog({
     <Modal
       open={open}
       onClose={onClose}
-      title={`„${project.name}“ löschen?`}
-      description="Dieser Vorgang kann nicht rückgängig gemacht werden."
+      title={`â€ž${project.name}â€œ lÃ¶schen?`}
+      description="Dieser Vorgang kann nicht rÃ¼ckgÃ¤ngig gemacht werden."
       dismissible={!pending}
     >
       <div className="flex flex-col gap-4">
         <div className="rounded-[14px] border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] leading-relaxed text-rose-900">
-          Gelöscht werden das Projekt, alle Links, Repositories, Zugänge, Geheimnisse und
+          GelÃ¶scht werden das Projekt, alle Links, Repositories, ZugÃ¤nge, Geheimnisse und
           Favoriten. Diese Aktion betrifft alle freigegebenen Personen.
         </div>
         <FormError message={error} />
@@ -116,7 +116,7 @@ function DeleteProjectDialog({
           </button>
           <button type="button" onClick={remove} className="btn btn-danger" disabled={pending}>
             {pending && <IconLoader className="h-4 w-4" />}
-            {pending ? "Löscht …" : "Endgültig löschen"}
+            {pending ? "LÃ¶scht â€¦" : "EndgÃ¼ltig lÃ¶schen"}
           </button>
         </div>
       </div>

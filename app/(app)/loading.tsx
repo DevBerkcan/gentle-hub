@@ -8,18 +8,18 @@ export default function AppLoading() {
       </div>
       <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
         {[0, 1, 2, 3].map((index) => (
-          <div key={index} className="h-28 animate-pulse rounded-[12px] border border-line bg-white" />
+          <div key={index} className="h-28 animate-pulse rounded-[12px] border border-line bg-surface" />
         ))}
       </div>
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_318px]">
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {[0, 1, 2, 3, 4, 5].map((index) => (
-            <div key={index} className="h-40 animate-pulse rounded-[14px] border border-line bg-white" />
+            <div key={index} className="h-40 animate-pulse rounded-[14px] border border-line bg-surface" />
           ))}
         </div>
         <div className="flex flex-col gap-4">
-          <div className="h-60 animate-pulse rounded-[14px] border border-line bg-white" />
-          <div className="h-48 animate-pulse rounded-[14px] border border-line bg-white" />
+          <div className="h-60 animate-pulse rounded-[14px] border border-line bg-surface" />
+          <div className="h-48 animate-pulse rounded-[14px] border border-line bg-surface" />
         </div>
       </div>
     </div>

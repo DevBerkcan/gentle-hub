@@ -22,7 +22,7 @@ export default function GlobalError({
         <div className="mb-8 flex justify-center">
           <Logo />
         </div>
-        <div className="rounded-[24px] border border-line bg-white p-7 text-center shadow-float">
+        <div className="rounded-[24px] border border-line bg-surface p-7 text-center shadow-float">
           <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-[14px] bg-rose-50 text-rose-600">
             <IconAlert className="h-6 w-6" />
           </span>
@@ -30,7 +30,7 @@ export default function GlobalError({
             Etwas ist schiefgelaufen
           </h1>
           <p className="mt-2 text-[13px] leading-relaxed text-muted">
-            Die Anfrage konnte nicht abgeschlossen werden. Prüfe kurz die Verbindung und versuche
+            Die Anfrage konnte nicht abgeschlossen werden. PrÃ¼fe kurz die Verbindung und versuche
             es erneut.
           </p>
           {error.digest && (

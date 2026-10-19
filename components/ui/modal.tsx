@@ -96,7 +96,7 @@ export function Modal({
             <button
               type="button"
               onClick={onClose}
-              aria-label="Schließen"
+              aria-label="SchlieÃŸen"
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] text-muted transition hover:bg-surface-2 hover:text-ink"
             >
               <IconX className="h-4 w-4" />

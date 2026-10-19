@@ -53,7 +53,7 @@ export function AssetSection({
     <section aria-labelledby={`asset-group-${group.key}`}>
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface-2 text-[#475467]">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface-2 text-muted">
             <Icon className="h-3.5 w-3.5" />
           </span>
           <div className="min-w-0">
@@ -72,9 +72,9 @@ export function AssetSection({
         <button
           type="button"
           onClick={() => setAddOpen(true)}
-          aria-label={`${group.title}: Eintrag hinzufügen`}
-          title="Eintrag hinzufügen"
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-white text-muted transition hover:border-line-strong hover:text-ink"
+          aria-label={`${group.title}: Eintrag hinzufÃ¼gen`}
+          title="Eintrag hinzufÃ¼gen"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface text-muted transition hover:border-line-strong hover:text-ink"
         >
           <IconPlus className="h-3.5 w-3.5" />
         </button>
@@ -82,13 +82,13 @@ export function AssetSection({
 
       {assets.length === 0 ? (
         <div className="flex items-center justify-between gap-3 rounded-[8px] border border-dashed border-line-strong bg-surface px-3.5 py-2.5">
-          <p className="text-[11px] text-muted">Noch keine Einträge in dieser Kategorie.</p>
+          <p className="text-[11px] text-muted">Noch keine EintrÃ¤ge in dieser Kategorie.</p>
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="shrink-0 text-[11px] font-semibold text-ink transition hover:text-[#0f766e]"
+            className="shrink-0 text-[11px] font-semibold text-ink transition hover:text-accent"
           >
-            + Hinzufügen
+            + HinzufÃ¼gen
           </button>
         </div>
       ) : (
@@ -124,7 +124,7 @@ function AssetRow({ asset, projectSlug }: { asset: Asset; projectSlug: string })
     <article
       id={`asset-${asset.id}`}
       className={cn(
-        "group scroll-mt-24 rounded-[10px] border border-line bg-white p-3.5 transition",
+        "group scroll-mt-24 rounded-[10px] border border-line bg-surface p-3.5 transition",
         "hover:border-line-strong",
       )}
     >
@@ -155,7 +155,7 @@ function AssetRow({ asset, projectSlug }: { asset: Asset; projectSlug: string })
                   href={asset.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-w-0 items-center gap-1 text-[11.5px] font-medium text-[#0f766e] transition hover:underline"
+                  className="inline-flex min-w-0 items-center gap-1 text-[11.5px] font-medium text-accent transition hover:underline"
                   title={asset.url}
                 >
                   <span className="truncate">{shortUrl(asset.url)}</span>

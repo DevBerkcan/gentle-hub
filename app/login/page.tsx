@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/session";
 import { getHealth } from "@/lib/data";
 import { LoginForm } from "@/components/auth/login-form";
 import { Logo } from "@/components/ui/logo";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { IconLockCheck, IconShield } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Anmelden" };
@@ -39,7 +40,10 @@ export default async function LoginPage({
   const expired = Boolean(Array.isArray(params.expired) ? params.expired[0] : params.expired);
 
   return (
-    <main className="grid min-h-dvh lg:grid-cols-[1fr_460px]">
+    <main className="relative grid min-h-dvh lg:grid-cols-[1fr_460px]">
+      <div className="absolute right-4 top-4 z-20">
+        <ThemeToggle />
+      </div>
       <section className="relative hidden overflow-hidden bg-navy px-10 py-10 text-white lg:flex lg:flex-col xl:px-14">
         <div className="grid-pattern pointer-events-none absolute inset-0 opacity-50" />
 
@@ -55,7 +59,7 @@ export default async function LoginPage({
             Interner Zugang
           </h1>
           <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-white/50">
-            Alle Produkte, Kundenprojekte, Repositories und Zugänge der Gentle Group an einem
+            Alle Produkte, Kundenprojekte, Repositories und ZugÃ¤nge der Gentle Group an einem
             Ort.
           </p>
         </div>
@@ -86,7 +90,7 @@ export default async function LoginPage({
         </div>
 
         <div className="relative mt-auto flex items-center justify-between border-t border-white/[0.08] pt-5 text-[10px] text-white/30">
-          <span>Gentle Group · Internes Werkzeug</span>
+          <span>Gentle Group Â· Internes Werkzeug</span>
           <span className="inline-flex items-center gap-1.5">
             <IconLockCheck className="h-3 w-3 text-brand/70" />
             Nur freigegebene Konten
@@ -98,13 +102,13 @@ export default async function LoginPage({
         <div className="w-full max-w-[380px]">
           <div className="mb-8 flex items-center justify-between lg:hidden">
             <Logo />
-            <span className="inline-flex items-center gap-1 rounded-[5px] border border-line bg-white px-2 py-1 text-[9.5px] font-semibold text-muted">
+            <span className="inline-flex items-center gap-1 rounded-[5px] border border-line bg-surface px-2 py-1 text-[9.5px] font-semibold text-muted">
               <IconShield className="h-3 w-3" />
               Intern
             </span>
           </div>
 
-          <div className="rounded-[14px] border border-line bg-white p-6 shadow-card sm:p-7">
+          <div className="rounded-[14px] border border-line bg-surface p-6 shadow-card sm:p-7">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">GentleHub</p>
             <h2 className="mt-2 font-display text-[24px] font-semibold tracking-[-0.03em] text-ink">
               Anmelden
@@ -127,7 +131,7 @@ export default async function LoginPage({
           </div>
 
           <p className="mt-4 text-center text-[10px] text-subtle">
-            Nur für freigegebene Gentle-Group-Konten · Sitzung 30 Tage
+            Nur fÃ¼r freigegebene Gentle-Group-Konten Â· Sitzung 30 Tage
           </p>
         </div>
       </section>

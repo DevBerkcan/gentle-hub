@@ -29,8 +29,8 @@ export function AssetFormModal({
       title={asset ? "Eintrag bearbeiten" : "Neuer Eintrag"}
       description={
         asset
-          ? "Änderungen werden sofort gespeichert. Leere Passwortfelder lassen den bestehenden Wert unverändert."
-          : `${ASSET_TYPE_LABELS[type]} hinzufügen – Zugänge werden verschlüsselt gespeichert.`
+          ? "Ã„nderungen werden sofort gespeichert. Leere Passwortfelder lassen den bestehenden Wert unverÃ¤ndert."
+          : `${ASSET_TYPE_LABELS[type]} hinzufÃ¼gen â€“ ZugÃ¤nge werden verschlÃ¼sselt gespeichert.`
       }
       size="lg"
     >

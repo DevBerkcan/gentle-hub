@@ -73,7 +73,7 @@ export default async function SettingsPage() {
                   Konten mit Zugriff
                 </dt>
                 <dd className="mt-0.5 text-[12px] font-medium text-ink">
-                  medin@gentlegroup.de · berkcan@gentlegroup.de
+                  medin@gentlegroup.de Â· berkcan@gentlegroup.de
                 </dd>
               </div>
             </dl>
@@ -81,15 +81,15 @@ export default async function SettingsPage() {
 
           <section className="card p-5 sm:p-6" aria-labelledby="password-heading">
             <div className="mb-4 flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-[9px] bg-[#f4f2f9] text-muted">
+              <span className="flex h-8 w-8 items-center justify-center rounded-[9px] bg-surface-2 text-muted">
                 <IconLock className="h-4 w-4" />
               </span>
               <div>
                 <h2 id="password-heading" className="text-[13.5px] font-semibold text-ink">
-                  Passwort ändern
+                  Passwort Ã¤ndern
                 </h2>
                 <p className="text-[11px] text-muted">
-                  Nach der Änderung werden andere Sitzungen abgemeldet.
+                  Nach der Ã„nderung werden andere Sitzungen abgemeldet.
                 </p>
               </div>
             </div>
@@ -129,33 +129,33 @@ export default async function SettingsPage() {
                 </span>
               </Row>
               <Row icon={<IconServer className="h-3.5 w-3.5" />} label="Umgebung">
-                {health?.environment ?? "–"}
+                {health?.environment ?? "â€“"}
               </Row>
               <Row icon={<IconDatabase className="h-3.5 w-3.5" />} label="Datenbank">
                 {online ? "Verbunden" : "Unbekannt"}
               </Row>
               <Row icon={<IconActivity className="h-3.5 w-3.5" />} label="Projekte">
-                {health?.projects ?? "–"}
+                {health?.projects ?? "â€“"}
               </Row>
               <Row icon={<IconShield className="h-3.5 w-3.5" />} label="Schema">
-                v{health?.schemaVersion ?? "–"}
+                v{health?.schemaVersion ?? "â€“"}
               </Row>
             </dl>
             {!online && (
               <p className="mt-3 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] leading-relaxed text-amber-800">
                 Das Backend antwortet gerade nicht. Gespeicherte Daten bleiben erhalten; bitte
-                später erneut versuchen.
+                spÃ¤ter erneut versuchen.
               </p>
             )}
           </section>
 
           <section className="card p-4">
             <div className="flex items-center gap-2 text-[11.5px] font-semibold text-ink">
-              <IconShield className="h-3.5 w-3.5 text-[#0f766e]" />
+              <IconShield className="h-3.5 w-3.5 text-accent" />
               Sicherheit
             </div>
             <ul className="mt-2.5 flex flex-col gap-1.5 text-[10.5px] leading-relaxed text-muted">
-              <li>Geheimnisse sind mit AES-256-GCM verschlüsselt.</li>
+              <li>Geheimnisse sind mit AES-256-GCM verschlÃ¼sselt.</li>
               <li>Die Anzeige eines Geheimnisses wird protokolliert.</li>
               <li>Sitzungen laufen nach 30 Tagen ab.</li>
               <li>Nur zwei freigegebene Konten haben Zugriff.</li>

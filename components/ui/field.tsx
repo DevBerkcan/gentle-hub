@@ -58,7 +58,7 @@ export function SuccessNote({ message }: { message?: string | null }) {
       className="flex items-center gap-2 rounded-[12px] border border-emerald-200 bg-emerald-50 px-3.5 py-3 text-[13px] font-medium text-emerald-800"
     >
       <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-200 text-[10px] font-bold text-emerald-900">
-        ✓
+        âœ“
       </span>
       {message}
     </div>

@@ -29,15 +29,15 @@ export function ProjectFilterBar({
     cn(
       "inline-flex h-8 items-center gap-1.5 rounded-[6px] border px-2.5 text-[11px] font-semibold transition",
       active
-        ? "border-ink bg-ink text-white"
-        : "border-line bg-white text-muted hover:border-line-strong hover:text-ink",
+        ? "border-ink bg-ink text-canvas"
+        : "border-line bg-surface text-muted hover:border-line-strong hover:text-ink",
     );
 
   return (
     <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto pb-1">
       <Link href={basePath} className={chipClass(!activeStatus && !favoritesOnly)}>
         Alle
-        <span className={cn("tabular-nums", activeStatus || favoritesOnly ? "text-subtle" : "text-white/60")}>
+        <span className={cn("tabular-nums", activeStatus || favoritesOnly ? "text-subtle" : "text-canvas/70")}>
           {projects.length}
         </span>
       </Link>
@@ -48,7 +48,7 @@ export function ProjectFilterBar({
       >
         <IconStarFilled className={cn("h-3 w-3", favoritesOnly ? "text-amber-300" : "text-amber-500")} />
         Favoriten
-        <span className={cn("tabular-nums", favoritesOnly ? "text-white/60" : "text-subtle")}>
+        <span className={cn("tabular-nums", favoritesOnly ? "text-canvas/70" : "text-subtle")}>
           {favorites}
         </span>
       </Link>
@@ -66,7 +66,7 @@ export function ProjectFilterBar({
           >
             <span className={cn("h-1.5 w-1.5 rounded-full", meta.dot)} />
             {meta.label}
-            <span className={cn("tabular-nums", active ? "text-white/60" : "text-subtle")}>
+            <span className={cn("tabular-nums", active ? "text-canvas/70" : "text-subtle")}>
               {statusCounts[status]}
             </span>
           </Link>

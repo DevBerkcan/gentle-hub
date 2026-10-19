@@ -40,7 +40,7 @@ export function ProjectIcon({ name, icon, size = "md", className }: ProjectIconP
           className="h-full w-full object-contain p-[8%]"
         />
       ) : (
-        <span className="font-display font-bold tracking-[-0.03em] text-[#475467]">
+        <span className="font-display font-bold tracking-[-0.03em] text-muted">
           {initials(name)}
         </span>
       )}

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 
 const tones = {
-  neutral: "bg-surface-2 text-[#475467]",
-  accent: "bg-[#ecfdf5] text-[#0f766e]",
+  neutral: "bg-surface-2 text-muted",
+  accent: "bg-accent-soft text-accent",
 } as const;
 
 export function StatCard({
@@ -29,7 +29,7 @@ export function StatCard({
         </span>
         {href && (
           <span className="text-[10px] font-semibold text-subtle transition group-hover:text-ink">
-            Ansehen →
+            Ansehen â†’
           </span>
         )}
       </div>

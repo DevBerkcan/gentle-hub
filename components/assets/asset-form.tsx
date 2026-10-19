@@ -88,17 +88,17 @@ function secretLabel(type: AssetType): string {
 function detailsPlaceholder(type: AssetType): string {
   switch (type) {
     case "repo":
-      return "Branch, Sprache, Besonderheiten …";
+      return "Branch, Sprache, Besonderheiten â€¦";
     case "hosting":
-      return "Projekt, Plan, Region, Deploy-Branch …";
+      return "Projekt, Plan, Region, Deploy-Branch â€¦";
     case "database":
-      return "Datenbankname, Port, Collation …";
+      return "Datenbankname, Port, Collation â€¦";
     case "account":
-      return "2FA, Rolle, wofür der Zugang ist …";
+      return "2FA, Rolle, wofÃ¼r der Zugang ist â€¦";
     case "secret":
-      return "Wofür ist der Wert? Umgebung, Ablaufdatum …";
+      return "WofÃ¼r ist der Wert? Umgebung, Ablaufdatum â€¦";
     default:
-      return "Zusätzliche Informationen …";
+      return "ZusÃ¤tzliche Informationen â€¦";
   }
 }
 
@@ -165,7 +165,7 @@ export function AssetForm({
     if ((type === "link" || type === "repo") && !normalizedUrl) {
       nextErrors.url = "Bitte eine URL angeben.";
     } else if (normalizedUrl && type !== "database" && !isValidHttpUrl(normalizedUrl)) {
-      nextErrors.url = "Bitte eine gültige Web-Adresse angeben.";
+      nextErrors.url = "Bitte eine gÃ¼ltige Web-Adresse angeben.";
     }
 
     if (type === "secret" && mode === "create" && !form.secret.trim()) {
@@ -225,8 +225,8 @@ export function AssetForm({
                 className={cn(
                   "flex items-center gap-2.5 rounded-[12px] border px-2.5 py-2.5 text-left transition",
                   active
-                    ? "border-ink/15 bg-white shadow-[0_2px_10px_-4px_rgb(11_16_42/0.18)] ring-1 ring-ink/10"
-                    : "border-line bg-surface-2/60 hover:border-line-strong hover:bg-white",
+                    ? "border-ink/15 bg-surface shadow-[0_2px_10px_-4px_rgb(11_16_42/0.18)] ring-1 ring-ink/10"
+                    : "border-line bg-surface-2/60 hover:border-line-strong hover:bg-surface",
                 )}
               >
                 <AssetTypeIcon type={option.value} className="h-8 w-8 rounded-[9px]" />
@@ -283,7 +283,7 @@ export function AssetForm({
             label={urlLabel(type)}
             htmlFor={`${formId}-url`}
             error={errors.url}
-            hint={type === "database" ? "Hostname oder Serveradresse, z. B. db123.example.net" : "Ohne https:// wird automatisch ergänzt."}
+            hint={type === "database" ? "Hostname oder Serveradresse, z. B. db123.example.net" : "Ohne https:// wird automatisch ergÃ¤nzt."}
             required={type === "link" || type === "repo"}
           >
             <input
@@ -294,8 +294,8 @@ export function AssetForm({
                 type === "database"
                   ? "db74483.databaseasp.net"
                   : type === "repo"
-                    ? "https://github.com/…"
-                    : "https://…"
+                    ? "https://github.com/â€¦"
+                    : "https://â€¦"
               }
               className="input"
               inputMode={type === "database" ? "text" : "url"}
@@ -328,7 +328,7 @@ export function AssetForm({
             id={`${formId}-provider`}
             value={form.provider}
             onChange={(event) => update("provider", event.target.value)}
-            placeholder="Vercel, GitHub, MonsterASP …"
+            placeholder="Vercel, GitHub, MonsterASP â€¦"
             className="input"
             list={`${formId}-providers`}
             maxLength={120}
@@ -365,8 +365,8 @@ export function AssetForm({
         error={errors.secret}
         hint={
           hasStoredSecret
-            ? "Leer lassen, um das gespeicherte Geheimnis unverändert zu lassen."
-            : "Wird verschlüsselt gespeichert und nur nach ausdrücklicher Anzeige entschlüsselt."
+            ? "Leer lassen, um das gespeicherte Geheimnis unverÃ¤ndert zu lassen."
+            : "Wird verschlÃ¼sselt gespeichert und nur nach ausdrÃ¼cklicher Anzeige entschlÃ¼sselt."
         }
       >
         <div className="relative">
@@ -377,8 +377,8 @@ export function AssetForm({
               onChange={(event) => update("secret", event.target.value)}
               placeholder={
                 hasStoredSecret
-                  ? "Unverändert lassen …"
-                  : "Server=…;Database=…;User Id=…;Password=…;"
+                  ? "UnverÃ¤ndert lassen â€¦"
+                  : "Server=â€¦;Database=â€¦;User Id=â€¦;Password=â€¦;"
               }
               className="textarea min-h-28 pr-10 font-mono text-[12px]"
               autoComplete="off"
@@ -390,7 +390,7 @@ export function AssetForm({
               type={showSecret ? "text" : "password"}
               value={form.secret}
               onChange={(event) => update("secret", event.target.value)}
-              placeholder={hasStoredSecret ? "Unverändert lassen …" : "••••••••••••"}
+              placeholder={hasStoredSecret ? "UnverÃ¤ndert lassen â€¦" : "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"}
               className="input pr-11 font-mono text-[12px]"
               autoComplete="new-password"
               maxLength={20_000}
@@ -401,7 +401,7 @@ export function AssetForm({
               type="button"
               onClick={() => setShowSecret((current) => !current)}
               aria-label={showSecret ? "Geheimnis verbergen" : "Geheimnis anzeigen"}
-              className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[8px] text-subtle transition hover:bg-[#f0edf6] hover:text-ink"
+              className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-[8px] text-subtle transition hover:bg-surface-2 hover:text-ink"
             >
               {showSecret ? <IconEyeOff className="h-4 w-4" /> : <IconEye className="h-4 w-4" />}
             </button>
@@ -415,7 +415,7 @@ export function AssetForm({
               onChange={(event) => update("clearSecret", event.target.checked)}
               className="h-3.5 w-3.5 rounded border-rose-300 accent-rose-600"
             />
-            Gespeichertes Geheimnis löschen
+            Gespeichertes Geheimnis lÃ¶schen
           </label>
         )}
       </Field>
@@ -436,7 +436,7 @@ export function AssetForm({
           id={`${formId}-notes`}
           value={form.notes}
           onChange={(event) => update("notes", event.target.value)}
-          placeholder="Interne Hinweise, Ansprechpartner, Ablaufdatum …"
+          placeholder="Interne Hinweise, Ansprechpartner, Ablaufdatum â€¦"
           className="textarea min-h-20"
           rows={2}
         />
@@ -448,7 +448,7 @@ export function AssetForm({
         </button>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending ? "Speichert …" : mode === "create" ? "Eintrag hinzufügen" : "Änderungen speichern"}
+          {pending ? "Speichert â€¦" : mode === "create" ? "Eintrag hinzufÃ¼gen" : "Ã„nderungen speichern"}
         </button>
       </div>
     </form>

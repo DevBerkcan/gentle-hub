@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * GentleHub design tokens.
  * Restrained internal-tool palette: ink, warm grey surfaces and a small
@@ -20,6 +22,9 @@
   --brand-ink: #04251a;
   --accent: #0f766e;
   --accent-soft: #ecfdf5;
+  --ring: #0f766e;
+  --ring-soft: #ccfbf1;
+  --primary-hover: #1d2939;
   --navy: #0b1220;
   --navy-2: #121a2b;
 
@@ -40,6 +45,29 @@
   color-scheme: light;
 }
 
+.dark {
+  --canvas: #0b0f17;
+  --surface: #121826;
+  --surface-2: #1a2230;
+  --ink: #f2f4f7;
+  --ink-2: #d0d5dd;
+  --muted: #98a2b3;
+  --subtle: #7d8899;
+  --line: #232c3b;
+  --line-strong: #344054;
+  --accent: #5eead4;
+  --accent-soft: #12302b;
+  --ring: #5eead4;
+  --ring-soft: #134e4a;
+  --primary-hover: #e4e7ec;
+  --navy: #070b12;
+  --navy-2: #0f1520;
+  --sh-card: 0 1px 2px rgb(0 0 0 / 0.35);
+  --sh-float: 0 30px 80px -24px rgb(0 0 0 / 0.8), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+  --sh-pop: 0 16px 40px -18px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -54,6 +82,7 @@
   --color-brand-ink: var(--brand-ink);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-ring: var(--ring);
   --color-navy: var(--navy);
   --color-navy-2: var(--navy-2);
   --color-mint: var(--mint);
@@ -95,7 +124,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #0f766e;
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
@@ -129,7 +158,12 @@ body {
   }
 
   .btn-primary {
-    @apply bg-ink text-white shadow-[0_1px_2px_rgb(16_24_40/0.18)] hover:bg-[#1d2939];
+    background: var(--ink);
+    color: var(--surface);
+    @apply shadow-[0_1px_2px_rgb(0_0_0/0.18)];
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
   }
 
   .btn-mint {
@@ -137,7 +171,7 @@ body {
   }
 
   .btn-secondary {
-    @apply border border-line bg-white text-ink hover:border-line-strong hover:bg-surface-2;
+    @apply border border-line bg-surface text-ink hover:border-line-strong hover:bg-surface-2;
   }
 
   .btn-ghost {
@@ -157,7 +191,7 @@ body {
   .input,
   .select,
   .textarea {
-    @apply w-full rounded-[10px] border border-line bg-white text-[13.5px] text-ink shadow-[0_1px_2px_rgb(16_24_40/0.03)] outline-none transition placeholder:text-subtle/80 focus:border-[#5eead4] focus:ring-4 focus:ring-[#ccfbf1] disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-muted;
+    @apply w-full rounded-[10px] border border-line bg-surface text-[13.5px] text-ink shadow-[0_1px_2px_rgb(0_0_0/0.03)] outline-none transition placeholder:text-subtle/80 focus:border-[var(--ring)] focus:ring-4 focus:ring-[var(--ring-soft)] disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-muted;
   }
 
   .input,
@@ -183,7 +217,7 @@ body {
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-[6px] border border-line bg-white px-2 py-0.5 text-[10.5px] font-medium text-muted;
+    @apply inline-flex items-center gap-1.5 rounded-[6px] border border-line bg-surface px-2 py-0.5 text-[10.5px] font-medium text-muted;
   }
 
   .eyebrow {
@@ -272,8 +306,12 @@ dialog {
 }
 
 dialog::backdrop {
-  background: rgb(15 23 42 / 0.5);
+  background: rgb(0 0 0 / 0.6);
   backdrop-filter: blur(3px);
+}
+
+.dark dialog::backdrop {
+  background: rgb(0 0 0 / 0.72);
 }
 
 dialog[open] {

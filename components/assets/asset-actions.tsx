@@ -27,15 +27,15 @@ export function AssetActions({
           onClick={() => setEditOpen(true)}
           aria-label={`${asset.label} bearbeiten`}
           title="Bearbeiten"
-          className="flex h-8 w-8 items-center justify-center rounded-[8px] text-subtle transition hover:bg-[#f0edf6] hover:text-ink"
+          className="flex h-8 w-8 items-center justify-center rounded-[8px] text-subtle transition hover:bg-surface-2 hover:text-ink"
         >
           <IconPencil className="h-3.5 w-3.5" />
         </button>
         <button
           type="button"
           onClick={() => setDeleteOpen(true)}
-          aria-label={`${asset.label} löschen`}
-          title="Löschen"
+          aria-label={`${asset.label} lÃ¶schen`}
+          title="LÃ¶schen"
           className="flex h-8 w-8 items-center justify-center rounded-[8px] text-subtle transition hover:bg-rose-50 hover:text-rose-600"
         >
           <IconTrash className="h-3.5 w-3.5" />
@@ -90,14 +90,14 @@ function DeleteAssetDialog({
     <Modal
       open={open}
       onClose={onClose}
-      title={`„${asset.label}“ löschen?`}
-      description={`Dieser Eintrag gehört zum Projekt ${projectSlug}.`}
+      title={`â€ž${asset.label}â€œ lÃ¶schen?`}
+      description={`Dieser Eintrag gehÃ¶rt zum Projekt ${projectSlug}.`}
       dismissible={!pending}
     >
       <div className="flex flex-col gap-4">
         <div className="rounded-[14px] border border-rose-200 bg-rose-50 px-4 py-3 text-[13px] leading-relaxed text-rose-900">
-          Der Eintrag und das dazugehörige Geheimnis werden endgültig entfernt. Das kann nicht
-          rückgängig gemacht werden.
+          Der Eintrag und das dazugehÃ¶rige Geheimnis werden endgÃ¼ltig entfernt. Das kann nicht
+          rÃ¼ckgÃ¤ngig gemacht werden.
         </div>
         <FormError message={error} />
         <div className="flex items-center justify-end gap-2">
@@ -106,7 +106,7 @@ function DeleteAssetDialog({
           </button>
           <button type="button" onClick={remove} className="btn btn-danger" disabled={pending}>
             {pending && <IconLoader className="h-4 w-4" />}
-            {pending ? "Löscht …" : "Endgültig löschen"}
+            {pending ? "LÃ¶scht â€¦" : "EndgÃ¼ltig lÃ¶schen"}
           </button>
         </div>
       </div>

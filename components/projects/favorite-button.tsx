@@ -44,14 +44,14 @@ export function FavoriteButton({
       onClick={toggle}
       disabled={pending}
       aria-pressed={favorite}
-      aria-label={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
-      title={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
+      aria-label={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufÃ¼gen"}
+      title={favorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufÃ¼gen"}
       className={cn(
         "flex shrink-0 items-center justify-center rounded-[9px] transition",
         size === "sm" ? "h-7 w-7" : "h-8 w-8",
         favorite
           ? "text-amber-500 hover:bg-amber-50"
-          : "text-subtle/60 hover:bg-[#f3f0f8] hover:text-amber-500",
+          : "text-subtle/60 hover:bg-surface-2 hover:text-amber-500",
         className,
       )}
     >

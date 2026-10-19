@@ -500,3 +500,20 @@ export function IconLockCheck(props: IconProps) {
     </Icon>
   );
 }
+
+export function IconSun(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" />
+    </Icon>
+  );
+}
+
+export function IconMoon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M21 12.8A8.8 8.8 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+    </Icon>
+  );
+}

@@ -25,27 +25,27 @@ export const PROJECT_STATUSES = {
   live: {
     label: "Live",
     dot: "bg-emerald-500",
-    badge: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
+    badge: "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-400/20",
   },
   beta: {
     label: "Beta",
     dot: "bg-violet-500",
-    badge: "bg-violet-50 text-violet-700 ring-violet-600/10",
+    badge: "bg-violet-50 text-violet-700 ring-violet-600/10 dark:bg-violet-500/10 dark:text-violet-300 dark:ring-violet-400/20",
   },
   development: {
     label: "In Entwicklung",
     dot: "bg-amber-500",
-    badge: "bg-amber-50 text-amber-700 ring-amber-600/10",
+    badge: "bg-amber-50 text-amber-700 ring-amber-600/10 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-400/20",
   },
   paused: {
     label: "Pausiert",
     dot: "bg-slate-400",
-    badge: "bg-slate-100 text-slate-600 ring-slate-500/10",
+    badge: "bg-slate-100 text-slate-600 ring-slate-500/10 dark:bg-slate-500/10 dark:text-slate-300 dark:ring-slate-400/20",
   },
   archived: {
     label: "Archiviert",
     dot: "bg-rose-400",
-    badge: "bg-rose-50 text-rose-700 ring-rose-600/10",
+    badge: "bg-rose-50 text-rose-700 ring-rose-600/10 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-400/20",
   },
 } as const;
 
@@ -159,15 +159,15 @@ export const SUBTYPE_LABELS: Record<string, string> = {
 export const ENVIRONMENTS = {
   production: {
     label: "Produktion",
-    badge: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
+    badge: "bg-emerald-50 text-emerald-700 ring-emerald-600/10 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-400/20",
   },
   staging: {
     label: "Staging",
-    badge: "bg-amber-50 text-amber-700 ring-amber-600/10",
+    badge: "bg-amber-50 text-amber-700 ring-amber-600/10 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-400/20",
   },
   development: {
     label: "Entwicklung",
-    badge: "bg-sky-50 text-sky-700 ring-sky-600/10",
+    badge: "bg-sky-50 text-sky-700 ring-sky-600/10 dark:bg-sky-500/10 dark:text-sky-300 dark:ring-sky-400/20",
   },
 } as const;
 

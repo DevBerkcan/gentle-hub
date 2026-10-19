@@ -42,7 +42,7 @@ export function Sidebar({ counts, open, onClose }: SidebarProps) {
           <button
             type="button"
             onClick={onClose}
-            aria-label="Navigation schließen"
+            aria-label="Navigation schlieÃŸen"
             className="flex h-8 w-8 items-center justify-center rounded-[6px] text-white/50 transition hover:bg-white/10 hover:text-white lg:hidden"
           >
             <IconX className="h-4 w-4" />
@@ -57,7 +57,7 @@ export function Sidebar({ counts, open, onClose }: SidebarProps) {
           <div className="flex items-start gap-2.5">
             <IconLockCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand/80" />
             <div>
-              <p className="text-[10.5px] font-semibold text-white/70">Verschlüsselte Zugänge</p>
+              <p className="text-[10.5px] font-semibold text-white/70">VerschlÃ¼sselte ZugÃ¤nge</p>
               <p className="mt-1 text-[10px] leading-relaxed text-white/35">
                 AES-256-GCM. Anzeigen werden protokolliert.
               </p>

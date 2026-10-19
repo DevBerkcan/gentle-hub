@@ -39,7 +39,7 @@ export default async function AppsPage({
       <PageHeader
         eyebrow="Eigene Produkte"
         title="Gentle Group"
-        description="Unsere Produkte, Plattformen und internen Werkzeuge – GentleBook, GentleSuite, Gentle Access, GentleTrack, GastroTeam, BackReserve und AngebotPilot."
+        description="Unsere Produkte, Plattformen und internen Werkzeuge â€“ GentleBook, GentleSuite, Gentle Access, GentleTrack, GastroTeam, BackReserve und AngebotPilot."
         action={<NewProjectButton kind="internal" label="Neue App" />}
       />
 
@@ -57,7 +57,7 @@ export default async function AppsPage({
         </p>
         {isFiltered && (
           <Link href="/apps" className="text-[11px] font-semibold text-muted transition hover:text-ink">
-            Filter zurücksetzen
+            Filter zurÃ¼cksetzen
           </Link>
         )}
       </div>
@@ -67,16 +67,16 @@ export default async function AppsPage({
       ) : (
         <EmptyState
           icon={<IconApps className="h-4 w-4" />}
-          title={isFiltered ? "Keine Apps für diesen Filter" : "Noch keine Apps"}
+          title={isFiltered ? "Keine Apps fÃ¼r diesen Filter" : "Noch keine Apps"}
           description={
             isFiltered
-              ? "Passe den Filter an oder setze ihn zurück."
+              ? "Passe den Filter an oder setze ihn zurÃ¼ck."
               : "Lege das erste eigene Produkt an."
           }
           action={
             isFiltered ? (
               <Link href="/apps" className="btn btn-secondary">
-                Filter zurücksetzen
+                Filter zurÃ¼cksetzen
               </Link>
             ) : (
               <NewProjectButton kind="internal" label="Erste App anlegen" />
