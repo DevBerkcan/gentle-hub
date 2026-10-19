@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     // Local QA artifacts and backend subproject:
     "qa/**",
     "screenshots/**",
+    "catalog/**",
     "backend/**",
     "publish/**",
   ]),

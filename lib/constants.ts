@@ -3,6 +3,24 @@ export const API_URL = (process.env.GENTLEHUB_API_URL ?? "https://gentlehub.runa
 export const SESSION_COOKIE = "gh_session";
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
 
+export const KIND_LABELS = {
+  internal: "Gentle Group",
+  customer: "Kunde",
+  project: "Eigenes Projekt",
+} as const;
+
+export const KIND_PATHS = {
+  internal: "/apps",
+  customer: "/customers",
+  project: "/projects",
+} as const;
+
+export const KIND_SINGULAR = {
+  internal: "App",
+  customer: "Kunde",
+  project: "Projekt",
+} as const;
+
 export const PROJECT_STATUSES = {
   live: {
     label: "Live",

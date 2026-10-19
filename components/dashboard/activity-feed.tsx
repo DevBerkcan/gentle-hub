@@ -26,6 +26,9 @@ function meta(action: string) {
   if (action === "secret.reveal") {
     return { label: "Geheimnis angezeigt", icon: IconLock, tone: "bg-[#ffe8ee] text-[#a52545]" };
   }
+  if (action === "setup.catalog") {
+    return { label: "Einrichtung", icon: IconShield, tone: "bg-[#ecfdf5] text-[#0f766e]" };
+  }
   if (action === "project.create") {
     return { label: "Projekt angelegt", icon: IconPlus, tone: "bg-[#e6fff7] text-[#007a52]" };
   }

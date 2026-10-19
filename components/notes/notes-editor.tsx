@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { saveNotesAction } from "@/app/actions";
 import { FormError } from "@/components/ui/field";
-import { IconCheck, IconLoader, IconPencil } from "@/components/ui/icons";
+import { IconCheck, IconLoader } from "@/components/ui/icons";
 
 export function NotesEditor({
   projectSlug,
@@ -40,24 +40,19 @@ export function NotesEditor({
   }
 
   return (
-    <section className="card p-5 sm:p-6" aria-labelledby="notes-heading">
+    <section className="card p-4 sm:p-5" aria-labelledby="notes-heading">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[9px] bg-[#f4f2f9] text-muted">
-            <IconPencil className="h-4 w-4" />
-          </span>
-          <div>
-            <h2 id="notes-heading" className="font-display text-[14.5px] font-bold text-ink">
-              Notizen
-            </h2>
-            <p className="text-[11px] text-muted">{meta}</p>
-          </div>
+        <div>
+          <h2 id="notes-heading" className="text-[12.5px] font-semibold text-ink">
+            Notizen
+          </h2>
+          <p className="mt-0.5 text-[10.5px] text-muted">{meta}</p>
         </div>
         <button
           type="button"
           onClick={save}
           disabled={!dirty || pending}
-          className="btn btn-secondary h-9 text-[12.5px]"
+          className="btn btn-secondary h-8 text-[11.5px]"
         >
           {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconCheck className="h-3.5 w-3.5" />}
           {pending ? "Speichert …" : dirty ? "Speichern" : "Gespeichert"}
@@ -66,7 +61,7 @@ export function NotesEditor({
 
       <FormError message={error} />
       {message && (
-        <p className="mb-2 text-[12px] font-medium text-emerald-700" role="status">
+        <p className="mb-2 text-[11px] font-medium text-emerald-700" role="status">
           {message}
         </p>
       )}
@@ -81,15 +76,13 @@ export function NotesEditor({
           }
         }}
         placeholder="Hinweise, Ansprechpartner, To-dos, wichtige Entscheidungen …"
-        className="textarea min-h-32 text-[13px] leading-relaxed"
-        rows={5}
+        className="textarea min-h-28 text-[12.5px] leading-relaxed"
+        rows={4}
         maxLength={50_000}
         aria-label="Notizen zum Projekt"
       />
-      <p className="mt-2 text-[11px] text-subtle">
-        Tipp: <kbd className="rounded border border-line bg-white px-1 py-0.5 text-[10px]">Strg</kbd> +{" "}
-        <kbd className="rounded border border-line bg-white px-1 py-0.5 text-[10px]">Enter</kbd> speichert.
-        Passwörter gehören nicht in die Notizen, sondern in einen Zugang.
+      <p className="mt-2 text-[10.5px] text-subtle">
+        Strg + Enter speichert. Passwörter gehören in einen Zugang, nicht in die Notizen.
       </p>
     </section>
   );

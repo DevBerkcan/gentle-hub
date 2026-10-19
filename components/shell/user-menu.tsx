@@ -6,12 +6,7 @@ import { logoutAction } from "@/app/actions";
 import { cn } from "@/lib/cn";
 import type { User } from "@/lib/types";
 import { initials } from "@/lib/format";
-import {
-  IconChevronDown,
-  IconLogout,
-  IconSettings,
-  IconShield,
-} from "@/components/ui/icons";
+import { IconChevronDown, IconLogout, IconSettings, IconShield } from "@/components/ui/icons";
 
 export function UserMenu({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
@@ -44,52 +39,52 @@ export function UserMenu({ user }: { user: User }) {
         aria-haspopup="menu"
         aria-expanded={open}
         className={cn(
-          "flex h-10 items-center gap-2.5 rounded-[12px] border border-line bg-white px-2 pr-2.5 text-left shadow-[0_1px_2px_rgb(11_16_42/0.03)] transition hover:border-line-strong hover:bg-surface-2",
+          "flex h-9 items-center gap-2 rounded-[8px] border border-line bg-white px-1.5 pr-2 text-left transition hover:border-line-strong hover:bg-surface-2",
           open && "border-line-strong bg-surface-2",
         )}
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-navy text-[10px] font-bold text-mint">
+        <span className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-navy text-[9px] font-bold text-brand">
           {initials(user.displayName || user.email)}
         </span>
         <span className="hidden min-w-0 flex-col leading-tight sm:flex">
-          <span className="max-w-[9rem] truncate text-[12.5px] font-semibold text-ink">
+          <span className="max-w-[8.5rem] truncate text-[11.5px] font-semibold text-ink">
             {user.displayName}
           </span>
-          <span className="max-w-[9rem] truncate text-[10px] text-subtle">{user.email}</span>
+          <span className="max-w-[8.5rem] truncate text-[9.5px] text-subtle">{user.email}</span>
         </span>
-        <IconChevronDown className={cn("h-3.5 w-3.5 text-subtle transition", open && "rotate-180")} />
+        <IconChevronDown className={cn("h-3 w-3 text-subtle transition", open && "rotate-180")} />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-[calc(100%+8px)] z-50 w-64 overflow-hidden rounded-[16px] border border-line bg-white shadow-float"
+          className="absolute right-0 top-[calc(100%+6px)] z-50 w-60 overflow-hidden rounded-[10px] border border-line bg-white shadow-pop"
         >
-          <div className="border-b border-line px-4 py-3.5">
-            <p className="truncate text-[13px] font-semibold text-ink">{user.displayName}</p>
-            <p className="mt-0.5 truncate text-[11px] text-muted">{user.email}</p>
-            <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-mint-soft px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+          <div className="border-b border-line px-3.5 py-3">
+            <p className="truncate text-[12.5px] font-semibold text-ink">{user.displayName}</p>
+            <p className="mt-0.5 truncate text-[10.5px] text-muted">{user.email}</p>
+            <p className="mt-2 inline-flex items-center gap-1 rounded-[4px] bg-surface-2 px-1.5 py-0.5 text-[9.5px] font-semibold text-muted">
               <IconShield className="h-3 w-3" />
               Freigegebener Zugang
             </p>
           </div>
-          <div className="p-1.5">
+          <div className="p-1">
             <Link
               href="/settings"
               onClick={() => setOpen(false)}
               role="menuitem"
-              className="flex items-center gap-2.5 rounded-[10px] px-3 py-2 text-[13px] font-medium text-ink transition hover:bg-surface-2"
+              className="flex items-center gap-2 rounded-[6px] px-2.5 py-2 text-[12px] font-medium text-ink transition hover:bg-surface-2"
             >
-              <IconSettings className="h-4 w-4 text-muted" />
+              <IconSettings className="h-3.5 w-3.5 text-muted" />
               Einstellungen
             </Link>
             <form action={logoutAction}>
               <button
                 type="submit"
                 role="menuitem"
-                className="flex w-full items-center gap-2.5 rounded-[10px] px-3 py-2 text-left text-[13px] font-medium text-rose-600 transition hover:bg-rose-50"
+                className="flex w-full items-center gap-2 rounded-[6px] px-2.5 py-2 text-left text-[12px] font-medium text-[#b42318] transition hover:bg-[#fef3f2]"
               >
-                <IconLogout className="h-4 w-4" />
+                <IconLogout className="h-3.5 w-3.5" />
                 Abmelden
               </button>
             </form>

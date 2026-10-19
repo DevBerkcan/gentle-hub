@@ -5,6 +5,7 @@ import { cn } from "@/lib/cn";
 import type { OverviewCounts } from "@/lib/types";
 import {
   IconApps,
+  IconFolder,
   IconHome,
   IconSearch,
   IconSettings,
@@ -43,7 +44,7 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
       items: [
         {
           href: "/apps",
-          label: "Alle Apps",
+          label: "Gentle Group",
           icon: IconApps,
           count: counts.internal,
           active: (path) => path.startsWith("/apps"),
@@ -59,6 +60,18 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
           icon: IconUsers,
           count: counts.customers,
           active: (path) => path.startsWith("/customers"),
+        },
+      ],
+    },
+    {
+      title: "Eigene Projekte",
+      items: [
+        {
+          href: "/projects",
+          label: "Projekte & Spiele",
+          icon: IconFolder,
+          count: counts.projects,
+          active: (path) => path.startsWith("/projects"),
         },
       ],
     },
@@ -82,10 +95,10 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
   ];
 
   return (
-    <nav className="flex flex-col gap-6 pt-2">
+    <nav className="flex flex-col gap-5 pt-1">
       {sections.map((section) => (
         <div key={section.title}>
-          <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white/30">
+          <p className="px-3 pb-1.5 text-[9.5px] font-bold uppercase tracking-[0.16em] text-white/30">
             {section.title}
           </p>
           <ul className="flex flex-col gap-0.5">
@@ -100,22 +113,22 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
                     onClick={onNavigate}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "group relative flex h-10 items-center gap-3 rounded-[10px] px-3 text-[13px] font-medium transition-colors",
+                      "group relative flex h-9 items-center gap-2.5 rounded-[7px] px-3 text-[12.5px] font-medium transition-colors",
                       isActive
-                        ? "bg-white/[0.09] text-white shadow-[inset_0_0_0_1px_rgb(255_255_255/0.07)]"
-                        : "text-white/55 hover:bg-white/[0.05] hover:text-white",
+                        ? "bg-white/[0.08] text-white"
+                        : "text-white/55 hover:bg-white/[0.04] hover:text-white",
                     )}
                   >
                     {isActive && (
-                      <span className="absolute left-0 top-1/2 h-4 w-[2.5px] -translate-y-1/2 rounded-r-full bg-mint" />
+                      <span className="absolute -left-3 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-r bg-brand" />
                     )}
-                    <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-mint" : "text-white/45")} />
+                    <Icon className={cn("h-[15px] w-[15px] shrink-0", isActive ? "text-brand" : "text-white/40")} />
                     <span className="truncate">{item.label}</span>
                     {typeof item.count === "number" && (
                       <span
                         className={cn(
-                          "ml-auto rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
-                          isActive ? "bg-mint/15 text-mint" : "bg-white/[0.06] text-white/40",
+                          "ml-auto rounded-[4px] px-1.5 py-0.5 text-[9.5px] font-semibold tabular-nums",
+                          isActive ? "bg-white/10 text-white/70" : "bg-white/[0.05] text-white/35",
                         )}
                       >
                         {item.count}

@@ -4,8 +4,7 @@ import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
 import { getProjectData } from "@/lib/data";
 import { requireAuth } from "@/lib/session";
-import { accentOf, ASSET_GROUPS } from "@/lib/constants";
-import { cn } from "@/lib/cn";
+import { ASSET_GROUPS, KIND_LABELS, KIND_PATHS } from "@/lib/constants";
 import { formatDate, formatDateTime, formatRelative } from "@/lib/format";
 import { AssetSection } from "@/components/assets/asset-section";
 import { NotesEditor } from "@/components/notes/notes-editor";
@@ -17,6 +16,7 @@ import {
   IconCalendar,
   IconChevronRight,
   IconDatabase,
+  IconFolder,
   IconGlobe,
   IconKey,
   IconLink,
@@ -53,8 +53,9 @@ export default async function ProjectPage({ params }: PageParams) {
   }
 
   const { project, assets } = detail;
-  const tone = accentOf(project.accent);
   const isCustomer = project.kind === "customer";
+  const KindIcon =
+    project.kind === "customer" ? IconUser : project.kind === "project" ? IconFolder : IconGlobe;
 
   const counts = {
     links: assets.filter((asset) => asset.type === "link").length,
@@ -64,54 +65,48 @@ export default async function ProjectPage({ params }: PageParams) {
   };
 
   return (
-    <div className="flex flex-col gap-7">
-      <nav aria-label="Brotkrumen" className="flex items-center gap-1.5 text-[11.5px]">
+    <div className="flex flex-col gap-6">
+      <nav aria-label="Brotkrumen" className="flex items-center gap-1.5 text-[11px]">
         <Link
-          href={isCustomer ? "/customers" : "/apps"}
+          href={KIND_PATHS[project.kind] ?? "/apps"}
           className="font-medium text-muted transition hover:text-ink"
         >
-          {isCustomer ? "Kundenprojekte" : "Alle Apps"}
+          {KIND_LABELS[project.kind] ?? "Projekte"}
         </Link>
         <IconChevronRight className="h-3 w-3 text-subtle" />
         <span className="truncate font-semibold text-ink">{project.name}</span>
       </nav>
 
-      <header className="card relative overflow-hidden p-5 sm:p-6">
-        <span aria-hidden="true" className={cn("absolute inset-x-0 top-0 h-[3px]", tone.dot)} />
+      <header className="card p-5 sm:p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start">
-          <ProjectIcon
-            name={project.name}
-            icon={project.icon}
-            accent={project.accent}
-            size="xl"
-          />
+          <ProjectIcon name={project.name} icon={project.icon} size="xl" />
 
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#f4f2f9] px-2.5 py-1 text-[10.5px] font-semibold text-muted">
-                {isCustomer ? <IconUser className="h-3 w-3" /> : <IconGlobe className="h-3 w-3" />}
-                {isCustomer ? "Kundenprojekt" : "Gentle Group"}
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="inline-flex items-center gap-1 rounded-[5px] border border-line bg-white px-1.5 py-0.5 text-[9.5px] font-semibold text-muted">
+                <KindIcon className="h-3 w-3" />
+                {KIND_LABELS[project.kind] ?? "Projekt"}
               </span>
               <StatusBadge status={project.status} />
               {project.isFavorite && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[10.5px] font-semibold text-amber-700">
+                <span className="inline-flex items-center gap-1 rounded-[5px] bg-surface-2 px-1.5 py-0.5 text-[9.5px] font-semibold text-muted">
                   ★ Favorit
                 </span>
               )}
             </div>
 
-            <h1 className="mt-2.5 text-balance font-display text-[26px] font-extrabold leading-[1.1] tracking-[-0.035em] text-ink sm:text-[30px]">
+            <h1 className="mt-2 text-balance font-display text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-ink sm:text-[28px]">
               {project.name}
             </h1>
 
             {project.description && (
-              <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-muted">
+              <p className="mt-1.5 max-w-2xl text-[12.5px] leading-relaxed text-muted">
                 {project.description}
               </p>
             )}
 
             {project.tags.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-1.5">
+              <div className="mt-2.5 flex flex-wrap gap-1">
                 {project.tags.map((tag) => (
                   <Tag key={tag}>{tag}</Tag>
                 ))}
@@ -124,7 +119,7 @@ export default async function ProjectPage({ params }: PageParams) {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-4">
           <HeaderStat icon={<IconLink className="h-3.5 w-3.5" />} label="Links" value={counts.links} />
           <HeaderStat icon={<IconRepo className="h-3.5 w-3.5" />} label="Repos" value={counts.repos} />
           <HeaderStat icon={<IconKey className="h-3.5 w-3.5" />} label="Konten" value={counts.accounts} />
@@ -160,8 +155,8 @@ export default async function ProjectPage({ params }: PageParams) {
 
         <aside className="flex flex-col gap-5">
           {isCustomer && (
-            <section className="card p-5" aria-labelledby="customer-heading">
-              <h2 id="customer-heading" className="font-display text-[14px] font-bold text-ink">
+            <section className="card p-4" aria-labelledby="customer-heading">
+              <h2 id="customer-heading" className="text-[12.5px] font-semibold text-ink">
                 Kundenkontakt
               </h2>
               <div className="mt-3 flex flex-col gap-2.5">
@@ -174,7 +169,7 @@ export default async function ProjectPage({ params }: PageParams) {
                   <DetailRow icon={<IconMail className="h-3.5 w-3.5" />} label="E-Mail">
                     <a
                       href={`mailto:${project.customer.contactEmail}`}
-                      className="break-all font-medium text-[#0b6b4f] hover:underline"
+                      className="break-all font-medium text-[#0f766e] hover:underline"
                     >
                       {project.customer.contactEmail}
                     </a>
@@ -184,7 +179,7 @@ export default async function ProjectPage({ params }: PageParams) {
                   <DetailRow icon={<IconPhone className="h-3.5 w-3.5" />} label="Telefon">
                     <a
                       href={`tel:${project.customer.contactPhone}`}
-                      className="font-medium text-[#0b6b4f] hover:underline"
+                      className="font-medium text-[#0f766e] hover:underline"
                     >
                       {project.customer.contactPhone}
                     </a>
@@ -196,7 +191,7 @@ export default async function ProjectPage({ params }: PageParams) {
                       href={project.customer.companyWebsite}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="break-all font-medium text-[#0b6b4f] hover:underline"
+                      className="break-all font-medium text-[#0f766e] hover:underline"
                     >
                       {project.customer.companyWebsite.replace(/^https?:\/\//, "")}
                     </a>
@@ -215,8 +210,8 @@ export default async function ProjectPage({ params }: PageParams) {
             </section>
           )}
 
-          <section className="card p-5" aria-labelledby="meta-heading">
-            <h2 id="meta-heading" className="font-display text-[14px] font-bold text-ink">
+          <section className="card p-4" aria-labelledby="meta-heading">
+            <h2 id="meta-heading" className="text-[12.5px] font-semibold text-ink">
               Details
             </h2>
             <dl className="mt-3 flex flex-col gap-2.5 text-[12px]">
@@ -260,20 +255,18 @@ export default async function ProjectPage({ params }: PageParams) {
             </dl>
           </section>
 
-          <section className="rounded-[18px] border border-emerald-200/70 bg-gradient-to-br from-[#effff9] to-[#f7f5ff] p-5">
-            <div className="flex items-center gap-2 text-[12.5px] font-bold text-emerald-900">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-emerald-700 shadow-[0_1px_2px_rgb(11_16_42/0.06)]">
-                <IconShield className="h-3.5 w-3.5" />
-              </span>
+          <section className="card p-4">
+            <div className="flex items-center gap-2 text-[11.5px] font-semibold text-ink">
+              <IconShield className="h-3.5 w-3.5 text-[#0f766e]" />
               Sicher gespeichert
             </div>
-            <p className="mt-2.5 text-[11.5px] leading-relaxed text-emerald-900/70">
-              Passwörter, Verbindungsdaten und Publish-Profile werden mit AES-256-GCM
-              verschlüsselt. Die Anzeige eines Geheimnisses wird protokolliert.
+            <p className="mt-2 text-[10.5px] leading-relaxed text-muted">
+              Passwörter, Verbindungsdaten und Publish-Profile sind mit AES-256-GCM
+              verschlüsselt. Jede Anzeige wird protokolliert.
             </p>
-            <div className="mt-3 flex items-center gap-1.5 text-[10.5px] font-semibold text-emerald-800">
+            <div className="mt-2 flex items-center gap-1.5 text-[9.5px] font-medium text-subtle">
               <IconLock className="h-3 w-3" />
-              Nur für freigegebene Gentle-Group-Konten
+              Nur für freigegebene Konten
             </div>
           </section>
 

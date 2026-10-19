@@ -54,4 +54,5 @@ next-env.d.ts
 # local QA artifacts
 /qa/
 /screenshots/
-/build.log
+/catalog/
+/build2.log

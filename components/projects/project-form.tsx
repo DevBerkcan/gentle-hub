@@ -4,17 +4,11 @@ import { useState, useTransition } from "react";
 import { createProjectAction, updateProjectAction } from "@/app/actions";
 import type { FieldErrors } from "@/lib/action-types";
 import { cn } from "@/lib/cn";
-import { ACCENTS } from "@/lib/constants";
 import { isValidHttpUrl, normalizeUrl, parseTags } from "@/lib/format";
 import type { Project, ProjectInput, ProjectKind, ProjectStatus } from "@/lib/types";
 import { Field, FormError } from "@/components/ui/field";
-import { IconApps, IconLoader, IconUsers } from "@/components/ui/icons";
-
-const EMOJI_CHOICES = [
-  "🧭", "📅", "🧩", "🌿", "📝", "🍽️", "🥐", "📈", "🕌", "🌙", "🌗", "🚀",
-  "🔧", "🌬️", "🧲", "🔴", "🏥", "🧰", "⚡", "❄️", "✨", "🧮", "💇", "🎟️",
-  "🍬", "🥗", "🤝", "🌐",
-];
+import { ProjectIcon } from "@/components/ui/project-icon";
+import { IconApps, IconFolder, IconLoader, IconUsers } from "@/components/ui/icons";
 
 const STATUS_OPTIONS: { value: ProjectStatus; label: string }[] = [
   { value: "live", label: "Live" },
@@ -22,6 +16,17 @@ const STATUS_OPTIONS: { value: ProjectStatus; label: string }[] = [
   { value: "development", label: "In Entwicklung" },
   { value: "paused", label: "Pausiert" },
   { value: "archived", label: "Archiviert" },
+];
+
+const KIND_OPTIONS: {
+  value: ProjectKind;
+  label: string;
+  hint: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
+  { value: "internal", label: "Gentle Group", hint: "Eigenes Produkt", icon: IconApps },
+  { value: "customer", label: "Kunde", hint: "Kundenprojekt", icon: IconUsers },
+  { value: "project", label: "Eigenes Projekt", hint: "Game / Experiment", icon: IconFolder },
 ];
 
 function toInput(project: Project): ProjectInput {
@@ -32,7 +37,7 @@ function toInput(project: Project): ProjectInput {
     status: project.status,
     primaryUrl: project.primaryUrl ?? "",
     icon: project.icon ?? "",
-    accent: project.accent ?? (project.kind === "customer" ? "blue" : "mint"),
+    accent: project.accent ?? "",
     tags: project.tags,
     notes: project.notes,
     contactName: project.customer?.contactName ?? "",
@@ -50,7 +55,7 @@ function emptyInput(kind: ProjectKind): ProjectInput {
     status: "live",
     primaryUrl: "",
     icon: "",
-    accent: kind === "customer" ? "blue" : "mint",
+    accent: "",
     tags: [],
     notes: "",
     contactName: "",
@@ -82,7 +87,16 @@ export function ProjectForm({
   const [pending, startTransition] = useTransition();
 
   const isCustomer = form.kind === "customer";
+  const isProject = form.kind === "project";
   const formId = mode === "create" ? "create-project-form" : "edit-project-form";
+  const submitLabel =
+    mode === "create"
+      ? form.kind === "internal"
+        ? "App anlegen"
+        : form.kind === "customer"
+          ? "Kunde anlegen"
+          : "Projekt anlegen"
+      : "Änderungen speichern";
 
   function update<K extends keyof ProjectInput>(key: K, value: ProjectInput[K]) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -111,7 +125,11 @@ export function ProjectForm({
       nextErrors.companyWebsite = "Bitte eine gültige Web-Adresse angeben.";
     }
 
-    if (isCustomer && form.contactEmail.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(form.contactEmail.trim())) {
+    if (
+      isCustomer &&
+      form.contactEmail.trim() &&
+      !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(form.contactEmail.trim())
+    ) {
       nextErrors.contactEmail = "Bitte eine gültige E-Mail-Adresse angeben.";
     }
 
@@ -155,51 +173,31 @@ export function ProjectForm({
   }
 
   return (
-    <form id={formId} onSubmit={submit} className="flex flex-col gap-5">
+    <form id={formId} onSubmit={submit} className="flex flex-col gap-4">
       <FormError message={message} />
 
       {mode === "create" && (
-        <div className="grid grid-cols-2 gap-2 rounded-[14px] border border-line bg-surface-2 p-1.5">
-          {(
-            [
-              { value: "internal", label: "Eigene App", icon: IconApps, hint: "Gentle Group" },
-              { value: "customer", label: "Kunde", icon: IconUsers, hint: "Kundenprojekt" },
-            ] as const
-          ).map((option) => {
+        <div className="grid gap-1.5 sm:grid-cols-3">
+          {KIND_OPTIONS.map((option) => {
             const active = form.kind === option.value;
             const Icon = option.icon;
             return (
               <button
                 key={option.value}
                 type="button"
-                onClick={() => {
-                  setForm((current) => ({
-                    ...current,
-                    kind: option.value,
-                    accent:
-                      current.accent === "mint" || current.accent === "blue"
-                        ? option.value === "customer"
-                          ? "blue"
-                          : "mint"
-                        : current.accent,
-                  }));
-                }}
+                onClick={() => update("kind", option.value)}
+                aria-pressed={active}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 text-left transition",
-                  active ? "bg-white shadow-[0_1px_2px_rgb(11_16_42/0.08)]" : "hover:bg-white/60",
+                  "flex items-center gap-2 rounded-[8px] border px-2.5 py-2 text-left transition",
+                  active
+                    ? "border-ink/20 bg-surface-2 ring-1 ring-inset ring-ink/5"
+                    : "border-line bg-white hover:border-line-strong hover:bg-surface-2",
                 )}
               >
-                <span
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-[9px]",
-                    active ? "bg-navy text-mint" : "bg-white text-muted",
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                </span>
+                <Icon className={cn("h-4 w-4", active ? "text-ink" : "text-muted")} />
                 <span className="min-w-0">
-                  <span className="block text-[13px] font-semibold text-ink">{option.label}</span>
-                  <span className="block text-[10.5px] text-muted">{option.hint}</span>
+                  <span className="block text-[11.5px] font-semibold text-ink">{option.label}</span>
+                  <span className="block text-[9.5px] text-muted">{option.hint}</span>
                 </span>
               </button>
             );
@@ -207,44 +205,22 @@ export function ProjectForm({
         </div>
       )}
 
-      <Field label="Name" htmlFor={`${formId}-name`} error={errors.name} required>
-        <input
-          id={`${formId}-name`}
-          value={form.name}
-          onChange={(event) => update("name", event.target.value)}
-          placeholder={isCustomer ? "z. B. Gelenkwerk Physio" : "z. B. GentleBook"}
-          className="input"
-          maxLength={160}
-          autoFocus
-        />
-      </Field>
-
-      <Field label="Kurzbeschreibung" htmlFor={`${formId}-description`} error={errors.description}>
-        <textarea
-          id={`${formId}-description`}
-          value={form.description}
-          onChange={(event) => update("description", event.target.value)}
-          placeholder="Worum geht es? Ein bis zwei Sätze reichen."
-          className="textarea min-h-20"
-          maxLength={800}
-          rows={2}
-        />
-      </Field>
-
-      <div className="grid gap-4 sm:grid-cols-[1fr_180px]">
-        <Field
-          label={isCustomer ? "Website" : "Haupt-Link"}
-          htmlFor={`${formId}-url`}
-          hint="Ohne https:// wird automatisch ergänzt."
-          error={errors.primaryUrl}
-        >
+      <div className="grid gap-4 sm:grid-cols-[1fr_170px]">
+        <Field label="Name" htmlFor={`${formId}-name`} error={errors.name} required>
           <input
-            id={`${formId}-url`}
-            value={form.primaryUrl}
-            onChange={(event) => update("primaryUrl", event.target.value)}
-            placeholder="https://…"
+            id={`${formId}-name`}
+            value={form.name}
+            onChange={(event) => update("name", event.target.value)}
+            placeholder={
+              form.kind === "internal"
+                ? "z. B. GentleBook"
+                : form.kind === "customer"
+                  ? "z. B. Gelenkwerk Physio"
+                  : "z. B. Twinshade"
+            }
             className="input"
-            inputMode="url"
+            maxLength={160}
+            autoFocus
           />
         </Field>
 
@@ -264,62 +240,64 @@ export function ProjectForm({
         </Field>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Icon" htmlFor={`${formId}-icon`} hint="Ein Emoji oder leer für Initialen." error={errors.icon}>
-          <div className="flex gap-2">
-            <input
-              id={`${formId}-icon`}
-              value={form.icon}
-              onChange={(event) => update("icon", event.target.value)}
-              placeholder="✨"
-              className="input w-16 text-center text-lg"
-              maxLength={32}
-            />
-            <div className="no-scrollbar flex flex-1 items-center gap-1 overflow-x-auto rounded-[12px] border border-line bg-white px-2">
-              {EMOJI_CHOICES.slice(0, 12).map((emoji) => (
-                <button
-                  key={emoji}
-                  type="button"
-                  onClick={() => update("icon", emoji)}
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] text-[16px] transition hover:bg-surface-2"
-                  aria-label={`Icon ${emoji} wählen`}
-                >
-                  {emoji}
-                </button>
-              ))}
-            </div>
-          </div>
-        </Field>
+      <Field label="Kurzbeschreibung" htmlFor={`${formId}-description`} error={errors.description}>
+        <textarea
+          id={`${formId}-description`}
+          value={form.description}
+          onChange={(event) => update("description", event.target.value)}
+          placeholder="Ein bis zwei Sätze."
+          className="textarea min-h-[70px]"
+          maxLength={800}
+          rows={2}
+        />
+      </Field>
 
-        <Field label="Farbe" error={errors.accent}>
-          <div className="flex h-11 items-center gap-2 rounded-[12px] border border-line bg-white px-3">
-            {ACCENTS.map((accent) => (
-              <button
-                key={accent.key}
-                type="button"
-                onClick={() => update("accent", accent.key)}
-                aria-label={`Farbe ${accent.label}`}
-                aria-pressed={form.accent === accent.key}
-                className={cn(
-                  "h-6 w-6 rounded-full ring-2 ring-offset-2 transition",
-                  accent.dot,
-                  form.accent === accent.key ? "ring-ink" : "ring-transparent hover:scale-110",
-                )}
-              />
-            ))}
-            <span className="ml-auto text-[11px] font-medium text-muted">
-              {ACCENTS.find((accent) => accent.key === form.accent)?.label ?? "Mint"}
-            </span>
-          </div>
-        </Field>
-      </div>
+      <Field
+        label={isCustomer ? "Website" : isProject ? "Haupt-Link" : "Produkt-Link"}
+        htmlFor={`${formId}-url`}
+        hint="Ohne https:// wird automatisch ergänzt."
+        error={errors.primaryUrl}
+      >
+        <input
+          id={`${formId}-url`}
+          value={form.primaryUrl}
+          onChange={(event) => update("primaryUrl", event.target.value)}
+          placeholder="https://…"
+          className="input"
+          inputMode="url"
+        />
+      </Field>
+
+      <Field
+        label="Logo"
+        htmlFor={`${formId}-icon`}
+        hint="Pfad wie /apps/gentlebook.png oder eine HTTPS-URL. Leer = Initialen."
+        error={errors.icon}
+      >
+        <div className="flex items-center gap-3">
+          <ProjectIcon
+            name={form.name || "Projekt"}
+            icon={form.icon}
+            size="lg"
+            className="shrink-0"
+          />
+          <input
+            id={`${formId}-icon`}
+            value={form.icon}
+            onChange={(event) => update("icon", event.target.value)}
+            placeholder="/apps/… oder https://…"
+            className="input flex-1"
+            maxLength={1000}
+          />
+        </div>
+      </Field>
 
       {isCustomer && (
-        <fieldset className="rounded-[16px] border border-line bg-surface-2/60 p-4">
-          <legend className="px-1 text-[11px] font-bold uppercase tracking-[0.12em] text-muted">
+        <fieldset className="rounded-[10px] border border-line bg-surface-2/50 p-3.5">
+          <legend className="px-1 text-[10px] font-bold uppercase tracking-[0.12em] text-muted">
             Kundenkontakt
           </legend>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Ansprechpartner" htmlFor={`${formId}-contact`} error={errors.contactName}>
               <input
                 id={`${formId}-contact`}
@@ -384,7 +362,7 @@ export function ProjectForm({
       <Field
         label="Notizen"
         htmlFor={`${formId}-notes`}
-        hint="Hinweise, Ansprechpartner, To-dos. Secrets gehören unter Zugänge & Infrastruktur."
+        hint="Hinweise und To-dos. Secrets gehören unter Zugänge & Infrastruktur."
         error={errors.notes}
       >
         <textarea
@@ -393,23 +371,17 @@ export function ProjectForm({
           onChange={(event) => update("notes", event.target.value)}
           placeholder="Was ist bei diesem Projekt wichtig?"
           className="textarea"
-          rows={4}
+          rows={3}
         />
       </Field>
 
-      <div className="sticky bottom-0 -mx-5 -mb-5 mt-1 flex items-center justify-end gap-2 border-t border-line bg-white/95 px-5 py-3.5 backdrop-blur sm:-mx-6 sm:px-6">
+      <div className="sticky bottom-0 -mx-5 -mb-5 mt-1 flex items-center justify-end gap-2 border-t border-line bg-white/95 px-5 py-3 backdrop-blur sm:-mx-6 sm:px-6">
         <button type="button" onClick={onCancel} className="btn btn-secondary" disabled={pending}>
           Abbrechen
         </button>
         <button type="submit" className="btn btn-primary" disabled={pending}>
           {pending && <IconLoader className="h-4 w-4" />}
-          {pending
-            ? "Speichert …"
-            : mode === "create"
-              ? isCustomer
-                ? "Kunde anlegen"
-                : "App anlegen"
-              : "Änderungen speichern"}
+          {pending ? "Speichert …" : submitLabel}
         </button>
       </div>
     </form>

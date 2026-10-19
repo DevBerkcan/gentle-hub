@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { cn } from "@/lib/cn";
-import { accentOf } from "@/lib/constants";
 import { initials } from "@/lib/format";
 
 type ProjectIconProps = {
@@ -11,29 +11,38 @@ type ProjectIconProps = {
 };
 
 const sizes = {
-  sm: "h-9 w-9 rounded-[11px] text-[15px]",
-  md: "h-11 w-11 rounded-[13px] text-[19px]",
-  lg: "h-14 w-14 rounded-[17px] text-[24px]",
-  xl: "h-[4.5rem] w-[4.5rem] rounded-[20px] text-[30px]",
+  sm: "h-8 w-8 rounded-[8px] text-[10px]",
+  md: "h-10 w-10 rounded-[10px] text-[11px]",
+  lg: "h-12 w-12 rounded-[11px] text-[13px]",
+  xl: "h-16 w-16 rounded-[14px] text-[17px]",
 };
 
-export function ProjectIcon({ name, icon, accent, size = "md", className }: ProjectIconProps) {
-  const tone = accentOf(accent);
+export function ProjectIcon({ name, icon, size = "md", className }: ProjectIconProps) {
+  const isImage = Boolean(icon && (icon.startsWith("/") || icon.startsWith("http")));
 
   return (
     <span
       aria-hidden="true"
       className={cn(
-        "inline-flex shrink-0 select-none items-center justify-center font-semibold ring-1 ring-inset ring-black/[0.06]",
-        tone.tile,
+        "relative inline-flex shrink-0 items-center justify-center overflow-hidden border border-line bg-white",
+        "shadow-[0_1px_2px_rgb(16_24_40/0.04)]",
         sizes[size],
         className,
       )}
     >
-      {icon ? (
-        <span className="leading-none drop-shadow-[0_1px_1px_rgb(0_0_0/0.08)]">{icon}</span>
+      {isImage ? (
+        <Image
+          src={icon!}
+          alt=""
+          width={128}
+          height={128}
+          unoptimized
+          className="h-full w-full object-contain p-[8%]"
+        />
       ) : (
-        <span className="font-display text-[0.72em] font-extrabold tracking-tight">{initials(name)}</span>
+        <span className="font-display font-bold tracking-[-0.03em] text-[#475467]">
+          {initials(name)}
+        </span>
       )}
     </span>
   );

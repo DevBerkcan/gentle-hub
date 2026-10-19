@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/icons";
 
 const meta = {
-  link: { icon: IconLink, tone: "bg-[#e6fff7] text-[#008a5c]" },
-  repo: { icon: IconRepo, tone: "bg-[#f0e9ff] text-[#6b3fc4]" },
-  hosting: { icon: IconServer, tone: "bg-[#e8efff] text-[#2c58b8]" },
-  database: { icon: IconDatabase, tone: "bg-[#e2fbf8] text-[#00756b]" },
-  account: { icon: IconKey, tone: "bg-[#fff3dd] text-[#8d5a00]" },
-  secret: { icon: IconLock, tone: "bg-[#ffe8ee] text-[#a52545]" },
+  link: { icon: IconLink },
+  repo: { icon: IconRepo },
+  hosting: { icon: IconServer },
+  database: { icon: IconDatabase },
+  account: { icon: IconKey },
+  secret: { icon: IconLock },
 } as const;
 
 export function AssetTypeIcon({
@@ -31,13 +31,12 @@ export function AssetTypeIcon({
   return (
     <span
       className={cn(
-        "flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] ring-1 ring-inset ring-black/[0.03]",
-        entry.tone,
+        "flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface-2 text-[#475467]",
         className,
       )}
       aria-hidden="true"
     >
-      <Icon className="h-[17px] w-[17px]" />
+      <Icon className="h-3.5 w-3.5" />
     </span>
   );
 }

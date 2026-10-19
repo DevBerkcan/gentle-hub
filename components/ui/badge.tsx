@@ -14,12 +14,12 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset",
+        "inline-flex items-center gap-1 rounded-[5px] px-1.5 py-0.5 text-[9.5px] font-semibold ring-1 ring-inset",
         meta.badge,
         className,
       )}
     >
-      <span className={cn("h-1.5 w-1.5 rounded-full", meta.dot)} />
+      <span className={cn("h-1 w-1 rounded-full", meta.dot)} />
       {meta.label}
     </span>
   );
@@ -39,7 +39,7 @@ export function EnvironmentBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset",
+        "inline-flex items-center rounded-[4px] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ring-1 ring-inset",
         meta.badge,
         className,
       )}
@@ -53,7 +53,7 @@ export function Tag({ children, className }: { children: React.ReactNode; classN
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border border-line bg-white px-2.5 py-1 text-[11px] font-medium text-muted",
+        "inline-flex items-center rounded-[5px] border border-line bg-white px-1.5 py-0.5 text-[9.5px] font-medium text-muted",
         className,
       )}
     >

@@ -25,10 +25,14 @@ export function ProjectFormModal({
     mode === "edit"
       ? kind === "customer"
         ? "Kunde bearbeiten"
-        : "App bearbeiten"
+        : kind === "project"
+          ? "Projekt bearbeiten"
+          : "App bearbeiten"
       : kind === "customer"
         ? "Neuer Kunde"
-        : "Neue App";
+        : kind === "project"
+          ? "Neues Projekt"
+          : "Neue App";
 
   return (
     <Modal
@@ -40,7 +44,9 @@ export function ProjectFormModal({
           ? "Änderungen sind sofort für alle freigegebenen Personen sichtbar."
           : kind === "customer"
             ? "Lege ein Kundenprojekt an. Zugänge und Repositories kommen danach auf der Detailseite dazu."
-            : "Lege eine eigene App oder Website an. Alles Weitere ergänzt du auf der Detailseite."
+            : kind === "project"
+              ? "Lege ein eigenes Projekt, Spiel oder Experiment an."
+              : "Lege ein Gentle-Group-Produkt oder eine interne App an."
       }
       size="lg"
     >

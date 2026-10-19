@@ -53,20 +53,20 @@ export function AssetSection({
     <section aria-labelledby={`asset-group-${group.key}`}>
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] bg-white text-muted ring-1 ring-inset ring-line">
-            <Icon className="h-4 w-4" />
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-surface-2 text-[#475467]">
+            <Icon className="h-3.5 w-3.5" />
           </span>
           <div className="min-w-0">
             <h2
               id={`asset-group-${group.key}`}
-              className="flex items-center gap-2 font-display text-[14.5px] font-bold tracking-[-0.01em] text-ink"
+              className="flex items-center gap-1.5 text-[12.5px] font-semibold text-ink"
             >
               {group.title}
-              <span className="rounded-full bg-[#f3f0f8] px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-muted">
+              <span className="rounded-[4px] bg-surface-2 px-1.5 py-0.5 text-[9.5px] font-semibold tabular-nums text-muted">
                 {assets.length}
               </span>
             </h2>
-            <p className="truncate text-[11px] text-muted">{group.description}</p>
+            <p className="truncate text-[10.5px] text-muted">{group.description}</p>
           </div>
         </div>
         <button
@@ -74,25 +74,25 @@ export function AssetSection({
           onClick={() => setAddOpen(true)}
           aria-label={`${group.title}: Eintrag hinzufügen`}
           title="Eintrag hinzufügen"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] border border-line bg-white text-muted shadow-[0_1px_2px_rgb(11_16_42/0.03)] transition hover:border-line-strong hover:text-ink"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] border border-line bg-white text-muted transition hover:border-line-strong hover:text-ink"
         >
-          <IconPlus className="h-4 w-4" />
+          <IconPlus className="h-3.5 w-3.5" />
         </button>
       </div>
 
       {assets.length === 0 ? (
-        <div className="flex items-center justify-between gap-3 rounded-[14px] border border-dashed border-line-strong bg-surface-2/50 px-4 py-3">
-          <p className="text-[12px] text-muted">Noch keine Einträge in dieser Kategorie.</p>
+        <div className="flex items-center justify-between gap-3 rounded-[8px] border border-dashed border-line-strong bg-surface px-3.5 py-2.5">
+          <p className="text-[11px] text-muted">Noch keine Einträge in dieser Kategorie.</p>
           <button
             type="button"
             onClick={() => setAddOpen(true)}
-            className="shrink-0 text-[12px] font-semibold text-ink transition hover:text-emerald-700"
+            className="shrink-0 text-[11px] font-semibold text-ink transition hover:text-[#0f766e]"
           >
             + Hinzufügen
           </button>
         </div>
       ) : (
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2">
           {assets.map((asset) => (
             <AssetRow key={asset.id} asset={asset} projectSlug={projectSlug} />
           ))}
@@ -124,8 +124,8 @@ function AssetRow({ asset, projectSlug }: { asset: Asset; projectSlug: string })
     <article
       id={`asset-${asset.id}`}
       className={cn(
-        "group scroll-mt-24 rounded-[16px] border border-line bg-white p-4 shadow-[0_1px_2px_rgb(11_16_42/0.03)] transition",
-        "hover:border-line-strong hover:shadow-[0_8px_24px_-18px_rgb(11_16_42/0.24)]",
+        "group scroll-mt-24 rounded-[10px] border border-line bg-white p-3.5 transition",
+        "hover:border-line-strong",
       )}
     >
       <div className="flex items-start gap-3">
@@ -133,15 +133,15 @@ function AssetRow({ asset, projectSlug }: { asset: Asset; projectSlug: string })
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <h3 className="text-[13.5px] font-semibold leading-snug text-ink">{asset.label}</h3>
+            <h3 className="text-[12.5px] font-semibold leading-snug text-ink">{asset.label}</h3>
             {asset.provider && (
-              <span className="inline-flex items-center rounded-full bg-[#f4f2f9] px-2 py-0.5 text-[10px] font-semibold text-muted">
+              <span className="inline-flex items-center rounded-[4px] bg-surface-2 px-1.5 py-0.5 text-[9.5px] font-semibold text-muted">
                 {asset.provider}
               </span>
             )}
             <EnvironmentBadge environment={asset.environment} />
             {asset.type === "secret" && asset.subtype && (
-              <span className="inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-700">
+              <span className="inline-flex items-center rounded-[4px] bg-surface-2 px-1.5 py-0.5 text-[9.5px] font-semibold text-muted">
                 {SUBTYPE_LABELS[asset.subtype] ?? asset.subtype}
               </span>
             )}
@@ -155,7 +155,7 @@ function AssetRow({ asset, projectSlug }: { asset: Asset; projectSlug: string })
                   href={asset.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-w-0 items-center gap-1 text-[12px] font-medium text-[#0b6b4f] transition hover:text-emerald-700 hover:underline"
+                  className="inline-flex min-w-0 items-center gap-1 text-[11.5px] font-medium text-[#0f766e] transition hover:underline"
                   title={asset.url}
                 >
                   <span className="truncate">{shortUrl(asset.url)}</span>
@@ -175,7 +175,7 @@ function AssetRow({ asset, projectSlug }: { asset: Asset; projectSlug: string })
               <span className="shrink-0 text-[10.5px] font-semibold uppercase tracking-wide text-subtle">
                 Benutzer
               </span>
-              <code className="truncate rounded bg-[#f7f5fb] px-1.5 py-0.5 font-mono text-[11.5px] text-ink">
+              <code className="truncate rounded-[4px] bg-surface-2 px-1.5 py-0.5 font-mono text-[11px] text-ink">
                 {asset.username}
               </code>
               <CopyButton value={asset.username} label="Benutzername kopieren" />

@@ -36,7 +36,7 @@ export default async function SettingsPage() {
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="flex flex-col gap-6">
           <section className="card p-5 sm:p-6" aria-labelledby="account-heading">
-            <h2 id="account-heading" className="font-display text-[16px] font-bold text-ink">
+            <h2 id="account-heading" className="text-[14px] font-semibold text-ink">
               Konto
             </h2>
             <div className="mt-4 flex flex-wrap items-center gap-4">
@@ -85,7 +85,7 @@ export default async function SettingsPage() {
                 <IconLock className="h-4 w-4" />
               </span>
               <div>
-                <h2 id="password-heading" className="font-display text-[15px] font-bold text-ink">
+                <h2 id="password-heading" className="text-[13.5px] font-semibold text-ink">
                   Passwort ändern
                 </h2>
                 <p className="text-[11px] text-muted">
@@ -100,7 +100,7 @@ export default async function SettingsPage() {
         <aside className="flex flex-col gap-5">
           <section className="card p-5" aria-labelledby="api-heading">
             <div className="flex items-center justify-between gap-2">
-              <h2 id="api-heading" className="font-display text-[14px] font-bold text-ink">
+              <h2 id="api-heading" className="text-[12.5px] font-semibold text-ink">
                 Backend
               </h2>
               <span
@@ -149,14 +149,12 @@ export default async function SettingsPage() {
             )}
           </section>
 
-          <section className="rounded-[18px] border border-emerald-200/70 bg-gradient-to-br from-[#effff9] to-[#f7f5ff] p-5">
-            <div className="flex items-center gap-2 text-[12.5px] font-bold text-emerald-900">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-emerald-700 shadow-[0_1px_2px_rgb(11_16_42/0.06)]">
-                <IconShield className="h-3.5 w-3.5" />
-              </span>
+          <section className="card p-4">
+            <div className="flex items-center gap-2 text-[11.5px] font-semibold text-ink">
+              <IconShield className="h-3.5 w-3.5 text-[#0f766e]" />
               Sicherheit
             </div>
-            <ul className="mt-3 flex flex-col gap-2 text-[11.5px] leading-relaxed text-emerald-900/75">
+            <ul className="mt-2.5 flex flex-col gap-1.5 text-[10.5px] leading-relaxed text-muted">
               <li>Geheimnisse sind mit AES-256-GCM verschlüsselt.</li>
               <li>Die Anzeige eines Geheimnisses wird protokolliert.</li>
               <li>Sitzungen laufen nach 30 Tagen ab.</li>
@@ -164,9 +162,9 @@ export default async function SettingsPage() {
             </ul>
           </section>
 
-          <section className="card p-5">
-            <h2 className="flex items-center gap-2 font-display text-[14px] font-bold text-ink">
-              <IconUser className="h-4 w-4 text-muted" />
+          <section className="card p-4">
+            <h2 className="flex items-center gap-2 text-[12.5px] font-semibold text-ink">
+              <IconUser className="h-3.5 w-3.5 text-muted" />
               Hilfe
             </h2>
             <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted">

@@ -27,9 +27,9 @@ export function ProjectFilterBar({
 
   const chipClass = (active: boolean) =>
     cn(
-      "inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[11.5px] font-semibold transition",
+      "inline-flex h-8 items-center gap-1.5 rounded-[6px] border px-2.5 text-[11px] font-semibold transition",
       active
-        ? "border-ink bg-ink text-white shadow-[0_4px_12px_-6px_rgb(11_16_42/0.4)]"
+        ? "border-ink bg-ink text-white"
         : "border-line bg-white text-muted hover:border-line-strong hover:text-ink",
     );
 

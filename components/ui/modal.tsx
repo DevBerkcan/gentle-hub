@@ -77,17 +77,17 @@ export function Modal({
     >
       <div
         className={cn(
-          "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-[22px] border border-white/60 bg-surface shadow-float",
+          "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-[14px] border border-line bg-surface shadow-float",
           size === "lg" ? "sm:max-w-3xl" : "sm:max-w-xl",
         )}
       >
-        <div className="flex items-start gap-4 border-b border-line px-5 py-5 sm:px-6">
+        <div className="flex items-start gap-4 border-b border-line px-5 py-4 sm:px-6">
           <div className="min-w-0 flex-1">
-            <h2 id={titleId} className="font-display text-lg font-bold tracking-tight text-ink">
+            <h2 id={titleId} className="font-display text-[16px] font-semibold tracking-[-0.02em] text-ink">
               {title}
             </h2>
             {description && (
-              <p id={descriptionId} className="mt-1 text-[13px] leading-relaxed text-muted">
+              <p id={descriptionId} className="mt-1 text-[11.5px] leading-relaxed text-muted">
                 {description}
               </p>
             )}
@@ -97,17 +97,17 @@ export function Modal({
               type="button"
               onClick={onClose}
               aria-label="Schließen"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-muted transition hover:bg-[#f0edf6] hover:text-ink"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] text-muted transition hover:bg-surface-2 hover:text-ink"
             >
-              <IconX className="h-4.5 w-4.5" />
+              <IconX className="h-4 w-4" />
             </button>
           )}
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 sm:px-6">{children}</div>
 
         {footer && (
-          <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line bg-surface-2/80 px-5 py-4 sm:px-6">
+          <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line bg-surface-2/60 px-5 py-3.5 sm:px-6">
             {footer}
           </div>
         )}

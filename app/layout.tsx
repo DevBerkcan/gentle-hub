@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,10 +8,10 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const manrope = Manrope({
+const geist = Geist({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-manrope",
+  variable: "--font-geist",
 });
 
 export const metadata: Metadata = {
@@ -19,21 +19,21 @@ export const metadata: Metadata = {
     default: "GentleHub",
     template: "%s · GentleHub",
   },
-  description: "Alle Apps, Kundenprojekte und Zugänge der Gentle Group an einem Ort.",
+  description: "Apps, Kundenprojekte und Zugänge der Gentle Group.",
   applicationName: "GentleHub",
   robots: { index: false, follow: false, nocache: true },
   icons: { icon: "/favicon.svg" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070d24",
+  themeColor: "#0b1220",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${manrope.variable}`}>
+    <html lang="de" className={`${inter.variable} ${geist.variable}`}>
       <body>{children}</body>
     </html>
   );

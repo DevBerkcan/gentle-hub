@@ -2,11 +2,8 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 
 const tones = {
-  mint: "bg-[#e6fff7] text-[#007a52]",
-  violet: "bg-[#f2eaff] text-[#6633c7]",
-  blue: "bg-[#e8efff] text-[#2c58b8]",
-  amber: "bg-[#fff3dd] text-[#8d5a00]",
-  rose: "bg-[#ffe8ee] text-[#a52545]",
+  neutral: "bg-surface-2 text-[#475467]",
+  accent: "bg-[#ecfdf5] text-[#0f766e]",
 } as const;
 
 export function StatCard({
@@ -15,7 +12,7 @@ export function StatCard({
   hint,
   icon,
   href,
-  tone = "mint",
+  tone = "neutral",
 }: {
   label: string;
   value: number;
@@ -27,7 +24,7 @@ export function StatCard({
   const content = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <span className={cn("flex h-9 w-9 items-center justify-center rounded-[10px]", tones[tone])}>
+        <span className={cn("flex h-8 w-8 items-center justify-center rounded-[7px]", tones[tone])}>
           {icon}
         </span>
         {href && (
@@ -36,16 +33,16 @@ export function StatCard({
           </span>
         )}
       </div>
-      <p className="mt-4 font-display text-[28px] font-extrabold leading-none tracking-[-0.04em] text-ink tabular-nums">
+      <p className="mt-3 font-display text-[24px] font-semibold leading-none tracking-[-0.03em] text-ink tabular-nums">
         {value}
       </p>
-      <p className="mt-1.5 text-[12.5px] font-semibold text-ink">{label}</p>
-      <p className="mt-0.5 text-[10.5px] leading-relaxed text-muted">{hint}</p>
+      <p className="mt-1.5 text-[11.5px] font-semibold text-ink">{label}</p>
+      <p className="mt-0.5 text-[10px] leading-relaxed text-muted">{hint}</p>
     </>
   );
 
   const className =
-    "group rounded-[18px] border border-line bg-surface p-4 shadow-card transition hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_16px_34px_-24px_rgb(11_16_42/0.3)]";
+    "group rounded-[12px] border border-line bg-surface p-3.5 shadow-card transition hover:border-line-strong";
 
   return href ? (
     <Link href={href} className={className}>

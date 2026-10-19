@@ -10,11 +10,12 @@ Der zentrale Hub der Gentle Group: eigene Apps, Kundenprojekte, Repositories, Ho
 
 ## Was GentleHub kann
 
-- **Zwei klare Bereiche:** eigene Apps der Gentle Group und Kundenprojekte – getrennt in Navigation, Listen und Filtern.
+- **Drei klare Bereiche:** Gentle-Group-Produkte, Kundenprojekte und eigene Projekte (Games, Experimente, Portfolios) – getrennt in Navigation, Listen und Filtern.
+- **Echte App-Logos:** Die Kacheln nutzen die Logos/Favicons aus den jeweiligen Repositories und Live-Deployments; keine Emoji-Platzhalter.
 - **Alles zu einem Projekt an einem Ort:** Links, Repositories, Hosting, Datenbanken, Konten und Geheimnisse.
 - **Sensible Daten verschlüsselt:** Passwörter, Connection Strings, Publish-Profile und API-Keys werden mit AES-256-GCM verschlüsselt gespeichert und erst nach einem Klick entschlüsselt.
 - **Schnell finden:** globale Suche über Projekte, Links, Repositories, Anbieter, Benutzernamen und Notizen; Favoriten für den direkten Zugriff.
-- **Aufgeräumtes Dashboard:** Kennzahlen, Favoriten, zuletzt aktualisierte Projekte und Aktivitätsprotokoll.
+- **Aufgeräumtes Dashboard:** Kennzahlen, Projektstatus, Favoriten und Aktivitätsprotokoll.
 - **Nur zwei Konten:** `medin@gentlegroup.de` und `berkcan@gentlegroup.de`. Es gibt keine Selbstregistrierung.
 - **Sicherheit:** PBKDF2-SHA256-Passwort-Hashes, undurchsichtige Session-Tokens (nur als Hash in der Datenbank), 30-Tage-Sitzungen, Login-Rate-Limit, protokollierte Anzeige von Geheimnissen.
 
@@ -105,7 +106,7 @@ Passwörter stehen bewusst nicht in diesem Repository. Sie werden beim Setup sep
 
 ## Datenmodell (Kurzfassung)
 
-- **Projects**: Name, Slug, Typ (`internal`/`customer`), Status, URL, Icon, Farbe, Tags, Notizen, Kundenkontakt.
+- **Projects**: Name, Slug, Typ (`internal` = Gentle Group, `customer`, `project`), Status, URL, Logo, Tags, Notizen, Kundenkontakt.
 - **Assets**: pro Projekt beliebig viele Einträge vom Typ `link`, `repo`, `hosting`, `database`, `account` oder `secret` – mit URL, Anbieter, Umgebung, Benutzername, Details, Notizen und optional einem verschlüsselten Geheimnis.
 - **Favorites**: pro Benutzer.
 - **Activity**: protokolliert Anmeldungen, Änderungen und die Anzeige von Geheimnissen.

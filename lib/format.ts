@@ -1,3 +1,6 @@
+import { KIND_LABELS, KIND_SINGULAR } from "@/lib/constants";
+import type { ProjectKind } from "@/lib/types";
+
 const dateFormatter = new Intl.DateTimeFormat("de-DE", {
   day: "2-digit",
   month: "short",
@@ -59,6 +62,18 @@ export function initials(name: string): string {
 
 export function firstName(name: string): string {
   return name.trim().split(/\s+/)[0] || name;
+}
+
+export function kindLabel(kind: ProjectKind): string {
+  return KIND_LABELS[kind] ?? "Projekt";
+}
+
+export function kindSingular(kind: ProjectKind): string {
+  return KIND_SINGULAR[kind] ?? "Projekt";
+}
+
+export function projectPath(_kind: ProjectKind, slug: string): string {
+  return `/p/${slug}`;
 }
 
 export function hostFromUrl(url: string | null | undefined): string {

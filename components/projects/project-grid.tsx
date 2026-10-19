@@ -14,7 +14,7 @@ export function ProjectGrid({
   return (
     <div
       className={cn(
-        "grid gap-4",
+        "grid gap-3",
         compact ? "sm:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3",
         className,
       )}

@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteProjectAction } from "@/app/actions";
 import { cn } from "@/lib/cn";
+import { KIND_PATHS } from "@/lib/constants";
 import type { Project } from "@/lib/types";
 import { Modal } from "@/components/ui/modal";
 import { FormError } from "@/components/ui/field";
@@ -90,7 +91,7 @@ function DeleteProjectDialog({
         return;
       }
       onClose();
-      router.push(project.kind === "customer" ? "/customers" : "/apps");
+      router.push(KIND_PATHS[project.kind] ?? "/apps");
       router.refresh();
     });
   }

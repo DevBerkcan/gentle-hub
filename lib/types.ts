@@ -1,4 +1,4 @@
-export type ProjectKind = "internal" | "customer";
+export type ProjectKind = "internal" | "customer" | "project";
 
 export type ProjectStatus = "live" | "beta" | "development" | "paused" | "archived";
 
@@ -73,6 +73,7 @@ export type LoginResponse = {
 export type OverviewCounts = {
   internal: number;
   customers: number;
+  projects: number;
   assets: number;
   secrets: number;
   favorites: number;
