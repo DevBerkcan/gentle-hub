@@ -147,3 +147,151 @@ export type AssetInput = {
   clearSecret?: boolean;
   sortOrder?: number;
 };
+
+// ---------------------------------------------------------------------------
+// AI Operations
+// ---------------------------------------------------------------------------
+
+export type AgentPermissions = {
+  readEmails: boolean;
+  analyzeAttachments: boolean;
+  readCrm: boolean;
+  createDrafts: boolean;
+  writeCrm: boolean;
+  requiresApproval: boolean;
+  sendNotifications: boolean;
+};
+
+export type AgentMonthStats = {
+  runs: number;
+  failedRuns: number;
+  inputTokens: number;
+  outputTokens: number;
+  costEur: number;
+  lastRunAt?: string | null;
+};
+
+export type Agent = {
+  id: string;
+  name: string;
+  description: string;
+  model: string;
+  isEnabled: boolean;
+  triggerType: string;
+  allowedTools: string[];
+  permissions: AgentPermissions;
+  promptVersion: number;
+  maxOutputTokens: number;
+  timeoutSeconds: number;
+  monthlyBudgetEur?: number | null;
+  month: AgentMonthStats;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
+
+export type AgentPrompt = {
+  version: number;
+  systemPrompt: string;
+  changeNote?: string | null;
+  createdAt: string;
+  createdBy?: string | null;
+};
+
+export type AgentRunStatus = "running" | "succeeded" | "invalid_output" | "failed" | "blocked" | "abandoned";
+
+export type AgentRun = {
+  id: string;
+  agentId: string;
+  promptVersion: number;
+  provider: string;
+  model: string;
+  status: AgentRunStatus;
+  isDryRun: boolean;
+  jobId?: string | null;
+  workflowId?: string | null;
+  inputSummary?: string | null;
+  outputJson?: string | null;
+  inputTokens?: number | null;
+  outputTokens?: number | null;
+  costEur?: number | null;
+  durationMs?: number | null;
+  error?: string | null;
+  startedAt: string;
+  completedAt?: string | null;
+};
+
+export type AgentDetail = { agent: Agent; prompts: AgentPrompt[]; recentRuns: AgentRun[] };
+
+export type JobStatus = "queued" | "running" | "succeeded" | "failed" | "dead" | "cancelled";
+
+export type AiJob = {
+  id: string;
+  type: string;
+  status: JobStatus;
+  priority: number;
+  attempts: number;
+  maxAttempts: number;
+  runAfter: string;
+  workflowId?: string | null;
+  lastError?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  startedAt?: string | null;
+  completedAt?: string | null;
+};
+
+export type AiSettings = {
+  globalMonthlyBudgetEur: number;
+  processingEnabled: boolean;
+  provider: string;
+  isDryRun: boolean;
+};
+
+export type BudgetStatus = {
+  month: string;
+  budgetEur: number;
+  spentEur: number;
+  reservedEur: number;
+  remainingEur: number;
+  isExhausted: boolean;
+};
+
+export type AiOverview = {
+  settings: AiSettings;
+  budget: BudgetStatus;
+  agents: Agent[];
+  jobs: Record<JobStatus, number>;
+  recentRuns: AgentRun[];
+  recentFailures: AgentRun[];
+  pendingApprovals: number;
+};
+
+export type CostAgent = {
+  agentId: string;
+  model: string;
+  actualEur: number;
+  reservedEur: number;
+  adjustmentEur: number;
+  totalEur: number;
+  inputTokens: number;
+  outputTokens: number;
+  monthlyBudgetEur?: number | null;
+};
+
+export type CostReport = {
+  budget: BudgetStatus;
+  agents: CostAgent[];
+  daily: { day: string; amountEur: number }[];
+};
+
+export type AgentUpdateInput = {
+  isEnabled?: boolean;
+  model?: string;
+  monthlyBudgetEur?: number | null;
+  clearMonthlyBudget?: boolean;
+  maxOutputTokens?: number;
+  timeoutSeconds?: number;
+  permissions?: AgentPermissions;
+};
+
+export type AiSettingsInput = { globalMonthlyBudgetEur?: number; processingEnabled?: boolean };

@@ -7,7 +7,15 @@ import { api, ApiError } from "@/lib/api";
 import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/constants";
 import { getSessionToken } from "@/lib/session";
 import type { ActionFailure, ActionResult, LoginState } from "@/lib/action-types";
-import type { Asset, AssetInput, ProjectInput } from "@/lib/types";
+import type {
+  Agent,
+  AgentUpdateInput,
+  AiSettings,
+  AiSettingsInput,
+  Asset,
+  AssetInput,
+  ProjectInput,
+} from "@/lib/types";
 
 function toFailure(error: unknown): ActionFailure {
   if (error instanceof ApiError) {
@@ -224,6 +232,97 @@ export async function revealSecretAction(
   try {
     const response = await api.revealAsset(token, id);
     return { ok: true, secret: response.secret, label: response.label };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// AI Operations
+// ---------------------------------------------------------------------------
+
+export async function updateAiAgentAction(
+  id: string,
+  input: AgentUpdateInput,
+): Promise<ActionResult<{ agent: Agent }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const agent = await api.updateAiAgent(token, id, input);
+    revalidatePath("/ai", "layout");
+    return { ok: true, agent };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function addAiAgentPromptAction(
+  id: string,
+  systemPrompt: string,
+  changeNote: string,
+): Promise<ActionResult<{ version: number }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { version } = await api.addAiAgentPrompt(token, id, systemPrompt, changeNote);
+    revalidatePath("/ai", "layout");
+    return { ok: true, version };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function testRunAiAgentAction(id: string): Promise<ActionResult<{ jobId: string }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { jobId } = await api.testRunAiAgent(token, id);
+    revalidatePath("/ai", "layout");
+    return { ok: true, jobId };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function retryAiJobAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.retryAiJob(token, id);
+    revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function cancelAiJobAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.cancelAiJob(token, id);
+    revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateAiSettingsAction(
+  input: AiSettingsInput,
+): Promise<ActionResult<{ settings: AiSettings }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const settings = await api.updateAiSettings(token, input);
+    revalidatePath("/ai", "layout");
+    return { ok: true, settings };
   } catch (error) {
     return toFailure(error);
   }

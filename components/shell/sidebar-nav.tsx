@@ -4,11 +4,15 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { OverviewCounts } from "@/lib/types";
 import {
+  IconActivity,
   IconApps,
   IconFolder,
   IconHome,
   IconSearch,
+  IconServer,
   IconSettings,
+  IconShield,
+  IconSparkles,
   IconUsers,
 } from "@/components/ui/icons";
 
@@ -72,6 +76,41 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
           icon: IconFolder,
           count: counts.projects,
           active: (path) => path.startsWith("/projects"),
+        },
+      ],
+    },
+    {
+      title: "AI Operations",
+      items: [
+        {
+          href: "/ai",
+          label: "Dashboard",
+          icon: IconSparkles,
+          active: (path) => path === "/ai",
+        },
+        {
+          href: "/ai/agents",
+          label: "Agenten",
+          icon: IconServer,
+          active: (path) => path.startsWith("/ai/agents"),
+        },
+        {
+          href: "/ai/history",
+          label: "Workflow-Historie",
+          icon: IconActivity,
+          active: (path) => path.startsWith("/ai/history"),
+        },
+        {
+          href: "/ai/costs",
+          label: "KI-Kosten",
+          icon: IconShield,
+          active: (path) => path.startsWith("/ai/costs"),
+        },
+        {
+          href: "/ai/settings",
+          label: "AI-Einstellungen",
+          icon: IconSettings,
+          active: (path) => path.startsWith("/ai/settings"),
         },
       ],
     },

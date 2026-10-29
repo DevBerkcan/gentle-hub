@@ -1,8 +1,18 @@
 import { API_URL } from "@/lib/constants";
 import type {
+  Agent,
+  AgentDetail,
+  AgentRun,
+  AgentUpdateInput,
+  AiJob,
+  AiOverview,
+  AiSettings,
+  AiSettingsInput,
   Asset,
   AssetInput,
+  CostReport,
   Health,
+  JobStatus,
   LoginResponse,
   Overview,
   Project,
@@ -165,4 +175,64 @@ export const api = {
       body: {},
       timeoutMs: 20_000,
     }),
+
+  // AI Operations
+  aiOverview: (token: string) => request<AiOverview>("/api/ai/overview", { token }),
+
+  aiAgents: (token: string) => request<{ items: Agent[] }>("/api/ai/agents", { token }),
+
+  aiAgent: (token: string, id: string) =>
+    request<AgentDetail>(`/api/ai/agents/${encodeURIComponent(id)}`, { token }),
+
+  updateAiAgent: (token: string, id: string, input: AgentUpdateInput) =>
+    request<Agent>(`/api/ai/agents/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  addAiAgentPrompt: (token: string, id: string, systemPrompt: string, changeNote: string) =>
+    request<{ version: number }>(`/api/ai/agents/${encodeURIComponent(id)}/prompts`, {
+      method: "POST",
+      token,
+      body: { systemPrompt, changeNote },
+    }),
+
+  testRunAiAgent: (token: string, id: string) =>
+    request<{ jobId: string }>(`/api/ai/agents/${encodeURIComponent(id)}/test-run`, {
+      method: "POST",
+      token,
+      body: {},
+    }),
+
+  aiRuns: (token: string, filter: { agentId?: string; status?: string; take?: number } = {}) => {
+    const params = new URLSearchParams();
+    if (filter.agentId) params.set("agentId", filter.agentId);
+    if (filter.status) params.set("status", filter.status);
+    if (filter.take) params.set("take", String(filter.take));
+    const query = params.toString();
+    return request<{ items: AgentRun[] }>(`/api/ai/runs${query ? `?${query}` : ""}`, { token });
+  },
+
+  aiJobs: (token: string, status?: JobStatus, take = 50) => {
+    const params = new URLSearchParams({ take: String(take) });
+    if (status) params.set("status", status);
+    return request<{ items: AiJob[] }>(`/api/ai/jobs?${params.toString()}`, { token });
+  },
+
+  retryAiJob: (token: string, id: string) =>
+    request<{ ok: boolean }>(`/api/ai/jobs/${encodeURIComponent(id)}/retry`, {
+      method: "POST",
+      token,
+      body: {},
+    }),
+
+  cancelAiJob: (token: string, id: string) =>
+    request<{ ok: boolean }>(`/api/ai/jobs/${encodeURIComponent(id)}/cancel`, {
+      method: "POST",
+      token,
+      body: {},
+    }),
+
+  aiCosts: (token: string, month?: string) =>
+    request<CostReport>(`/api/ai/costs${month ? `?month=${encodeURIComponent(month)}` : ""}`, { token }),
+
+  updateAiSettings: (token: string, input: AiSettingsInput) =>
+    request<AiSettings>("/api/ai/settings", { method: "PUT", token, body: input }),
 };
