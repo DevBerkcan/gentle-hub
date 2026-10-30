@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getEmailConnectionEventsData, getEmailConnectionsData } from "@/lib/data";
+import { getCrmStatusData, getEmailConnectionEventsData, getEmailConnectionsData, getMessengerData } from "@/lib/data";
 import { formatDateTime, formatRelative } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { EmailConnection } from "@/lib/types";
@@ -7,12 +7,17 @@ import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
 import { MailboxFormButton } from "@/components/ai/mailbox-form-button";
 import { MailboxActions } from "@/components/ai/mailbox-actions";
+import { MessengerPanel } from "@/components/ai/messenger-panel";
 import { IconAlert, IconLock, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Verbindungen" };
 
 export default async function AiConnectionsPage() {
-  const { items, encryptionConfigured } = await getEmailConnectionsData();
+  const [{ items, encryptionConfigured }, messenger, crm] = await Promise.all([
+    getEmailConnectionsData(),
+    getMessengerData(),
+    getCrmStatusData(),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -50,14 +55,32 @@ export default async function AiConnectionsPage() {
         )}
       </section>
 
-      <section className="card p-4" aria-labelledby="messenger-heading">
-        <h2 id="messenger-heading" className="text-[13px] font-semibold text-ink">
-          Messenger
-        </h2>
-        <p className="mt-1.5 text-[12px] text-muted">
-          Telegram-Kopplung, Benachrichtigungen, Ruhezeiten und später WhatsApp folgen im nächsten Schritt.
+      <section className="card flex flex-col gap-2 p-5" aria-labelledby="crm-heading">
+        <div className="flex items-center justify-between gap-2">
+          <h2 id="crm-heading" className="text-[13.5px] font-semibold text-ink">
+            GentleSuite CRM
+          </h2>
+          <span
+            className={cn(
+              "rounded-[5px] px-1.5 py-0.5 text-[10px] font-semibold",
+              crm?.reachable ? "bg-emerald-50 text-emerald-700" : crm?.configured ? "bg-rose-50 text-rose-700" : "bg-surface-2 text-muted",
+            )}
+          >
+            {crm?.reachable ? "Verbunden" : crm?.configured ? "Nicht erreichbar" : "Nicht konfiguriert"}
+          </span>
+        </div>
+        <p className="text-[11.5px] text-muted">
+          GentleSuite bleibt das führende CRM. GentleHub liest Kunden, Kontakte, Projekte und Angebote über eine eigene, nur lesende
+          Schnittstelle und ordnet Kundenanfragen automatisch zu. Änderungen in GentleSuite passieren nur nach deiner Freigabe.
         </p>
+        {crm?.frontendUrl && (
+          <a href={crm.frontendUrl} target="_blank" rel="noopener noreferrer" className="w-fit text-[11.5px] font-semibold text-accent hover:underline">
+            GentleSuite öffnen
+          </a>
+        )}
       </section>
+
+      <MessengerPanel status={messenger} />
     </div>
   );
 }

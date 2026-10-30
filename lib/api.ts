@@ -12,6 +12,9 @@ import type {
   AssetInput,
   ConnectionTestResult,
   CostReport,
+  CrmCustomerMatch,
+  CrmLink,
+  CrmStatus,
   EmailConnection,
   EmailConnectionEvent,
   EmailConnectionInput,
@@ -19,6 +22,9 @@ import type {
   EmailListItem,
   Health,
   JobStatus,
+  MessengerStatus,
+  NotificationPreferences,
+  PairingCode,
   LoginResponse,
   Overview,
   Project,
@@ -278,4 +284,39 @@ export const api = {
 
   reanalyzeEmail: (token: string, id: string) =>
     request<{ jobId: string }>(`/api/ai/emails/${encodeURIComponent(id)}/reanalyze`, { method: "POST", token, body: {} }),
+
+  // Messenger
+  messenger: (token: string) => request<MessengerStatus>("/api/ai/messenger", { token }),
+
+  pairTelegram: (token: string) =>
+    request<PairingCode>("/api/ai/messenger/telegram/pair", { method: "POST", token, body: {} }),
+
+  updateMessengerPreferences: (token: string, id: string, preferences: NotificationPreferences, quietFrom: string, quietTo: string) =>
+    request<{ ok: boolean }>(`/api/ai/messenger/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      token,
+      body: { preferences, quietFrom, quietTo },
+    }),
+
+  revokeMessenger: (token: string, id: string) =>
+    request<{ ok: boolean }>(`/api/ai/messenger/${encodeURIComponent(id)}`, { method: "DELETE", token }),
+
+  sendTelegramTest: (token: string) =>
+    request<{ ok: boolean }>("/api/ai/messenger/telegram/test", { method: "POST", token, body: {} }),
+
+  // GentleSuite CRM
+  crmStatus: (token: string) => request<CrmStatus>("/api/ai/crm/status", { token }),
+
+  searchCrmCustomers: (token: string, query: string) =>
+    request<{ items: CrmCustomerMatch[] }>(`/api/ai/crm/search?q=${encodeURIComponent(query)}`, { token }),
+
+  emailCrmLink: (token: string, emailId: string) =>
+    request<{ link?: CrmLink | null }>(`/api/ai/emails/${encodeURIComponent(emailId)}/crm-link`, { token }),
+
+  setEmailCrmLink: (token: string, emailId: string, customerId: string | null) =>
+    request<{ link: CrmLink }>(`/api/ai/emails/${encodeURIComponent(emailId)}/crm-link`, {
+      method: "PUT",
+      token,
+      body: { customerId },
+    }),
 };

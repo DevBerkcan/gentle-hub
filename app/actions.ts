@@ -15,8 +15,11 @@ import type {
   Asset,
   AssetInput,
   ConnectionTestResult,
+  CrmCustomerMatch,
   EmailConnection,
   EmailConnectionInput,
+  NotificationPreferences,
+  PairingCode,
   ProjectInput,
 } from "@/lib/types";
 
@@ -386,6 +389,94 @@ export async function reanalyzeEmailAction(id: string): Promise<ActionResult> {
   try {
     await api.reanalyzeEmail(token, id);
     revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Messenger
+// ---------------------------------------------------------------------------
+
+export async function pairTelegramAction(): Promise<ActionResult<{ pairing: PairingCode }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const pairing = await api.pairTelegram(token);
+    return { ok: true, pairing };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateMessengerPreferencesAction(
+  id: string,
+  preferences: NotificationPreferences,
+  quietFrom: string,
+  quietTo: string,
+): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.updateMessengerPreferences(token, id, preferences, quietFrom, quietTo);
+    revalidatePath("/ai/connections");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function revokeMessengerAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.revokeMessenger(token, id);
+    revalidatePath("/ai/connections");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function sendTelegramTestAction(): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.sendTelegramTest(token);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GentleSuite CRM
+// ---------------------------------------------------------------------------
+
+export async function searchCrmCustomersAction(query: string): Promise<ActionResult<{ items: CrmCustomerMatch[] }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { items } = await api.searchCrmCustomers(token, query);
+    return { ok: true, items };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function setEmailCrmLinkAction(emailId: string, customerId: string | null): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.setEmailCrmLink(token, emailId, customerId);
+    revalidatePath(`/ai/emails/${emailId}`);
     return { ok: true };
   } catch (error) {
     return toFailure(error);

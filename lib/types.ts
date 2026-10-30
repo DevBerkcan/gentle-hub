@@ -425,3 +425,78 @@ export type EmailIntelligenceResult = {
   recommendedActions?: string[];
   projectHint?: string | null;
 };
+
+// ---------------------------------------------------------------------------
+// Messenger (Telegram, WhatsApp later)
+// ---------------------------------------------------------------------------
+
+export type NotificationPreferences = {
+  customerRequests: boolean;
+  importantEmails: boolean;
+  approvals: boolean;
+  failures: boolean;
+  dailyDigest: boolean;
+};
+
+export type MessengerLink = {
+  id: string;
+  channel: "telegram" | "whatsapp";
+  externalName?: string | null;
+  preferences: NotificationPreferences;
+  quietFrom?: string | null;
+  quietTo?: string | null;
+  linkedAt: string;
+};
+
+export type NotificationItem = {
+  kind: string;
+  title: string;
+  status: "queued" | "sent" | "failed" | "suppressed";
+  error?: string | null;
+  createdAt: string;
+  sentAt?: string | null;
+};
+
+export type MessengerStatus = {
+  telegramConfigured: boolean;
+  telegramBotUsername?: string | null;
+  telegramMode: "webhook" | "polling";
+  whatsAppConfigured: boolean;
+  links: MessengerLink[];
+  recent: NotificationItem[];
+};
+
+export type PairingCode = { code: string; deepLink: string; expiresAt: string };
+
+// ---------------------------------------------------------------------------
+// GentleSuite CRM references
+// ---------------------------------------------------------------------------
+
+export type CrmLinkStatus = "matched" | "proposed" | "ambiguous" | "unknown" | "confirmed";
+
+export type CrmCandidate = { id: string; companyName: string; customerNumber?: string | null; status: string; matchedBy: string };
+
+export type CrmLink = {
+  status: CrmLinkStatus;
+  matchedBy: string;
+  confidence: number;
+  customerId?: string | null;
+  customerName?: string | null;
+  contactName?: string | null;
+  customerUrl?: string | null;
+  candidates: CrmCandidate[];
+  reason?: string | null;
+  decidedBy?: string | null;
+  createdAt: string;
+};
+
+export type CrmCustomerMatch = {
+  id: string;
+  companyName: string;
+  customerNumber?: string | null;
+  status: string;
+  website?: string | null;
+  matchedBy: string;
+};
+
+export type CrmStatus = { configured: boolean; reachable: boolean; frontendUrl?: string | null };

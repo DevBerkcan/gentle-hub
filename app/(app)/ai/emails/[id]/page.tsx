@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
-import { getEmailData } from "@/lib/data";
+import { getCrmStatusData, getEmailCrmLinkData, getEmailData } from "@/lib/data";
 import { REQUEST_TYPE_LABELS } from "@/lib/ai-format";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -10,6 +10,7 @@ import type { EmailIntelligenceResult } from "@/lib/types";
 import { PageHeader } from "@/components/ui/page-header";
 import { EmailList, ImportanceBadge } from "@/components/ai/email-list";
 import { ReanalyzeButton } from "@/components/ai/mailbox-actions";
+import { CrmLinkCard } from "@/components/ai/crm-link-card";
 import { IconAlert, IconChevronLeft } from "@/components/ui/icons";
 
 type PageParams = { params: Promise<{ id: string }> };
@@ -35,6 +36,7 @@ export default async function AiEmailPage({ params }: PageParams) {
     throw error;
   }
 
+  const [crmLink, crmStatus] = await Promise.all([getEmailCrmLinkData(id), getCrmStatusData()]);
   const analysis = email.analysis;
   const result = parse(analysis?.resultJson);
 
@@ -125,6 +127,9 @@ export default async function AiEmailPage({ params }: PageParams) {
         </div>
 
         <aside className="flex flex-col gap-5">
+          {analysis?.isCustomerRequest && (
+            <CrmLinkCard emailId={email.id} link={crmLink} crmConfigured={crmStatus?.configured ?? false} />
+          )}
           <section className="card p-4" aria-labelledby="body-heading">
             <h2 id="body-heading" className="text-[12.5px] font-semibold text-ink">
               Nachricht

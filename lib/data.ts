@@ -5,9 +5,12 @@ import type {
   AgentDetail,
   AiOverview,
   CostReport,
+  CrmLink,
+  CrmStatus,
   EmailDetail,
   Health,
   JobStatus,
+  MessengerStatus,
   Overview,
   ProjectDetail,
   ProjectKind,
@@ -96,4 +99,24 @@ export const getEmailsData = cache(async (connectionId?: string, customerOnly?: 
 export const getEmailData = cache(async (id: string): Promise<EmailDetail> => {
   const { token } = await requireAuth();
   return api.email(token, id);
+});
+
+export const getMessengerData = cache(async (): Promise<MessengerStatus> => {
+  const { token } = await requireAuth();
+  return api.messenger(token);
+});
+
+export const getCrmStatusData = cache(async (): Promise<CrmStatus | null> => {
+  const { token } = await requireAuth();
+  try {
+    return await api.crmStatus(token);
+  } catch {
+    return null;
+  }
+});
+
+export const getEmailCrmLinkData = cache(async (emailId: string): Promise<CrmLink | null> => {
+  const { token } = await requireAuth();
+  const response = await api.emailCrmLink(token, emailId);
+  return response.link ?? null;
 });
