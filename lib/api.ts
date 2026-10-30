@@ -10,7 +10,13 @@ import type {
   AiSettingsInput,
   Asset,
   AssetInput,
+  ConnectionTestResult,
   CostReport,
+  EmailConnection,
+  EmailConnectionEvent,
+  EmailConnectionInput,
+  EmailDetail,
+  EmailListItem,
   Health,
   JobStatus,
   LoginResponse,
@@ -235,4 +241,41 @@ export const api = {
 
   updateAiSettings: (token: string, input: AiSettingsInput) =>
     request<AiSettings>("/api/ai/settings", { method: "PUT", token, body: input }),
+
+  // Mailboxes & E-Mail Intelligence
+  emailConnections: (token: string) =>
+    request<{ items: EmailConnection[]; encryptionConfigured: boolean }>("/api/ai/connections/email", { token }),
+
+  createEmailConnection: (token: string, input: EmailConnectionInput) =>
+    request<EmailConnection>("/api/ai/connections/email", { method: "POST", token, body: input }),
+
+  updateEmailConnection: (token: string, id: string, input: EmailConnectionInput) =>
+    request<EmailConnection>(`/api/ai/connections/email/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  testEmailConnection: (token: string, id: string) =>
+    request<ConnectionTestResult>(`/api/ai/connections/email/${encodeURIComponent(id)}/test`, {
+      method: "POST",
+      token,
+      body: {},
+      timeoutMs: 75_000,
+    }),
+
+  syncEmailConnection: (token: string, id: string) =>
+    request<{ jobId: string }>(`/api/ai/connections/email/${encodeURIComponent(id)}/sync`, { method: "POST", token, body: {} }),
+
+  emailConnectionEvents: (token: string, id: string) =>
+    request<{ items: EmailConnectionEvent[] }>(`/api/ai/connections/email/${encodeURIComponent(id)}/events?take=20`, { token }),
+
+  emails: (token: string, filter: { connectionId?: string; customerOnly?: boolean; importance?: string } = {}) => {
+    const params = new URLSearchParams({ take: "100" });
+    if (filter.connectionId) params.set("connectionId", filter.connectionId);
+    if (filter.customerOnly) params.set("customerOnly", "true");
+    if (filter.importance) params.set("importance", filter.importance);
+    return request<{ items: EmailListItem[] }>(`/api/ai/emails?${params.toString()}`, { token });
+  },
+
+  email: (token: string, id: string) => request<EmailDetail>(`/api/ai/emails/${encodeURIComponent(id)}`, { token }),
+
+  reanalyzeEmail: (token: string, id: string) =>
+    request<{ jobId: string }>(`/api/ai/emails/${encodeURIComponent(id)}/reanalyze`, { method: "POST", token, body: {} }),
 };

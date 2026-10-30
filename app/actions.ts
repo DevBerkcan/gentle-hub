@@ -14,6 +14,9 @@ import type {
   AiSettingsInput,
   Asset,
   AssetInput,
+  ConnectionTestResult,
+  EmailConnection,
+  EmailConnectionInput,
   ProjectInput,
 } from "@/lib/types";
 
@@ -323,6 +326,67 @@ export async function updateAiSettingsAction(
     const settings = await api.updateAiSettings(token, input);
     revalidatePath("/ai", "layout");
     return { ok: true, settings };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mailboxes & E-Mail Intelligence
+// ---------------------------------------------------------------------------
+
+export async function saveEmailConnectionAction(
+  id: string | null,
+  input: EmailConnectionInput,
+): Promise<ActionResult<{ connection: EmailConnection }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const connection = id
+      ? await api.updateEmailConnection(token, id, input)
+      : await api.createEmailConnection(token, input);
+    revalidatePath("/ai", "layout");
+    return { ok: true, connection };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function testEmailConnectionAction(id: string): Promise<ActionResult<{ result: ConnectionTestResult }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const result = await api.testEmailConnection(token, id);
+    revalidatePath("/ai/connections");
+    return { ok: true, result };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function syncEmailConnectionAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.syncEmailConnection(token, id);
+    revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function reanalyzeEmailAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.reanalyzeEmail(token, id);
+    revalidatePath("/ai", "layout");
+    return { ok: true };
   } catch (error) {
     return toFailure(error);
   }

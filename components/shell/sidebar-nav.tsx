@@ -8,6 +8,8 @@ import {
   IconApps,
   IconFolder,
   IconHome,
+  IconLink,
+  IconMail,
   IconSearch,
   IconServer,
   IconSettings,
@@ -93,6 +95,18 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
           label: "Agenten",
           icon: IconServer,
           active: (path) => path.startsWith("/ai/agents"),
+        },
+        {
+          href: "/ai/emails",
+          label: "E-Mail Intelligence",
+          icon: IconMail,
+          active: (path) => path.startsWith("/ai/emails"),
+        },
+        {
+          href: "/ai/connections",
+          label: "Verbindungen",
+          icon: IconLink,
+          active: (path) => path.startsWith("/ai/connections"),
         },
         {
           href: "/ai/history",

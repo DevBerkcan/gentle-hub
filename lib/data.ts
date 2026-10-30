@@ -5,6 +5,7 @@ import type {
   AgentDetail,
   AiOverview,
   CostReport,
+  EmailDetail,
   Health,
   JobStatus,
   Overview,
@@ -73,4 +74,26 @@ export const getAiJobsData = cache(async (status?: JobStatus) => {
 export const getAiCostsData = cache(async (month?: string): Promise<CostReport> => {
   const { token } = await requireAuth();
   return api.aiCosts(token, month);
+});
+
+export const getEmailConnectionsData = cache(async () => {
+  const { token } = await requireAuth();
+  return api.emailConnections(token);
+});
+
+export const getEmailConnectionEventsData = cache(async (id: string) => {
+  const { token } = await requireAuth();
+  const response = await api.emailConnectionEvents(token, id);
+  return response.items;
+});
+
+export const getEmailsData = cache(async (connectionId?: string, customerOnly?: boolean, importance?: string) => {
+  const { token } = await requireAuth();
+  const response = await api.emails(token, { connectionId, customerOnly, importance });
+  return response.items;
+});
+
+export const getEmailData = cache(async (id: string): Promise<EmailDetail> => {
+  const { token } = await requireAuth();
+  return api.email(token, id);
 });

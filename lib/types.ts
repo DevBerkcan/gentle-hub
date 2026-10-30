@@ -295,3 +295,133 @@ export type AgentUpdateInput = {
 };
 
 export type AiSettingsInput = { globalMonthlyBudgetEur?: number; processingEnabled?: boolean };
+
+// ---------------------------------------------------------------------------
+// Mailboxes & E-Mail Intelligence
+// ---------------------------------------------------------------------------
+
+export type MailSecurity = "ssl" | "starttls";
+
+export type EmailConnection = {
+  id: string;
+  label: string;
+  emailAddress: string;
+  username: string;
+  imapHost: string;
+  imapPort: number;
+  imapSecurity: MailSecurity;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecurity: MailSecurity;
+  folder: string;
+  isEnabled: boolean;
+  analysisEnabled: boolean;
+  hasPassword: boolean;
+  lastSyncAt?: string | null;
+  lastSyncStatus?: "ok" | "error" | null;
+  lastError?: string | null;
+  consecutiveFailures: number;
+  lastUid?: number | null;
+  messageCount: number;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
+
+export type EmailConnectionEvent = { kind: string; message: string; createdAt: string };
+
+export type EmailConnectionInput = {
+  label: string;
+  emailAddress: string;
+  username: string;
+  password: string;
+  imapHost: string;
+  imapPort: number;
+  imapSecurity: MailSecurity;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecurity: MailSecurity;
+  folder: string;
+  isEnabled: boolean;
+  analysisEnabled: boolean;
+};
+
+export type ConnectionTestResult = {
+  imapOk: boolean;
+  smtpOk: boolean;
+  imapMessage?: string | null;
+  smtpMessage?: string | null;
+  messageCount?: number | null;
+};
+
+export type EmailImportance = "low" | "normal" | "high" | "urgent";
+
+export type EmailListItem = {
+  id: string;
+  connectionId: string;
+  connectionLabel: string;
+  fromAddress?: string | null;
+  fromName?: string | null;
+  subject?: string | null;
+  receivedAt: string;
+  status: "new" | "queued" | "analyzed" | "skipped" | "failed";
+  attachmentCount: number;
+  importance?: EmailImportance | null;
+  requestType?: string | null;
+  isCustomerRequest?: boolean | null;
+  summary?: string | null;
+  injectionSuspected: boolean;
+};
+
+export type EmailAttachment = {
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+  verdict: "allowed" | "blocked" | "dangerous";
+  reason?: string | null;
+};
+
+export type EmailAnalysis = {
+  id: string;
+  agentRunId?: string | null;
+  workflowId?: string | null;
+  importance: EmailImportance;
+  requestType: string;
+  isCustomerRequest: boolean;
+  summary: string;
+  resultJson: string;
+  injectionSuspected: boolean;
+  createdAt: string;
+};
+
+export type EmailDetail = {
+  id: string;
+  connectionId: string;
+  connectionLabel: string;
+  fromAddress?: string | null;
+  fromName?: string | null;
+  toAddresses?: string | null;
+  ccAddresses?: string | null;
+  subject?: string | null;
+  receivedAt: string;
+  status: EmailListItem["status"];
+  bodyText?: string | null;
+  bodyTruncated: boolean;
+  bodyPurged: boolean;
+  hadHtml: boolean;
+  attachments: EmailAttachment[];
+  threadKey?: string | null;
+  analysis?: EmailAnalysis | null;
+  thread: EmailListItem[];
+};
+
+export type EmailIntelligenceResult = {
+  importance?: string;
+  requestType?: string;
+  isCustomerRequest?: boolean;
+  summary?: string;
+  requirements?: string[];
+  openQuestions?: string[];
+  deadlines?: { description?: string | null; date?: string | null }[];
+  recommendedActions?: string[];
+  projectHint?: string | null;
+};

@@ -55,6 +55,10 @@ export const JOB_STATUSES: Record<JobStatus, BadgeMeta> = {
 export const JOB_TYPE_LABELS: Record<string, string> = {
   "ai.maintenance": "Wartung",
   "ai.agent-test": "Agenten-Testlauf",
+  "email.sync-all": "Postfächer prüfen",
+  "email.sync": "Postfach abrufen",
+  "email.analyze": "E-Mail analysieren",
+  "email.retention": "Aufbewahrung",
 };
 
 export const TRIGGER_LABELS: Record<string, string> = {
@@ -72,3 +76,20 @@ export const PERMISSION_LABELS: { key: keyof import("@/lib/types").AgentPermissi
   { key: "requiresApproval", label: "Benötigt Benutzerfreigabe", hint: "Ergebnisse landen in der Freigabe-Inbox." },
   { key: "sendNotifications", label: "Darf Benachrichtigungen versenden", hint: "Telegram/WhatsApp, ohne vertrauliche Inhalte." },
 ];
+
+export const IMPORTANCE: Record<"low" | "normal" | "high" | "urgent", BadgeMeta> = {
+  low: { label: "Niedrig", badge: "bg-slate-100 text-slate-600 ring-slate-200", dot: "bg-slate-400" },
+  normal: { label: "Normal", badge: "bg-sky-50 text-sky-700 ring-sky-200", dot: "bg-sky-500" },
+  high: { label: "Wichtig", badge: "bg-amber-50 text-amber-800 ring-amber-200", dot: "bg-amber-500" },
+  urgent: { label: "Dringend", badge: "bg-rose-50 text-rose-700 ring-rose-200", dot: "bg-rose-500" },
+};
+
+export const REQUEST_TYPE_LABELS: Record<string, string> = {
+  new_request: "Neue Anfrage",
+  change_request: "Änderungswunsch",
+  support: "Support",
+  question: "Frage",
+  invoice: "Rechnung",
+  spam: "Spam",
+  other: "Sonstiges",
+};
