@@ -156,6 +156,63 @@ export const SUBTYPE_LABELS: Record<string, string> = {
   other: "Sonstiges",
 };
 
+// ---------------------------------------------------------------------------
+// Password vault
+// ---------------------------------------------------------------------------
+
+export const CREDENTIAL_CATEGORIES = [
+  {
+    key: "email",
+    label: "E-Mail",
+    description: "Postfächer, Webmail und IMAP-Zugänge",
+    icon: "mail",
+  },
+  {
+    key: "hosting",
+    label: "Hosting",
+    description: "Server, Panels und Hosting-Anbieter",
+    icon: "server",
+  },
+  {
+    key: "domain",
+    label: "Domains",
+    description: "Registrar, DNS und Nameserver",
+    icon: "globe",
+  },
+  {
+    key: "website",
+    label: "Websites",
+    description: "CMS-, Shop- und Admin-Logins",
+    icon: "link",
+  },
+  {
+    key: "software",
+    label: "Software",
+    description: "SaaS, Tools und Lizenzen",
+    icon: "apps",
+  },
+  {
+    key: "other",
+    label: "Sonstiges",
+    description: "Alles, was sonst nirgends passt",
+    icon: "key",
+  },
+] as const;
+
+export type CredentialCategoryKey = (typeof CREDENTIAL_CATEGORIES)[number]["key"];
+
+export const CREDENTIAL_CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
+  CREDENTIAL_CATEGORIES.map((category) => [category.key, category.label]),
+);
+
+export function credentialCategoryLabel(key: string | null | undefined): string {
+  return (key && CREDENTIAL_CATEGORY_LABELS[key]) || "Sonstiges";
+}
+
+export function isCredentialCategory(value: string | null | undefined): value is CredentialCategoryKey {
+  return Boolean(value) && CREDENTIAL_CATEGORIES.some((category) => category.key === value);
+}
+
 export const ENVIRONMENTS = {
   production: {
     label: "Produktion",

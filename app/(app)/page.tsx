@@ -16,6 +16,7 @@ import {
   IconFolder,
   IconKey,
   IconLink,
+  IconLock,
   IconServer,
   IconUsers,
 } from "@/components/ui/icons";
@@ -64,7 +65,7 @@ export default async function DashboardPage() {
         }
       />
 
-      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-5">
         <StatCard
           label="Gentle Group"
           value={counts.internal}
@@ -92,6 +93,13 @@ export default async function DashboardPage() {
           value={counts.assets}
           hint={`${counts.repositories} Repos · ${counts.hostings} Hostings · ${counts.secrets} Secrets`}
           icon={<IconLink className="h-4 w-4" />}
+        />
+        <StatCard
+          label="Passwörter"
+          value={counts.credentials}
+          hint="E-Mail, Hosting und Software-Zugänge"
+          icon={<IconLock className="h-4 w-4" />}
+          href="/passwords"
         />
       </div>
 

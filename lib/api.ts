@@ -14,6 +14,11 @@ import type {
   AssetInput,
   ConnectionTestResult,
   CostReport,
+  Credential,
+  CredentialImportItem,
+  CredentialImportResult,
+  CredentialInput,
+  CredentialList,
   CrmCustomerMatch,
   CrmLink,
   CrmStatus,
@@ -193,6 +198,42 @@ export const api = {
       token,
       body: {},
       timeoutMs: 20_000,
+    }),
+
+  // Password vault
+  credentials: (token: string, category?: string) =>
+    request<CredentialList>(
+      `/api/credentials${category ? `?category=${encodeURIComponent(category)}` : ""}`,
+      { token },
+    ),
+
+  createCredential: (token: string, input: CredentialInput) =>
+    request<Credential>("/api/credentials", { method: "POST", token, body: input }),
+
+  updateCredential: (token: string, id: string, input: CredentialInput) =>
+    request<Credential>(`/api/credentials/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      token,
+      body: input,
+    }),
+
+  deleteCredential: (token: string, id: string) =>
+    request<void>(`/api/credentials/${encodeURIComponent(id)}`, { method: "DELETE", token }),
+
+  revealCredential: (token: string, id: string) =>
+    request<SecretReveal>(`/api/credentials/${encodeURIComponent(id)}/reveal`, {
+      method: "POST",
+      token,
+      body: {},
+      timeoutMs: 20_000,
+    }),
+
+  importCredentials: (token: string, items: CredentialImportItem[]) =>
+    request<CredentialImportResult>("/api/credentials/import", {
+      method: "POST",
+      token,
+      body: { items },
+      timeoutMs: 90_000,
     }),
 
   // AI Operations

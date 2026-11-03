@@ -14,6 +14,7 @@ Der zentrale Hub der Gentle Group: eigene Apps, Kundenprojekte, Repositories, Ho
 - **Echte App-Logos:** Die Kacheln nutzen die Logos/Favicons aus den jeweiligen Repositories und Live-Deployments; keine Emoji-Platzhalter.
 - **Alles zu einem Projekt an einem Ort:** Links, Repositories, Hosting, Datenbanken, Konten und Geheimnisse.
 - **Sensible Daten verschlüsselt:** Passwörter, Connection Strings, Publish-Profile und API-Keys werden mit AES-256-GCM verschlüsselt gespeichert und erst nach einem Klick entschlüsselt.
+- **Passwort-Tresor:** Eigener Bereich für die Zugänge zu E-Mail-Postfächern, Hosting-Panels, Domains, Websites und Software – mit Kategorien, Suche und CSV-Import aus Chrome, Edge oder Brave.
 - **Schnell finden:** globale Suche über Projekte, Links, Repositories, Anbieter, Benutzernamen und Notizen; Favoriten für den direkten Zugriff.
 - **Aufgeräumtes Dashboard:** Kennzahlen, Projektstatus, Favoriten und Aktivitätsprotokoll.
 - **Nur zwei Konten:** `medin@gentlegroup.de` und `berkcan@gentlegroup.de`. Es gibt keine Selbstregistrierung.
@@ -36,20 +37,22 @@ Das Frontend spricht nie direkt aus dem Browser mit der API: Server Components u
 
 ```text
 app/
-  (app)/                 geschützter Bereich (Dashboard, Apps, Kunden, Detail, Suche, Einstellungen)
+  (app)/                 geschützter Bereich (Dashboard, Apps, Kunden, Passwörter, Detail, Suche, Einstellungen)
   login/                 Anmeldung
   actions.ts             Server Actions (Login, CRUD, Secrets)
 components/
   shell/                 Sidebar, Topbar, Suche, Benutzermenü
   projects/              Projektkarten, Filter, Formulare
   assets/                Links, Repos, Hosting, Datenbanken, Konten, Geheimnisse
+  vault/                 Passwort-Tresor, Import und Kategorie-Filter
   dashboard/             Kennzahlen und Aktivitätsfeed
   ui/                    Design-Bausteine
 lib/
   api.ts                 typisierter API-Client
   session.ts             Session-/Auth-Helfer
   data.ts                gecachte Server-Datenzugriffe
-  constants.ts           Status, Farben, Asset-Typen
+  constants.ts           Status, Farben, Asset-Typen, Passwort-Kategorien
+  csv.ts                 Import von Passwort-CSV-Exporten
 proxy.ts                 optimistischer Cookie-Schutz
 ```
 
@@ -108,6 +111,7 @@ Passwörter stehen bewusst nicht in diesem Repository. Sie werden beim Setup sep
 
 - **Projects**: Name, Slug, Typ (`internal` = Gentle Group, `customer`, `project`), Status, URL, Logo, Tags, Notizen, Kundenkontakt.
 - **Assets**: pro Projekt beliebig viele Einträge vom Typ `link`, `repo`, `hosting`, `database`, `account` oder `secret` – mit URL, Anbieter, Umgebung, Benutzername, Details, Notizen und optional einem verschlüsselten Geheimnis.
+- **Credentials**: Passwort-Tresor unabhängig von Projekten. Kategorien `email`, `hosting`, `domain`, `website`, `software`, `other` – mit Adresse, Benutzername, Anbieter, Notizen und AES-256-GCM-verschlüsseltem Passwort.
 - **Favorites**: pro Benutzer.
 - **Activity**: protokolliert Anmeldungen, Änderungen und die Anzeige von Geheimnissen.
 

@@ -81,6 +81,7 @@ export type OverviewCounts = {
   hostings: number;
   databases: number;
   accounts: number;
+  credentials: number;
 };
 
 export type Activity = {
@@ -146,6 +147,66 @@ export type AssetInput = {
   notes: string;
   clearSecret?: boolean;
   sortOrder?: number;
+};
+
+// ---------------------------------------------------------------------------
+// Password vault
+// ---------------------------------------------------------------------------
+
+export type CredentialCategory = "email" | "hosting" | "domain" | "website" | "software" | "other";
+
+export type Credential = {
+  id: string;
+  category: CredentialCategory;
+  label: string;
+  url: string | null;
+  username: string | null;
+  provider: string | null;
+  hasPassword: boolean;
+  notes: string;
+  isFavorite: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  updatedBy: string | null;
+};
+
+export type CredentialInput = {
+  category: CredentialCategory;
+  label: string;
+  url: string;
+  username: string;
+  password: string;
+  provider: string;
+  notes: string;
+  clearPassword?: boolean;
+  isFavorite?: boolean;
+  sortOrder?: number;
+};
+
+export type CredentialImportItem = {
+  category: CredentialCategory;
+  label: string;
+  url: string;
+  username: string;
+  password: string;
+  provider: string;
+  notes: string;
+};
+
+export type CredentialImportResult = {
+  created: number;
+  skipped: number;
+  total: number;
+};
+
+export type VaultStats = {
+  total: number;
+  byCategory: Record<string, number>;
+};
+
+export type CredentialList = {
+  items: Credential[];
+  stats: VaultStats;
 };
 
 // ---------------------------------------------------------------------------

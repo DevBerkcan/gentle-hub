@@ -6,6 +6,7 @@ import type {
   AiOverview,
   ApprovalDetail,
   CostReport,
+  CredentialList,
   CrmLink,
   CrmStatus,
   EmailDetail,
@@ -39,6 +40,11 @@ export const getProjectData = cache(async (key: string): Promise<ProjectDetail> 
 export const getSearchData = cache(async (query: string): Promise<SearchResults> => {
   const { token } = await requireAuth();
   return api.search(token, query);
+});
+
+export const getCredentialsData = cache(async (category?: string): Promise<CredentialList> => {
+  const { token } = await requireAuth();
+  return api.credentials(token, category);
 });
 
 export const getHealth = cache(async (): Promise<Health | null> => {

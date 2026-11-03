@@ -15,6 +15,10 @@ import type {
   Asset,
   AssetInput,
   ConnectionTestResult,
+  Credential,
+  CredentialImportItem,
+  CredentialImportResult,
+  CredentialInput,
   CrmCustomerMatch,
   EmailConnection,
   EmailConnectionInput,
@@ -240,6 +244,77 @@ export async function revealSecretAction(
   try {
     const response = await api.revealAsset(token, id);
     return { ok: true, secret: response.secret, label: response.label };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Password vault
+// ---------------------------------------------------------------------------
+
+export async function saveCredentialAction(
+  id: string | null,
+  input: CredentialInput,
+): Promise<ActionResult<{ credential: Credential }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const credential = id
+      ? await api.updateCredential(token, id, input)
+      : await api.createCredential(token, input);
+    revalidatePath("/passwords");
+    revalidatePath("/", "layout");
+    return { ok: true, credential };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function deleteCredentialAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.deleteCredential(token, id);
+    revalidatePath("/passwords");
+    revalidatePath("/", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function revealCredentialAction(
+  id: string,
+): Promise<ActionResult<{ secret: string; label: string }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const response = await api.revealCredential(token, id);
+    return { ok: true, secret: response.secret, label: response.label };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function importCredentialsAction(
+  items: CredentialImportItem[],
+): Promise<ActionResult<{ result: CredentialImportResult }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  if (items.length === 0) {
+    return { ok: false, error: "Die Datei enthält keine Passwörter." };
+  }
+
+  try {
+    const result = await api.importCredentials(token, items);
+    revalidatePath("/passwords");
+    revalidatePath("/", "layout");
+    return { ok: true, result };
   } catch (error) {
     return toFailure(error);
   }

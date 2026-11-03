@@ -9,6 +9,7 @@ import {
   IconCheck,
   IconFolder,
   IconHome,
+  IconKey,
   IconLink,
   IconMail,
   IconSearch,
@@ -79,6 +80,18 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
           icon: IconFolder,
           count: counts.projects,
           active: (path) => path.startsWith("/projects"),
+        },
+      ],
+    },
+    {
+      title: "Zugänge",
+      items: [
+        {
+          href: "/passwords",
+          label: "Passwörter",
+          icon: IconKey,
+          count: counts.credentials,
+          active: (path) => path.startsWith("/passwords"),
         },
       ],
     },
