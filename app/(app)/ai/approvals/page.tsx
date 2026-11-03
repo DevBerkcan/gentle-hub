@@ -64,7 +64,8 @@ export default async function AiApprovalsPage({ searchParams }: { searchParams: 
                     </div>
                     <p className="mt-1 text-[11.5px] text-muted">
                       {item.customerName ?? "Kunde noch nicht zugeordnet"}
-                      {item.totalHours != null && ` · ${item.totalHours.toLocaleString("de-DE")} h · ${formatEur(item.totalNetEur)}`}
+                      {item.totalNetEur != null &&
+                        (item.totalHours ? ` · ${item.totalHours.toLocaleString("de-DE")} h · ${formatEur(item.totalNetEur)}` : ` · ${formatEur(item.totalNetEur)} pauschal`)}
                       {" · "}
                       <time dateTime={item.createdAt} title={formatDateTime(item.createdAt)}>
                         {formatRelative(item.createdAt)}

@@ -126,7 +126,9 @@ export default async function AiEmailPage({ params }: PageParams) {
               {work.estimate ? (
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="text-[12.5px] text-ink">
-                    {work.estimate.totals.totalHours.toLocaleString("de-DE")} h · {formatEur(work.estimate.totals.totalNetEur)} netto
+                    {work.estimate.totals.isFlat
+                      ? `${formatEur(work.estimate.totals.totalNetEur)} netto pauschal`
+                      : `${work.estimate.totals.totalHours.toLocaleString("de-DE")} h · ${formatEur(work.estimate.totals.totalNetEur)} netto`}
                   </span>
                   {work.estimate.approvalId && (
                     <Link href={`/ai/approvals/${work.estimate.approvalId}`} className="btn btn-primary h-8 text-[11.5px]">

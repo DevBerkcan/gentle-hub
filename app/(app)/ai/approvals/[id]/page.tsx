@@ -10,6 +10,7 @@ import type { ProjectNoteContent } from "@/lib/types";
 import { PageHeader } from "@/components/ui/page-header";
 import { EstimateEditor } from "@/components/ai/estimate-editor";
 import { ApprovalDecision } from "@/components/ai/approval-actions";
+import { CounterOfferForm, CounterOfferHistory } from "@/components/ai/counter-offer";
 import { IconChevronLeft, IconExternal, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Freigabe" };
@@ -38,6 +39,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
   const { approval, estimate, note } = detail;
   const meta = APPROVAL_STATUS[approval.status] ?? APPROVAL_STATUS.pending;
   const isOpen = approval.status === "pending" && new Date(approval.expiresAt) > new Date();
+  const canCounter = Boolean(estimate) && (isOpen || estimate?.status === "rejected");
   const noteContent = parseNote(note?.contentJson);
   const offer = estimate?.offerDraftJson ? (JSON.parse(estimate.offerDraftJson) as { subject?: string; lines?: unknown[]; totalNetEur?: number }) : null;
 
@@ -100,6 +102,9 @@ export default async function AiApprovalPage({ params }: PageParams) {
         </div>
 
         <aside className="flex flex-col gap-5">
+          {canCounter && estimate && <CounterOfferForm estimateId={estimate.id} agentTotal={estimate.totals.totalNetEur} />}
+          <CounterOfferHistory items={detail.counterOffers ?? []} />
+
           <section className="card p-4">
             <h2 className="text-[12.5px] font-semibold text-ink">Herkunft</h2>
             <dl className="mt-2 flex flex-col gap-2 text-[11.5px]">
@@ -109,7 +114,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
               </div>
               <div>
                 <dt className="text-subtle">Agent</dt>
-                <dd className="font-medium text-ink">Aufwandsschätzung</dd>
+                <dd className="font-medium text-ink">Schätz-Agent (Pauschalpreise)</dd>
               </div>
               <div>
                 <dt className="text-subtle">Erstellt</dt>

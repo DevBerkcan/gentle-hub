@@ -589,6 +589,8 @@ export type EstimateItem = {
   role: EstimateRole;
   hours: number;
   rateEur: number;
+  /** Flat package price; null only for legacy hourly items. */
+  priceEur?: number | null;
   amountEur: number;
   rationale?: string | null;
 };
@@ -600,6 +602,7 @@ export type EstimateTotals = {
   totalHours: number;
   baseNetEur: number;
   totalNetEur: number;
+  isFlat: boolean;
 };
 
 export type EstimateStatus = "pending_approval" | "approved" | "rejected" | "superseded";
@@ -676,18 +679,33 @@ export type ApprovalDetail = {
   note?: ProjectNote | null;
   emailSubject?: string | null;
   emailFrom?: string | null;
+  counterOffers: CounterOffer[];
 };
+
+export type CounterOffer = {
+  id: string;
+  estimateId: string;
+  agentTotalEur: number;
+  targetTotalEur?: number | null;
+  note?: string | null;
+  resultEstimateId?: string | null;
+  createdBy: string;
+  createdAt: string;
+};
+
+export type PriceCatalogEntry = { title: string; description?: string | null; priceEur: number };
 
 export type EmailWork = { note?: ProjectNote | null; estimate?: Estimate | null };
 
-export type EstimateSettings = { rates: Record<EstimateRole, number>; bufferPercent: number };
+export type EstimateSettings = { rates: Record<EstimateRole, number>; bufferPercent: number; catalog: PriceCatalogEntry[] };
 
 export type EstimateItemInput = {
   title: string;
   description?: string | null;
-  role: EstimateRole;
-  hours: number;
-  rateEur: number;
+  role?: EstimateRole;
+  hours?: number;
+  rateEur?: number;
+  priceEur?: number;
   rationale?: string | null;
 };
 

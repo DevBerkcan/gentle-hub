@@ -29,9 +29,9 @@ import type {
   EmailListItem,
   EmailWork,
   Estimate,
-  EstimateRole,
   EstimateSettings,
   EstimateUpdateInput,
+  PriceCatalogEntry,
   Health,
   JobStatus,
   MessengerStatus,
@@ -387,6 +387,9 @@ export const api = {
   regenerateEstimate: (token: string, id: string) =>
     request<{ jobId: string }>(`/api/ai/estimates/${encodeURIComponent(id)}/regenerate`, { method: "POST", token, body: {} }),
 
+  counterOffer: (token: string, id: string, input: { targetTotalEur?: number | null; note?: string | null }) =>
+    request<{ jobId: string }>(`/api/ai/estimates/${encodeURIComponent(id)}/counter-offer`, { method: "POST", token, body: input }),
+
   emailWork: (token: string, emailId: string) => request<EmailWork>(`/api/ai/emails/${encodeURIComponent(emailId)}/work`, { token }),
 
   startEstimateForEmail: (token: string, emailId: string) =>
@@ -394,6 +397,6 @@ export const api = {
 
   estimateSettings: (token: string) => request<EstimateSettings>("/api/ai/settings/estimate", { token }),
 
-  updateEstimateSettings: (token: string, rates: Record<EstimateRole, number>, bufferPercent: number) =>
-    request<EstimateSettings>("/api/ai/settings/estimate", { method: "PUT", token, body: { rates, bufferPercent } }),
+  updateEstimateSettings: (token: string, bufferPercent: number, catalog: PriceCatalogEntry[]) =>
+    request<EstimateSettings>("/api/ai/settings/estimate", { method: "PUT", token, body: { bufferPercent, catalog } }),
 };

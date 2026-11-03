@@ -22,8 +22,8 @@ import type {
   CrmCustomerMatch,
   EmailConnection,
   EmailConnectionInput,
-  EstimateRole,
   EstimateUpdateInput,
+  PriceCatalogEntry,
   NotificationPreferences,
   PairingCode,
   ProjectInput,
@@ -612,6 +612,23 @@ export async function regenerateEstimateAction(id: string): Promise<ActionResult
   }
 }
 
+export async function counterOfferAction(
+  id: string,
+  targetTotalEur: number | null,
+  note: string,
+): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.counterOffer(token, id, { targetTotalEur, note: note.trim() || null });
+    revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
 export async function startEstimateForEmailAction(emailId: string): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();
@@ -626,14 +643,14 @@ export async function startEstimateForEmailAction(emailId: string): Promise<Acti
 }
 
 export async function updateEstimateSettingsAction(
-  rates: Record<EstimateRole, number>,
   bufferPercent: number,
+  catalog: PriceCatalogEntry[],
 ): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();
 
   try {
-    await api.updateEstimateSettings(token, rates, bufferPercent);
+    await api.updateEstimateSettings(token, bufferPercent, catalog);
     revalidatePath("/ai/settings");
     return { ok: true };
   } catch (error) {

@@ -29,8 +29,9 @@ function fromLines(value: string) {
 }
 
 /**
- * Edit hours, rates and texts of an open estimate. Every save creates a new
- * approval version; amounts are always recalculated by the server.
+ * Edit packages, flat prices and texts of an open estimate. Every save creates a
+ * new approval version; totals are always recalculated by the server. Estimates
+ * from before flat pricing keep their hours × rate table.
  */
 export function EstimateEditor({
   estimate,
@@ -42,16 +43,21 @@ export function EstimateEditor({
   editable: boolean;
 }) {
   const router = useRouter();
+  const flat = estimate.totals.isFlat || estimate.items.length === 0;
   const [title, setTitle] = useState(estimate.title);
   const [items, setItems] = useState<EstimateItemInput[]>(
-    estimate.items.map((item) => ({
-      title: item.title,
-      description: item.description,
-      role: item.role,
-      hours: item.hours,
-      rateEur: item.rateEur,
-      rationale: item.rationale,
-    })),
+    estimate.items.map((item) =>
+      flat
+        ? { title: item.title, description: item.description, priceEur: item.amountEur, rationale: item.rationale }
+        : {
+            title: item.title,
+            description: item.description,
+            role: item.role,
+            hours: item.hours,
+            rateEur: item.rateEur,
+            rationale: item.rationale,
+          },
+    ),
   );
   const [buffer, setBuffer] = useState(estimate.totals.bufferPercent);
   const [content, setContent] = useState<EstimateContent>(estimate.content);
@@ -60,11 +66,13 @@ export function EstimateEditor({
   const [pending, startTransition] = useTransition();
 
   const totals = useMemo(() => {
+    const amount = (item: EstimateItemInput) =>
+      flat ? Number(item.priceEur) || 0 : (Number(item.hours) || 0) * (Number(item.rateEur) || 0);
     const baseHours = items.reduce((sum, item) => sum + (Number(item.hours) || 0), 0);
-    const baseNet = items.reduce((sum, item) => sum + (Number(item.hours) || 0) * (Number(item.rateEur) || 0), 0);
+    const baseNet = items.reduce((sum, item) => sum + amount(item), 0);
     const factor = 1 + (Number(buffer) || 0) / 100;
     return { baseHours, baseNet, totalHours: baseHours * factor, totalNet: baseNet * factor };
-  }, [items, buffer]);
+  }, [items, buffer, flat]);
 
   function updateItem(index: number, patch: Partial<EstimateItemInput>) {
     setItems((current) => current.map((item, i) => (i === index ? { ...item, ...patch } : item)));
@@ -73,8 +81,8 @@ export function EstimateEditor({
   function save() {
     setError(null);
     setMessage(null);
-    if (items.some((item) => !item.title.trim() || !(Number(item.hours) > 0))) {
-      setError("Jede Position braucht einen Titel und Stunden über 0.");
+    if (items.some((item) => !item.title.trim() || !(Number(flat ? item.priceEur : item.hours) > 0))) {
+      setError(flat ? "Jedes Paket braucht einen Titel und einen Preis über 0 €." : "Jede Position braucht einen Titel und Stunden über 0.");
       return;
     }
 
@@ -84,7 +92,11 @@ export function EstimateEditor({
         title,
         bufferPercent: Number(buffer),
         content,
-        items: items.map((item) => ({ ...item, hours: Number(item.hours), rateEur: Number(item.rateEur) })),
+        items: items.map((item) =>
+          flat
+            ? { title: item.title, description: item.description, rationale: item.rationale, priceEur: Number(item.priceEur) }
+            : { ...item, hours: Number(item.hours), rateEur: Number(item.rateEur) },
+        ),
       });
       if (!result.ok) {
         setError(result.error);
@@ -99,7 +111,7 @@ export function EstimateEditor({
     <section className="card flex flex-col gap-5 p-5" aria-labelledby="estimate-heading">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 id="estimate-heading" className="text-[14px] font-semibold text-ink">
-          Aufwandsschätzung
+          {flat ? "Pauschalangebot" : "Aufwandsschätzung"}
         </h2>
         {editable && (
           <button type="button" onClick={save} disabled={pending} className="btn btn-secondary h-8 text-[11.5px]">
@@ -126,6 +138,74 @@ export function EstimateEditor({
       />
       <TextBlock label="4. Umfang der Umsetzung" value={content.scope} editable={editable} onChange={(v) => setContent({ ...content, scope: v })} />
 
+      {flat ? (
+        <div className="flex flex-col gap-2">
+          <span className="label">5./6. Leistungspakete und Pauschalpreise</span>
+          <ul className="flex flex-col divide-y divide-line rounded-[10px] border border-line">
+            {items.map((item, index) => (
+              <li key={index} className="flex flex-col gap-2 p-3 sm:flex-row sm:items-start">
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <input
+                    className="input h-8 text-[12.5px] font-semibold"
+                    value={item.title}
+                    disabled={!editable}
+                    onChange={(event) => updateItem(index, { title: event.target.value })}
+                    aria-label="Titel des Pakets"
+                    placeholder="z. B. Website mit 5 Seiten"
+                  />
+                  {editable ? (
+                    <textarea
+                      className="textarea min-h-12 text-[12px] leading-relaxed"
+                      value={item.description ?? ""}
+                      onChange={(event) => updateItem(index, { description: event.target.value })}
+                      aria-label="Leistungsbeschreibung"
+                      placeholder="Was ist enthalten?"
+                    />
+                  ) : (
+                    item.description && <p className="text-[12px] leading-relaxed text-ink">{item.description}</p>
+                  )}
+                  {item.rationale && <p className="text-[10.5px] leading-relaxed text-muted">Begründung: {item.rationale}</p>}
+                </div>
+                <div className="flex items-center gap-2 sm:w-40 sm:flex-col sm:items-end">
+                  <label className="flex flex-1 items-center gap-1.5 sm:flex-none">
+                    <input
+                      type="number"
+                      step="10"
+                      min="0"
+                      className="input h-9 text-right text-[13px] font-semibold tabular-nums"
+                      value={item.priceEur ?? 0}
+                      disabled={!editable}
+                      onChange={(event) => updateItem(index, { priceEur: Number(event.target.value) })}
+                      aria-label="Pauschalpreis netto"
+                    />
+                    <span className="text-[12px] text-muted">€</span>
+                  </label>
+                  {editable && (
+                    <button
+                      type="button"
+                      onClick={() => setItems((current) => current.filter((_, i) => i !== index))}
+                      className="btn btn-ghost btn-icon h-8 w-8 text-rose-600"
+                      aria-label="Paket entfernen"
+                    >
+                      <IconTrash className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+          {editable && (
+            <button
+              type="button"
+              onClick={() => setItems((current) => [...current, { title: "", description: "", priceEur: 500 }])}
+              className="btn btn-ghost h-8 w-fit text-[11.5px]"
+            >
+              <IconPlus className="h-3.5 w-3.5" />
+              Paket hinzufügen
+            </button>
+          )}
+        </div>
+      ) : (
       <div className="flex flex-col gap-2">
         <span className="label">5./6. Leistungskomponenten und Personenstunden</span>
         <div className="overflow-x-auto rounded-[10px] border border-line">
@@ -156,7 +236,7 @@ export function EstimateEditor({
                   <td className="px-2 py-2">
                     <select
                       className="select h-8 text-[12px]"
-                      value={item.role}
+                      value={item.role ?? "dev"}
                       disabled={!editable}
                       onChange={(event) => updateItem(index, { role: event.target.value as EstimateRole })}
                       aria-label="Rolle"
@@ -174,7 +254,7 @@ export function EstimateEditor({
                       step="0.25"
                       min="0"
                       className="input h-8 text-right text-[12px] tabular-nums"
-                      value={item.hours}
+                      value={item.hours ?? 0}
                       disabled={!editable}
                       onChange={(event) => updateItem(index, { hours: Number(event.target.value) })}
                       aria-label="Stunden"
@@ -186,7 +266,7 @@ export function EstimateEditor({
                       step="1"
                       min="0"
                       className="input h-8 text-right text-[12px] tabular-nums"
-                      value={item.rateEur}
+                      value={item.rateEur ?? 0}
                       disabled={!editable}
                       onChange={(event) => updateItem(index, { rateEur: Number(event.target.value) })}
                       aria-label="Stundensatz"
@@ -221,15 +301,18 @@ export function EstimateEditor({
           </button>
         )}
       </div>
+      )}
 
       <div className="grid gap-3 rounded-[10px] bg-surface-2 p-4 text-[12px] sm:grid-cols-[1fr_auto]">
         <div className="flex flex-col gap-1">
           <span className="label">7. Gesamtsumme</span>
           <p className="text-muted">
-            Ohne Puffer: {hoursFormat.format(totals.baseHours)} h · {formatEur(totals.baseNet)}
+            {flat
+              ? `Summe der Pauschalen: ${formatEur(totals.baseNet)}`
+              : `Ohne Puffer: ${hoursFormat.format(totals.baseHours)} h · ${formatEur(totals.baseNet)}`}
           </p>
           <label className="inline-flex items-center gap-2 text-muted">
-            Puffer
+            {flat ? "Risikoaufschlag" : "Puffer"}
             <input
               type="number"
               min="0"
@@ -244,7 +327,9 @@ export function EstimateEditor({
         </div>
         <p className="self-end text-right">
           <span className="block font-display text-[22px] font-semibold tabular-nums text-ink">{formatEur(totals.totalNet)}</span>
-          <span className="text-muted">{hoursFormat.format(totals.totalHours)} h netto inkl. Puffer</span>
+          <span className="text-muted">
+            {flat ? "netto pauschal" : `${hoursFormat.format(totals.totalHours)} h netto inkl. Puffer`}
+          </span>
         </p>
       </div>
 
