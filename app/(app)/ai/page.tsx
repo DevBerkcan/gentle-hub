@@ -61,8 +61,9 @@ export default async function AiDashboardPage() {
         <StatCard
           label="Offene Freigaben"
           value={overview.pendingApprovals}
-          hint="Freigabe-Inbox folgt in Phase 5"
+          hint="Schätzungen und Entwürfe zur Prüfung"
           icon={<IconCheck className="h-4 w-4" />}
+          href="/ai/approvals"
         />
         <StatCard
           label="Wartende Jobs"

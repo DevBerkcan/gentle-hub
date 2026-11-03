@@ -6,6 +6,7 @@ import type { OverviewCounts } from "@/lib/types";
 import {
   IconActivity,
   IconApps,
+  IconCheck,
   IconFolder,
   IconHome,
   IconLink,
@@ -89,6 +90,12 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
           label: "Dashboard",
           icon: IconSparkles,
           active: (path) => path === "/ai",
+        },
+        {
+          href: "/ai/approvals",
+          label: "Freigaben",
+          icon: IconCheck,
+          active: (path) => path.startsWith("/ai/approvals"),
         },
         {
           href: "/ai/agents",

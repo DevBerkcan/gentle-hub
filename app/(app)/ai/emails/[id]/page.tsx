@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
-import { getCrmStatusData, getEmailCrmLinkData, getEmailData } from "@/lib/data";
+import { getCrmStatusData, getEmailCrmLinkData, getEmailData, getEmailWorkData } from "@/lib/data";
 import { REQUEST_TYPE_LABELS } from "@/lib/ai-format";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -11,6 +11,8 @@ import { PageHeader } from "@/components/ui/page-header";
 import { EmailList, ImportanceBadge } from "@/components/ai/email-list";
 import { ReanalyzeButton } from "@/components/ai/mailbox-actions";
 import { CrmLinkCard } from "@/components/ai/crm-link-card";
+import { StartEstimateButton } from "@/components/ai/approval-actions";
+import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { IconAlert, IconChevronLeft } from "@/components/ui/icons";
 
 type PageParams = { params: Promise<{ id: string }> };
@@ -36,7 +38,7 @@ export default async function AiEmailPage({ params }: PageParams) {
     throw error;
   }
 
-  const [crmLink, crmStatus] = await Promise.all([getEmailCrmLinkData(id), getCrmStatusData()]);
+  const [crmLink, crmStatus, work] = await Promise.all([getEmailCrmLinkData(id), getCrmStatusData(), getEmailWorkData(id)]);
   const analysis = email.analysis;
   const result = parse(analysis?.resultJson);
 
@@ -113,6 +115,44 @@ export default async function AiEmailPage({ params }: PageParams) {
                   : email.status === "failed"
                     ? "Die Analyse ist fehlgeschlagen. Details stehen in der Workflow-Historie."
                     : "Für dieses Postfach ist die KI-Analyse ausgeschaltet."}
+            </section>
+          )}
+
+          {analysis && (
+            <section className="card flex flex-col gap-3 p-5" aria-labelledby="work-heading">
+              <h2 id="work-heading" className="text-[13.5px] font-semibold text-ink">
+                Projektnotiz und Schätzung
+              </h2>
+              {work.estimate ? (
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-[12.5px] text-ink">
+                    {work.estimate.totals.totalHours.toLocaleString("de-DE")} h · {formatEur(work.estimate.totals.totalNetEur)} netto
+                  </span>
+                  {work.estimate.approvalId && (
+                    <Link href={`/ai/approvals/${work.estimate.approvalId}`} className="btn btn-primary h-8 text-[11.5px]">
+                      Zur Freigabe
+                    </Link>
+                  )}
+                  <span className="text-[11px] text-muted">
+                    {work.estimate.status === "pending_approval"
+                      ? APPROVAL_STATUS.pending.label
+                      : work.estimate.status === "approved"
+                        ? "Genehmigt, Angebotsentwurf vorbereitet"
+                        : work.estimate.status === "rejected"
+                          ? "Abgelehnt"
+                          : "Ersetzt"}
+                  </span>
+                </div>
+              ) : work.note ? (
+                <p className="text-[12px] text-muted">Projektnotiz ist erstellt, die Schätzung läuft.</p>
+              ) : analysis.isCustomerRequest ? (
+                <p className="text-[12px] text-muted">Notiz und Schätzung werden automatisch erstellt.</p>
+              ) : (
+                <>
+                  <p className="text-[12px] text-muted">Keine Kundenanfrage erkannt. Bei Bedarf manuell starten:</p>
+                  <StartEstimateButton emailId={email.id} />
+                </>
+              )}
             </section>
           )}
 

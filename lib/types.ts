@@ -500,3 +500,140 @@ export type CrmCustomerMatch = {
 };
 
 export type CrmStatus = { configured: boolean; reachable: boolean; frontendUrl?: string | null };
+
+// ---------------------------------------------------------------------------
+// Notes, estimates and approvals
+// ---------------------------------------------------------------------------
+
+export type EstimateRole = "pm" | "design" | "dev" | "qa";
+
+export type EstimateRisk = { description?: string | null; impactHours?: number | null };
+
+export type EstimateContent = {
+  currentState: string;
+  planning: string;
+  plannedMeasures: string[];
+  scope: string;
+  assumptions: string[];
+  dependencies: string[];
+  exclusions: string[];
+  risks: EstimateRisk[];
+};
+
+export type EstimateItem = {
+  id: string;
+  sortOrder: number;
+  title: string;
+  description?: string | null;
+  role: EstimateRole;
+  hours: number;
+  rateEur: number;
+  amountEur: number;
+  rationale?: string | null;
+};
+
+export type EstimateTotals = {
+  baseHours: number;
+  bufferPercent: number;
+  bufferHours: number;
+  totalHours: number;
+  baseNetEur: number;
+  totalNetEur: number;
+};
+
+export type EstimateStatus = "pending_approval" | "approved" | "rejected" | "superseded";
+
+export type Estimate = {
+  id: string;
+  title: string;
+  status: EstimateStatus;
+  emailMessageId?: string | null;
+  noteId?: string | null;
+  approvalId?: string | null;
+  workflowId?: string | null;
+  customerId?: string | null;
+  customerName?: string | null;
+  content: EstimateContent;
+  items: EstimateItem[];
+  totals: EstimateTotals;
+  offerDraftJson?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
+
+export type ProjectNote = {
+  id: string;
+  emailMessageId?: string | null;
+  customerId?: string | null;
+  customerName?: string | null;
+  title: string;
+  contentJson: string;
+  createdAt: string;
+};
+
+export type ProjectNoteContent = {
+  projectDescription?: string;
+  businessRequirements?: string[];
+  technicalRequirements?: string[];
+  decisions?: string[];
+  tasks?: { title?: string; description?: string }[];
+  openQuestions?: string[];
+  risks?: string[];
+  sources?: string[];
+};
+
+export type ApprovalStatus = "pending" | "approved" | "executed" | "rejected" | "expired" | "superseded";
+
+export type ApprovalListItem = {
+  id: string;
+  kind: string;
+  status: ApprovalStatus;
+  version: number;
+  title: string;
+  summary?: string | null;
+  agentId?: string | null;
+  customerName?: string | null;
+  nextAction?: string | null;
+  estimateId?: string | null;
+  emailMessageId?: string | null;
+  totalHours?: number | null;
+  totalNetEur?: number | null;
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string;
+  decidedBy?: string | null;
+  decidedAt?: string | null;
+};
+
+export type ApprovalDetail = {
+  approval: ApprovalListItem;
+  contentHash: string;
+  decisionNote?: string | null;
+  executedAt?: string | null;
+  estimate?: Estimate | null;
+  note?: ProjectNote | null;
+  emailSubject?: string | null;
+  emailFrom?: string | null;
+};
+
+export type EmailWork = { note?: ProjectNote | null; estimate?: Estimate | null };
+
+export type EstimateSettings = { rates: Record<EstimateRole, number>; bufferPercent: number };
+
+export type EstimateItemInput = {
+  title: string;
+  description?: string | null;
+  role: EstimateRole;
+  hours: number;
+  rateEur: number;
+  rationale?: string | null;
+};
+
+export type EstimateUpdateInput = {
+  expectedApprovalVersion: number;
+  title: string;
+  bufferPercent: number;
+  content: EstimateContent;
+  items: EstimateItemInput[];
+};

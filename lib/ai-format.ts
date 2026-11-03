@@ -1,4 +1,4 @@
-import type { AgentRunStatus, JobStatus } from "@/lib/types";
+import type { AgentRunStatus, ApprovalStatus, JobStatus } from "@/lib/types";
 
 const eurFormatter = new Intl.NumberFormat("de-DE", {
   style: "currency",
@@ -92,4 +92,13 @@ export const REQUEST_TYPE_LABELS: Record<string, string> = {
   invoice: "Rechnung",
   spam: "Spam",
   other: "Sonstiges",
+};
+
+export const APPROVAL_STATUS: Record<ApprovalStatus, { label: string; className: string }> = {
+  pending: { label: "Wartet auf dich", className: "bg-amber-50 text-amber-800" },
+  approved: { label: "Genehmigt", className: "bg-emerald-50 text-emerald-700" },
+  executed: { label: "Genehmigt", className: "bg-emerald-50 text-emerald-700" },
+  rejected: { label: "Abgelehnt", className: "bg-rose-50 text-rose-700" },
+  expired: { label: "Abgelaufen", className: "bg-slate-100 text-slate-600" },
+  superseded: { label: "Ersetzt", className: "bg-slate-100 text-slate-600" },
 };

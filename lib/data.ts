@@ -4,10 +4,13 @@ import { requireAuth } from "@/lib/session";
 import type {
   AgentDetail,
   AiOverview,
+  ApprovalDetail,
   CostReport,
   CrmLink,
   CrmStatus,
   EmailDetail,
+  EmailWork,
+  EstimateSettings,
   Health,
   JobStatus,
   MessengerStatus,
@@ -119,4 +122,25 @@ export const getEmailCrmLinkData = cache(async (emailId: string): Promise<CrmLin
   const { token } = await requireAuth();
   const response = await api.emailCrmLink(token, emailId);
   return response.link ?? null;
+});
+
+export const getApprovalsData = cache(async (status?: "open" | "done") => {
+  const { token } = await requireAuth();
+  const response = await api.approvals(token, status);
+  return response.items;
+});
+
+export const getApprovalData = cache(async (id: string): Promise<ApprovalDetail> => {
+  const { token } = await requireAuth();
+  return api.approval(token, id);
+});
+
+export const getEmailWorkData = cache(async (emailId: string): Promise<EmailWork> => {
+  const { token } = await requireAuth();
+  return api.emailWork(token, emailId);
+});
+
+export const getEstimateSettingsData = cache(async (): Promise<EstimateSettings> => {
+  const { token } = await requireAuth();
+  return api.estimateSettings(token);
 });

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { getAiOverviewData } from "@/lib/data";
+import { getAiOverviewData, getEstimateSettingsData } from "@/lib/data";
 import { PageHeader } from "@/components/ui/page-header";
 import { AiSettingsForm } from "@/components/ai/ai-settings-form";
+import { EstimateSettingsForm } from "@/components/ai/estimate-settings-form";
 import { IconShield } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "AI-Einstellungen" };
 
 export default async function AiSettingsPage() {
-  const { settings } = await getAiOverviewData();
+  const [{ settings }, estimateSettings] = await Promise.all([getAiOverviewData(), getEstimateSettingsData()]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -18,7 +19,10 @@ export default async function AiSettingsPage() {
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <AiSettingsForm settings={settings} />
+        <div className="flex flex-col gap-6">
+          <AiSettingsForm settings={settings} />
+          <EstimateSettingsForm settings={estimateSettings} />
+        </div>
 
         <aside className="flex flex-col gap-5">
           <section className="card p-4">

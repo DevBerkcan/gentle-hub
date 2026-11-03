@@ -18,6 +18,8 @@ import type {
   CrmCustomerMatch,
   EmailConnection,
   EmailConnectionInput,
+  EstimateRole,
+  EstimateUpdateInput,
   NotificationPreferences,
   PairingCode,
   ProjectInput,
@@ -477,6 +479,87 @@ export async function setEmailCrmLinkAction(emailId: string, customerId: string 
   try {
     await api.setEmailCrmLink(token, emailId, customerId);
     revalidatePath(`/ai/emails/${emailId}`);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Approvals & estimates
+// ---------------------------------------------------------------------------
+
+export async function decideApprovalAction(
+  id: string,
+  approve: boolean,
+  version: number,
+  contentHash: string,
+  note: string,
+): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.decideApproval(token, id, { approve, version, contentHash, note });
+    revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateEstimateAction(
+  id: string,
+  input: EstimateUpdateInput,
+): Promise<ActionResult<{ approvalVersion: number }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { approvalVersion } = await api.updateEstimate(token, id, input);
+    revalidatePath("/ai", "layout");
+    return { ok: true, approvalVersion };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function regenerateEstimateAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.regenerateEstimate(token, id);
+    revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function startEstimateForEmailAction(emailId: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.startEstimateForEmail(token, emailId);
+    revalidatePath(`/ai/emails/${emailId}`);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateEstimateSettingsAction(
+  rates: Record<EstimateRole, number>,
+  bufferPercent: number,
+): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.updateEstimateSettings(token, rates, bufferPercent);
+    revalidatePath("/ai/settings");
     return { ok: true };
   } catch (error) {
     return toFailure(error);

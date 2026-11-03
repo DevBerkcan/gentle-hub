@@ -8,6 +8,8 @@ import type {
   AiOverview,
   AiSettings,
   AiSettingsInput,
+  ApprovalDetail,
+  ApprovalListItem,
   Asset,
   AssetInput,
   ConnectionTestResult,
@@ -20,6 +22,11 @@ import type {
   EmailConnectionInput,
   EmailDetail,
   EmailListItem,
+  EmailWork,
+  Estimate,
+  EstimateRole,
+  EstimateSettings,
+  EstimateUpdateInput,
   Health,
   JobStatus,
   MessengerStatus,
@@ -319,4 +326,33 @@ export const api = {
       token,
       body: { customerId },
     }),
+
+  // Approvals & estimates
+  approvals: (token: string, status?: "open" | "done") =>
+    request<{ items: ApprovalListItem[] }>(`/api/ai/approvals${status ? `?status=${status}` : ""}`, { token }),
+
+  approval: (token: string, id: string) => request<ApprovalDetail>(`/api/ai/approvals/${encodeURIComponent(id)}`, { token }),
+
+  decideApproval: (token: string, id: string, body: { approve: boolean; version: number; contentHash: string; note: string }) =>
+    request<ApprovalDetail>(`/api/ai/approvals/${encodeURIComponent(id)}/decision`, { method: "POST", token, body }),
+
+  updateEstimate: (token: string, id: string, input: EstimateUpdateInput) =>
+    request<{ estimate: Estimate; approvalVersion: number }>(`/api/ai/estimates/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      token,
+      body: input,
+    }),
+
+  regenerateEstimate: (token: string, id: string) =>
+    request<{ jobId: string }>(`/api/ai/estimates/${encodeURIComponent(id)}/regenerate`, { method: "POST", token, body: {} }),
+
+  emailWork: (token: string, emailId: string) => request<EmailWork>(`/api/ai/emails/${encodeURIComponent(emailId)}/work`, { token }),
+
+  startEstimateForEmail: (token: string, emailId: string) =>
+    request<{ jobId: string }>(`/api/ai/emails/${encodeURIComponent(emailId)}/estimate`, { method: "POST", token, body: {} }),
+
+  estimateSettings: (token: string) => request<EstimateSettings>("/api/ai/settings/estimate", { token }),
+
+  updateEstimateSettings: (token: string, rates: Record<EstimateRole, number>, bufferPercent: number) =>
+    request<EstimateSettings>("/api/ai/settings/estimate", { method: "PUT", token, body: { rates, bufferPercent } }),
 };
