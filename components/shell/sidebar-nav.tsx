@@ -1,174 +1,39 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/cn";
 import type { OverviewCounts } from "@/lib/types";
-import {
-  IconActivity,
-  IconApps,
-  IconCheck,
-  IconFolder,
-  IconHome,
-  IconKey,
-  IconLink,
-  IconMail,
-  IconSearch,
-  IconServer,
-  IconSettings,
-  IconShield,
-  IconSparkles,
-  IconUsers,
-} from "@/components/ui/icons";
+import { TOOL_SECTION, WORKSPACES, type NavLocation, type WorkspaceKey } from "@/components/shell/workspaces";
 
 type SidebarNavProps = {
   counts: OverviewCounts;
   pathname: string;
+  workspace: WorkspaceKey;
   onNavigate: () => void;
 };
 
-type NavItem = {
-  href: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  count?: number;
-  active: (pathname: string) => boolean;
-};
+export function SidebarNav(props: SidebarNavProps) {
+  return (
+    <Suspense fallback={<NavSections {...props} category="" />}>
+      <SidebarNavWithParams {...props} />
+    </Suspense>
+  );
+}
 
-export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
-  const sections: { title: string; items: NavItem[] }[] = [
-    {
-      title: "Übersicht",
-      items: [
-        {
-          href: "/",
-          label: "Dashboard",
-          icon: IconHome,
-          active: (path) => path === "/",
-        },
-      ],
-    },
-    {
-      title: "Gentle Group",
-      items: [
-        {
-          href: "/apps",
-          label: "Gentle Group",
-          icon: IconApps,
-          count: counts.internal,
-          active: (path) => path.startsWith("/apps"),
-        },
-      ],
-    },
-    {
-      title: "Kunden",
-      items: [
-        {
-          href: "/customers",
-          label: "Kundenprojekte",
-          icon: IconUsers,
-          count: counts.customers,
-          active: (path) => path.startsWith("/customers"),
-        },
-      ],
-    },
-    {
-      title: "Eigene Projekte",
-      items: [
-        {
-          href: "/projects",
-          label: "Projekte & Spiele",
-          icon: IconFolder,
-          count: counts.projects,
-          active: (path) => path.startsWith("/projects"),
-        },
-      ],
-    },
-    {
-      title: "Zugänge",
-      items: [
-        {
-          href: "/passwords",
-          label: "Passwörter",
-          icon: IconKey,
-          count: counts.credentials,
-          active: (path) => path.startsWith("/passwords"),
-        },
-      ],
-    },
-    {
-      title: "AI Operations",
-      items: [
-        {
-          href: "/ai",
-          label: "Dashboard",
-          icon: IconSparkles,
-          active: (path) => path === "/ai",
-        },
-        {
-          href: "/ai/approvals",
-          label: "Freigaben",
-          icon: IconCheck,
-          active: (path) => path.startsWith("/ai/approvals"),
-        },
-        {
-          href: "/ai/agents",
-          label: "Agenten",
-          icon: IconServer,
-          active: (path) => path.startsWith("/ai/agents"),
-        },
-        {
-          href: "/ai/emails",
-          label: "E-Mail Intelligence",
-          icon: IconMail,
-          active: (path) => path.startsWith("/ai/emails"),
-        },
-        {
-          href: "/ai/connections",
-          label: "Verbindungen",
-          icon: IconLink,
-          active: (path) => path.startsWith("/ai/connections"),
-        },
-        {
-          href: "/ai/history",
-          label: "Workflow-Historie",
-          icon: IconActivity,
-          active: (path) => path.startsWith("/ai/history"),
-        },
-        {
-          href: "/ai/costs",
-          label: "KI-Kosten",
-          icon: IconShield,
-          active: (path) => path.startsWith("/ai/costs"),
-        },
-        {
-          href: "/ai/settings",
-          label: "AI-Einstellungen",
-          icon: IconSettings,
-          active: (path) => path.startsWith("/ai/settings"),
-        },
-      ],
-    },
-    {
-      title: "Werkzeuge",
-      items: [
-        {
-          href: "/search",
-          label: "Suche",
-          icon: IconSearch,
-          active: (path) => path.startsWith("/search"),
-        },
-        {
-          href: "/settings",
-          label: "Einstellungen",
-          icon: IconSettings,
-          active: (path) => path.startsWith("/settings"),
-        },
-      ],
-    },
-  ];
+function SidebarNavWithParams(props: SidebarNavProps) {
+  const searchParams = useSearchParams();
+  return <NavSections {...props} category={searchParams.get("category") ?? ""} />;
+}
+
+function NavSections({ counts, pathname, workspace, onNavigate, category }: SidebarNavProps & { category: string }) {
+  const active = WORKSPACES.find((item) => item.key === workspace) ?? WORKSPACES[0];
+  const sections = [...active.sections(counts), TOOL_SECTION];
+  const location: NavLocation = { pathname, category };
 
   return (
-    <nav className="flex flex-col gap-5 pt-1">
+    <nav className="flex flex-col gap-5 pt-1" aria-label={`Navigation ${active.label}`}>
       {sections.map((section) => (
         <div key={section.title}>
           <p className="px-3 pb-1.5 text-[9.5px] font-bold uppercase tracking-[0.16em] text-white/30">
@@ -176,7 +41,7 @@ export function SidebarNav({ counts, pathname, onNavigate }: SidebarNavProps) {
           </p>
           <ul className="flex flex-col gap-0.5">
             {section.items.map((item) => {
-              const isActive = item.active(pathname);
+              const isActive = item.active(location);
               const Icon = item.icon;
 
               return (

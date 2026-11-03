@@ -7,14 +7,16 @@ import type { OverviewCounts } from "@/lib/types";
 import { Logo } from "@/components/ui/logo";
 import { IconLockCheck, IconX } from "@/components/ui/icons";
 import { SidebarNav } from "@/components/shell/sidebar-nav";
+import type { WorkspaceKey } from "@/components/shell/workspaces";
 
 type SidebarProps = {
   counts: OverviewCounts;
+  workspace: WorkspaceKey;
   open: boolean;
   onClose: () => void;
 };
 
-export function Sidebar({ counts, open, onClose }: SidebarProps) {
+export function Sidebar({ counts, workspace, open, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -50,7 +52,7 @@ export function Sidebar({ counts, open, onClose }: SidebarProps) {
         </div>
 
         <div className="no-scrollbar flex-1 overflow-y-auto px-3 pb-4 pt-4">
-          <SidebarNav counts={counts} pathname={pathname} onNavigate={onClose} />
+          <SidebarNav counts={counts} pathname={pathname} workspace={workspace} onNavigate={onClose} />
         </div>
 
         <div className="border-t border-white/[0.06] px-4 py-4">

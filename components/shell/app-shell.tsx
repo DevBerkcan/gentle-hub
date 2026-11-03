@@ -9,6 +9,8 @@ import { Sidebar } from "@/components/shell/sidebar";
 import { SearchBox } from "@/components/shell/search-box";
 import { UserMenu } from "@/components/shell/user-menu";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { WorkspaceTabs } from "@/components/shell/workspace-tabs";
+import { workspaceForPath, type WorkspaceKey } from "@/components/shell/workspaces";
 
 export function AppShell({
   user,
@@ -20,10 +22,11 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const workspace = useWorkspace();
 
   return (
     <div className="min-h-dvh">
-      <Sidebar counts={counts} open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <Sidebar counts={counts} workspace={workspace} open={mobileOpen} onClose={() => setMobileOpen(false)} />
 
       <div className="lg:pl-[258px]">
         <header className="sticky top-0 z-30 border-b border-line bg-canvas/90 backdrop-blur-md">
@@ -39,6 +42,8 @@ export function AppShell({
               <IconMenu className="h-4 w-4" />
             </button>
 
+            <WorkspaceTabs active={workspace} className="hidden shrink-0 md:flex" />
+
             <div className="min-w-0 flex-1 sm:max-w-[420px]">
               <Suspense fallback={<div className="h-10 w-full rounded-[12px] border border-line bg-white/60" />}>
                 <TopbarSearch />
@@ -50,6 +55,9 @@ export function AppShell({
               <UserMenu user={user} />
             </div>
           </div>
+          <div className="px-4 pb-3 sm:px-6 md:hidden">
+            <WorkspaceTabs active={workspace} className="w-full" />
+          </div>
         </header>
 
         <main className="mx-auto w-full max-w-[1320px] px-4 pb-20 pt-6 sm:px-6 sm:pt-8 lg:px-8">
@@ -58,6 +66,15 @@ export function AppShell({
       </div>
     </div>
   );
+}
+
+/** Active top-level tab; shared pages (search, settings) keep the tab the user came from. */
+function useWorkspace(): WorkspaceKey {
+  const pathname = usePathname();
+  const matched = workspaceForPath(pathname);
+  const [lastWorkspace, setLastWorkspace] = useState<WorkspaceKey>(matched ?? "projects");
+  if (matched && matched !== lastWorkspace) setLastWorkspace(matched);
+  return matched ?? lastWorkspace;
 }
 
 function TopbarSearch() {
