@@ -154,7 +154,7 @@ export const WORKSPACES: Workspace[] = [
           },
           {
             href: "/ai/emails",
-            label: "E-Mail Intelligence",
+            label: "Posteingang",
             icon: IconMail,
             active: ({ pathname }) => pathname.startsWith("/ai/emails"),
           },

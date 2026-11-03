@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAiOverviewData } from "@/lib/data";
+import { getAiOverviewData, getEmailsData } from "@/lib/data";
 import { formatEur } from "@/lib/ai-format";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { AgentCard } from "@/components/ai/agent-card";
+import { EmailList } from "@/components/ai/email-list";
 import { BudgetMeter } from "@/components/ai/budget-meter";
 import { RunList } from "@/components/ai/run-list";
 import { DryRunBadge } from "@/components/ai/status-badges";
@@ -13,7 +14,7 @@ import { IconActivity, IconAlert, IconArrowRight, IconCheck, IconClock, IconSpar
 export const metadata: Metadata = { title: "AI Operations" };
 
 export default async function AiDashboardPage() {
-  const overview = await getAiOverviewData();
+  const [overview, emails] = await Promise.all([getAiOverviewData(), getEmailsData()]);
   const { settings, budget, agents, jobs } = overview;
   const runsThisMonth = agents.reduce((sum, agent) => sum + agent.month.runs, 0);
   const failuresThisMonth = agents.reduce((sum, agent) => sum + agent.month.failedRuns, 0);
@@ -107,6 +108,21 @@ export default async function AiDashboardPage() {
           </Link>
         </aside>
       </div>
+
+      <section className="flex flex-col gap-3" aria-labelledby="inbox-heading">
+        <div className="flex items-center justify-between">
+          <h2 id="inbox-heading" className="text-[14px] font-semibold text-ink">
+            Posteingang
+          </h2>
+          <Link href="/ai/emails" className="text-[11.5px] font-semibold text-muted hover:text-ink">
+            Alle E-Mails →
+          </Link>
+        </div>
+        <EmailList
+          emails={emails.slice(0, 6)}
+          emptyDescription="Sobald ein verbundenes Postfach abgerufen wurde, erscheinen die neuesten Mails hier – mit dem Stand der Agenten-Analyse."
+        />
+      </section>
 
       {overview.recentFailures.length > 0 && (
         <section className="flex flex-col gap-3" aria-labelledby="failures-heading">

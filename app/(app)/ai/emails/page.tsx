@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { EmailList } from "@/components/ai/email-list";
 import { IconArrowRight } from "@/components/ui/icons";
 
-export const metadata: Metadata = { title: "E-Mail Intelligence" };
+export const metadata: Metadata = { title: "Posteingang" };
 
 type Search = { customer?: string | string[]; importance?: string | string[]; mailbox?: string | string[] };
 
@@ -42,7 +42,7 @@ export default async function AiEmailsPage({ searchParams }: { searchParams: Pro
     <div className="flex flex-col gap-6">
       <PageHeader
         eyebrow="AI Operations"
-        title="E-Mail Intelligence"
+        title="Posteingang"
         description="Eingegangene Nachrichten mit Einordnung, Zusammenfassung, Anforderungen und empfohlenen Maßnahmen."
         action={
           <Link href="/ai/connections" className="btn btn-ghost">
