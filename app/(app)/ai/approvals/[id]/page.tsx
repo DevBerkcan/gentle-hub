@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
-import { getApprovalData } from "@/lib/data";
+import { getApprovalData, getLeadCheckData } from "@/lib/data";
 import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -12,6 +12,7 @@ import { EstimateEditor } from "@/components/ai/estimate-editor";
 import { ApprovalDecision } from "@/components/ai/approval-actions";
 import { CounterOfferForm, CounterOfferHistory } from "@/components/ai/counter-offer";
 import { ReplyReview } from "@/components/ai/reply-review";
+import { LeadCheckCard } from "@/components/ai/lead-check-card";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { IconChevronLeft, IconExternal, IconMail } from "@/components/ui/icons";
 
@@ -39,6 +40,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
   }
 
   const { approval, estimate, note, reply } = detail;
+  const leadCheck = estimate?.emailMessageId ? await getLeadCheckData(estimate.emailMessageId) : null;
   const meta = APPROVAL_STATUS[approval.status] ?? APPROVAL_STATUS.pending;
   const isOpen = approval.status === "pending" && new Date(approval.expiresAt) > new Date();
   const canCounter = Boolean(estimate) && (isOpen || estimate?.status === "rejected");
@@ -157,6 +159,8 @@ export default async function AiApprovalPage({ params }: PageParams) {
             )}
             {detail.emailFrom && <p className="mt-1 text-[10.5px] text-muted">{detail.emailFrom}</p>}
           </section>
+
+          {estimate?.emailMessageId && leadCheck && <LeadCheckCard emailId={estimate.emailMessageId} check={leadCheck} />}
 
           {note && (
             <section className="card flex flex-col gap-3 p-4" aria-labelledby="note-heading">

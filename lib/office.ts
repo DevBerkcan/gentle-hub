@@ -64,8 +64,8 @@ export function buildOffice(
       icon: "💶",
       color: "#10b981",
       href: "/ai/approvals",
-      agents: list("project-notes", "estimation"),
-      subtitle: `2 Agenten · ${estimateApprovals} ${estimateApprovals === 1 ? "Freigabe" : "Freigaben"} offen`,
+      agents: list("lead-check", "project-notes", "estimation"),
+      subtitle: `3 Agenten · ${estimateApprovals} ${estimateApprovals === 1 ? "Freigabe" : "Freigaben"} offen`,
       active: false,
     },
     {

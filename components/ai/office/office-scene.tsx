@@ -38,6 +38,7 @@ const PALETTE: Record<string, { body: string; dark: string; eye: string }> = {
   "follow-up": { body: "#6366f1", dark: "#312e81", eye: "#e0e7ff" },
   "support-triage": { body: "#f97316", dark: "#7c2d12", eye: "#fff1df" },
   "website-monitor": { body: "#06b6d4", dark: "#164e63", eye: "#e0fdff" },
+  "lead-check": { body: "#84cc16", dark: "#365314", eye: "#f7fee7" },
 };
 
 const ROOM_W = 9;
@@ -314,7 +315,8 @@ function Room({
   register: Register;
 }) {
   const [x, z] = position;
-  const desks: Vec2[] = room.agents.map((_, index) => [-2 + index * 4, -1.7]);
+  const spacing = room.agents.length > 2 ? 2.9 : 4;
+  const desks: Vec2[] = room.agents.map((_, index) => [(index - (room.agents.length - 1) / 2) * spacing, -1.7]);
 
   return (
     <group position={[x, 0, z]}>

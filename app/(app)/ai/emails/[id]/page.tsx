@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
-import { getCrmStatusData, getEmailCrmLinkData, getEmailData, getEmailRepliesData, getEmailWorkData, getSupportForEmailData } from "@/lib/data";
+import { getCrmStatusData, getEmailCrmLinkData, getEmailData, getEmailRepliesData, getEmailWorkData, getLeadCheckData, getSupportForEmailData } from "@/lib/data";
 import { REQUEST_TYPE_LABELS } from "@/lib/ai-format";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -14,6 +14,7 @@ import { CrmLinkCard } from "@/components/ai/crm-link-card";
 import { StartEstimateButton } from "@/components/ai/approval-actions";
 import { ReplyPanel } from "@/components/ai/reply-panel";
 import { SupportTicketCard } from "@/components/ai/support-tickets";
+import { LeadCheckCard } from "@/components/ai/lead-check-card";
 import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { IconAlert, IconChevronLeft } from "@/components/ui/icons";
 
@@ -40,12 +41,13 @@ export default async function AiEmailPage({ params }: PageParams) {
     throw error;
   }
 
-  const [crmLink, crmStatus, work, replies, ticket] = await Promise.all([
+  const [crmLink, crmStatus, work, replies, ticket, leadCheck] = await Promise.all([
     getEmailCrmLinkData(id),
     getCrmStatusData(),
     getEmailWorkData(id),
     getEmailRepliesData(id),
     getSupportForEmailData(id),
+    getLeadCheckData(id),
   ]);
   const analysis = email.analysis;
   const result = parse(analysis?.resultJson);
@@ -181,6 +183,9 @@ export default async function AiEmailPage({ params }: PageParams) {
         </div>
 
         <aside className="flex flex-col gap-5">
+          {(leadCheck || (analysis?.isCustomerRequest && analysis.requestType === "new_request")) && (
+            <LeadCheckCard emailId={email.id} check={leadCheck} />
+          )}
           {analysis?.isCustomerRequest && (
             <CrmLinkCard emailId={email.id} link={crmLink} crmConfigured={crmStatus?.configured ?? false} />
           )}

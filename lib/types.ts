@@ -740,6 +740,51 @@ export type SupportTicket = {
   updatedBy?: string | null;
 };
 
+export type LeadFacts = {
+  finalUrl: string;
+  https: boolean;
+  statusCode: number;
+  responseMs: number;
+  htmlKb: number;
+  title?: string | null;
+  metaDescriptionLength: number;
+  mobileViewport: boolean;
+  h1Count: number;
+  cms?: string | null;
+  hasImpressum: boolean;
+  hasDatenschutz: boolean;
+  hasCookieConsent: boolean;
+  copyrightYear?: number | null;
+  imageCount: number;
+  imagesWithoutAlt: number;
+  scriptCount: number;
+  structuredData: boolean;
+  openGraph: boolean;
+  language?: string | null;
+  certDaysLeft?: number | null;
+};
+
+export type LeadInsights = {
+  summary?: string | null;
+  strengths?: string[] | null;
+  weaknesses?: string[] | null;
+  salesArguments?: string[] | null;
+  quickWins?: string[] | null;
+  estimateHints?: string[] | null;
+};
+
+export type LeadCheck = {
+  id: string;
+  emailMessageId: string;
+  status: "done" | "skipped" | "unreachable";
+  reason?: string | null;
+  url?: string | null;
+  finalUrl?: string | null;
+  facts?: LeadFacts | null;
+  insights?: LeadInsights | null;
+  createdAt: string;
+};
+
 export type MonitorStatus = "up" | "degraded" | "down" | "unknown";
 
 export type MonitorTarget = {

@@ -644,6 +644,18 @@ export async function updateReplyAction(
   }
 }
 
+export async function runLeadCheckAction(emailId: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.runLeadCheck(token, emailId);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
 export async function setSupportStatusAction(id: string, status: SupportStatus): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();

@@ -157,6 +157,12 @@ export const getEmailRepliesData = cache(async (emailId: string): Promise<ReplyD
   return response.items;
 });
 
+export const getLeadCheckData = cache(async (emailId: string) => {
+  const { token } = await requireAuth();
+  const response = await api.leadCheck(token, emailId);
+  return response.check ?? null;
+});
+
 export const getSupportData = cache(async (status?: string) => {
   const { token } = await requireAuth();
   return api.supportTickets(token, status);
