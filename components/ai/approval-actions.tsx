@@ -12,11 +12,18 @@ export function ApprovalDecision({
   version,
   contentHash,
   estimateId,
+  approveLabel,
+  hint = "Genehmigen erstellt einen internen Angebotsentwurf. Es wird nichts an den Kunden gesendet.",
+  disabledReason,
 }: {
   approvalId: string;
   version: number;
   contentHash: string;
   estimateId?: string | null;
+  approveLabel?: string;
+  hint?: string;
+  /** Set while the shown content has unsaved edits: deciding would apply to the old version. */
+  disabledReason?: string | null;
 }) {
   const router = useRouter();
   const [note, setNote] = useState("");
@@ -67,11 +74,21 @@ export function ApprovalDecision({
       <div className="flex flex-wrap gap-2">
         {!rejecting ? (
           <>
-            <button type="button" onClick={() => decide(true)} disabled={pending} className="btn btn-primary flex-1 sm:flex-none">
+            <button
+              type="button"
+              onClick={() => decide(true)}
+              disabled={pending || Boolean(disabledReason)}
+              className="btn btn-primary flex-1 sm:flex-none"
+            >
               {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconCheck className="h-3.5 w-3.5" />}
-              Genehmigen (Version {version})
+              {approveLabel ?? `Genehmigen (Version ${version})`}
             </button>
-            <button type="button" onClick={() => setRejecting(true)} disabled={pending} className="btn btn-secondary text-rose-600">
+            <button
+              type="button"
+              onClick={() => setRejecting(true)}
+              disabled={pending || Boolean(disabledReason)}
+              className="btn btn-secondary text-rose-600"
+            >
               <IconX className="h-3.5 w-3.5" />
               Ablehnen
             </button>
@@ -94,9 +111,8 @@ export function ApprovalDecision({
           </>
         )}
       </div>
-      <p className="text-[10.5px] text-subtle">
-        Genehmigen erstellt einen internen Angebotsentwurf. Es wird nichts an den Kunden gesendet.
-      </p>
+      {disabledReason && <p className="text-[11px] font-medium text-amber-700">{disabledReason}</p>}
+      <p className="text-[10.5px] text-subtle">{hint}</p>
     </section>
   );
 }

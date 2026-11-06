@@ -18,6 +18,8 @@ import type {
   Overview,
   ProjectDetail,
   ProjectKind,
+  ReplyDraft,
+  ReplySettings,
   SearchResults,
 } from "@/lib/types";
 
@@ -144,6 +146,17 @@ export const getApprovalData = cache(async (id: string): Promise<ApprovalDetail>
 export const getEmailWorkData = cache(async (emailId: string): Promise<EmailWork> => {
   const { token } = await requireAuth();
   return api.emailWork(token, emailId);
+});
+
+export const getEmailRepliesData = cache(async (emailId: string): Promise<ReplyDraft[]> => {
+  const { token } = await requireAuth();
+  const response = await api.emailReplies(token, emailId);
+  return response.items;
+});
+
+export const getReplySettingsData = cache(async (): Promise<ReplySettings> => {
+  const { token } = await requireAuth();
+  return api.replySettings(token);
 });
 
 export const getEstimateSettingsData = cache(async (): Promise<EstimateSettings> => {

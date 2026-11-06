@@ -684,7 +684,34 @@ export type ApprovalDetail = {
   emailSubject?: string | null;
   emailFrom?: string | null;
   counterOffers: CounterOffer[];
+  reply?: ReplyDraft | null;
 };
+
+export type ReplyPurpose = "acknowledge" | "offer";
+
+export type ReplyStatus = "pending_approval" | "sent" | "rejected" | "superseded" | "failed";
+
+export type ReplyDraft = {
+  id: string;
+  emailMessageId: string;
+  approvalId?: string | null;
+  estimateId?: string | null;
+  purpose: ReplyPurpose;
+  fromAddress: string;
+  toAddress: string;
+  toName?: string | null;
+  subject: string;
+  bodyText: string;
+  status: ReplyStatus;
+  sentAt?: string | null;
+  savedToSent: boolean;
+  lastError?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
+
+export type ReplySettings = { signature: string; fromName: string };
 
 export type CounterOffer = {
   id: string;

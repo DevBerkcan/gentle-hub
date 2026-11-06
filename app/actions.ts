@@ -24,6 +24,8 @@ import type {
   EmailConnectionInput,
   EstimateUpdateInput,
   PriceCatalogEntry,
+  ReplyPurpose,
+  ReplySettings,
   NotificationPreferences,
   PairingCode,
   ProjectInput,
@@ -606,6 +608,48 @@ export async function regenerateEstimateAction(id: string): Promise<ActionResult
   try {
     await api.regenerateEstimate(token, id);
     revalidatePath("/ai", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function startReplyAction(emailId: string, purpose: ReplyPurpose): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.startReply(token, emailId, purpose);
+    revalidatePath(`/ai/emails/${emailId}`);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateReplyAction(
+  id: string,
+  input: { expectedApprovalVersion: number; subject: string; body: string },
+): Promise<ActionResult<{ approvalVersion: number }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { approvalVersion } = await api.updateReply(token, id, input);
+    revalidatePath("/ai", "layout");
+    return { ok: true, approvalVersion };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateReplySettingsAction(input: ReplySettings): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.updateReplySettings(token, input);
+    revalidatePath("/ai/settings");
     return { ok: true };
   } catch (error) {
     return toFailure(error);

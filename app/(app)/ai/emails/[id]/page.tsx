@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
-import { getCrmStatusData, getEmailCrmLinkData, getEmailData, getEmailWorkData } from "@/lib/data";
+import { getCrmStatusData, getEmailCrmLinkData, getEmailData, getEmailRepliesData, getEmailWorkData } from "@/lib/data";
 import { REQUEST_TYPE_LABELS } from "@/lib/ai-format";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -12,6 +12,7 @@ import { EmailList, ImportanceBadge } from "@/components/ai/email-list";
 import { ReanalyzeButton } from "@/components/ai/mailbox-actions";
 import { CrmLinkCard } from "@/components/ai/crm-link-card";
 import { StartEstimateButton } from "@/components/ai/approval-actions";
+import { ReplyPanel } from "@/components/ai/reply-panel";
 import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { IconAlert, IconChevronLeft } from "@/components/ui/icons";
 
@@ -38,7 +39,12 @@ export default async function AiEmailPage({ params }: PageParams) {
     throw error;
   }
 
-  const [crmLink, crmStatus, work] = await Promise.all([getEmailCrmLinkData(id), getCrmStatusData(), getEmailWorkData(id)]);
+  const [crmLink, crmStatus, work, replies] = await Promise.all([
+    getEmailCrmLinkData(id),
+    getCrmStatusData(),
+    getEmailWorkData(id),
+    getEmailRepliesData(id),
+  ]);
   const analysis = email.analysis;
   const result = parse(analysis?.resultJson);
 
@@ -157,6 +163,8 @@ export default async function AiEmailPage({ params }: PageParams) {
               )}
             </section>
           )}
+
+          {analysis && <ReplyPanel emailId={email.id} replies={replies} canOffer={work.estimate?.status === "approved"} />}
 
           {email.thread.length > 0 && (
             <section className="flex flex-col gap-3" aria-labelledby="thread-heading">

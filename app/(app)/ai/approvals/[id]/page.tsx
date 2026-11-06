@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { EstimateEditor } from "@/components/ai/estimate-editor";
 import { ApprovalDecision } from "@/components/ai/approval-actions";
 import { CounterOfferForm, CounterOfferHistory } from "@/components/ai/counter-offer";
+import { ReplyReview } from "@/components/ai/reply-review";
 import { IconChevronLeft, IconExternal, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Freigabe" };
@@ -36,7 +37,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
     throw error;
   }
 
-  const { approval, estimate, note } = detail;
+  const { approval, estimate, note, reply } = detail;
   const meta = APPROVAL_STATUS[approval.status] ?? APPROVAL_STATUS.pending;
   const isOpen = approval.status === "pending" && new Date(approval.expiresAt) > new Date();
   const canCounter = Boolean(estimate) && (isOpen || estimate?.status === "rejected");
@@ -68,9 +69,22 @@ export default async function AiApprovalPage({ params }: PageParams) {
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
-          {isOpen && <ApprovalDecision approvalId={approval.id} version={approval.version} contentHash={detail.contentHash} estimateId={estimate?.id} />}
+          {reply && (
+            <ReplyReview
+              key={`${reply.id}-${approval.version}`}
+              reply={reply}
+              approvalId={approval.id}
+              version={approval.version}
+              contentHash={detail.contentHash}
+              isOpen={isOpen}
+            />
+          )}
 
-          {!isOpen && (
+          {!reply && isOpen && (
+            <ApprovalDecision approvalId={approval.id} version={approval.version} contentHash={detail.contentHash} estimateId={estimate?.id} />
+          )}
+
+          {!isOpen && !reply && (
             <section className="card p-4 text-[12.5px]">
               {approval.decidedBy ? (
                 <p>
@@ -110,11 +124,11 @@ export default async function AiApprovalPage({ params }: PageParams) {
             <dl className="mt-2 flex flex-col gap-2 text-[11.5px]">
               <div>
                 <dt className="text-subtle">Kunde</dt>
-                <dd className="font-medium text-ink">{estimate?.customerName ?? "nicht zugeordnet"}</dd>
+                <dd className="font-medium text-ink">{estimate?.customerName ?? reply?.toName ?? reply?.toAddress ?? "nicht zugeordnet"}</dd>
               </div>
               <div>
                 <dt className="text-subtle">Agent</dt>
-                <dd className="font-medium text-ink">Schätz-Agent (Pauschalpreise)</dd>
+                <dd className="font-medium text-ink">{reply ? "Antwort-Agent" : "Schätz-Agent (Pauschalpreise)"}</dd>
               </div>
               <div>
                 <dt className="text-subtle">Erstellt</dt>
@@ -131,8 +145,8 @@ export default async function AiApprovalPage({ params }: PageParams) {
                 </div>
               )}
             </dl>
-            {estimate?.emailMessageId && (
-              <Link href={`/ai/emails/${estimate.emailMessageId}`} className="mt-3 inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-accent hover:underline">
+            {(estimate?.emailMessageId ?? reply?.emailMessageId) && (
+              <Link href={`/ai/emails/${estimate?.emailMessageId ?? reply?.emailMessageId}`} className="mt-3 inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-accent hover:underline">
                 <IconMail className="h-3.5 w-3.5" />
                 {detail.emailSubject ?? "Ursprüngliche E-Mail"}
               </Link>

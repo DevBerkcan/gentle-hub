@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { getAiOverviewData, getEstimateSettingsData } from "@/lib/data";
+import { getAiOverviewData, getEstimateSettingsData, getReplySettingsData } from "@/lib/data";
 import { PageHeader } from "@/components/ui/page-header";
 import { AiSettingsForm } from "@/components/ai/ai-settings-form";
 import { EstimateSettingsForm } from "@/components/ai/estimate-settings-form";
+import { ReplySettingsForm } from "@/components/ai/reply-settings-form";
 import { IconShield } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "AI-Einstellungen" };
 
 export default async function AiSettingsPage() {
-  const [{ settings }, estimateSettings] = await Promise.all([getAiOverviewData(), getEstimateSettingsData()]);
+  const [{ settings }, estimateSettings, replySettings] = await Promise.all([
+    getAiOverviewData(),
+    getEstimateSettingsData(),
+    getReplySettingsData(),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -22,6 +27,7 @@ export default async function AiSettingsPage() {
         <div className="flex flex-col gap-6">
           <AiSettingsForm settings={settings} />
           <EstimateSettingsForm settings={estimateSettings} />
+          <ReplySettingsForm settings={replySettings} />
         </div>
 
         <aside className="flex flex-col gap-5">

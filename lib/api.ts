@@ -32,6 +32,9 @@ import type {
   EstimateSettings,
   EstimateUpdateInput,
   PriceCatalogEntry,
+  ReplyDraft,
+  ReplyPurpose,
+  ReplySettings,
   Health,
   JobStatus,
   MessengerStatus,
@@ -388,6 +391,20 @@ export const api = {
 
   regenerateEstimate: (token: string, id: string) =>
     request<{ jobId: string }>(`/api/ai/estimates/${encodeURIComponent(id)}/regenerate`, { method: "POST", token, body: {} }),
+
+  emailReplies: (token: string, emailId: string) =>
+    request<{ items: ReplyDraft[] }>(`/api/ai/emails/${encodeURIComponent(emailId)}/replies`, { token }),
+
+  startReply: (token: string, emailId: string, purpose: ReplyPurpose) =>
+    request<{ jobId: string }>(`/api/ai/emails/${encodeURIComponent(emailId)}/reply`, { method: "POST", token, body: { purpose } }),
+
+  updateReply: (token: string, id: string, input: { expectedApprovalVersion: number; subject: string; body: string }) =>
+    request<{ reply: ReplyDraft; approvalVersion: number }>(`/api/ai/replies/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  replySettings: (token: string) => request<ReplySettings>("/api/ai/settings/reply", { token }),
+
+  updateReplySettings: (token: string, input: ReplySettings) =>
+    request<ReplySettings>("/api/ai/settings/reply", { method: "PUT", token, body: input }),
 
   counterOffer: (token: string, id: string, input: { targetTotalEur?: number | null; note?: string | null }) =>
     request<{ jobId: string }>(`/api/ai/estimates/${encodeURIComponent(id)}/counter-offer`, { method: "POST", token, body: input }),
