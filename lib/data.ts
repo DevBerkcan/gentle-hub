@@ -42,9 +42,9 @@ export const getSearchData = cache(async (query: string): Promise<SearchResults>
   return api.search(token, query);
 });
 
-export const getCredentialsData = cache(async (category?: string): Promise<CredentialList> => {
+export const getCredentialsData = cache(async (category?: string, query?: string, tag?: string): Promise<CredentialList> => {
   const { token } = await requireAuth();
-  return api.credentials(token, category);
+  return api.credentials(token, category, query, tag);
 });
 
 export const getHealth = cache(async (): Promise<Health | null> => {

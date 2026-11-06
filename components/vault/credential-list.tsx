@@ -14,12 +14,17 @@ export function CredentialList({ items }: { items: Credential[] }) {
 
   const groups = useMemo(() => {
     const needle = query.trim().toLowerCase();
+    // "#tag" matches tags only; plain text also searches the tags.
+    const tagOnly = needle.startsWith("#");
+    const tagNeedle = needle.replace(/^#+/, "");
     const filtered = needle
-      ? items.filter((credential) =>
-          [credential.label, credential.url, credential.username, credential.provider, credential.notes]
+      ? items.filter((credential) => {
+          const tags = (credential.tags ?? []).map((tag) => tag.toLowerCase());
+          if (tagOnly) return tags.some((tag) => tag.includes(tagNeedle));
+          return [credential.label, credential.url, credential.username, credential.provider, credential.notes, ...tags]
             .filter(Boolean)
-            .some((value) => String(value).toLowerCase().includes(needle)),
-        )
+            .some((value) => String(value).toLowerCase().includes(needle));
+        })
       : items;
 
     return CATEGORY_ORDER.map((key) => {
@@ -44,7 +49,7 @@ export function CredentialList({ items }: { items: Credential[] }) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Nach Label, Adresse, Benutzer oder Anbieter suchen …"
+            placeholder="Nach Label, Adresse, Benutzer, Anbieter oder #Tag suchen …"
             aria-label="Passwörter durchsuchen"
             className="input pl-9 pr-9"
           />

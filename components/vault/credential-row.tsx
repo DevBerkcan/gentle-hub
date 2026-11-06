@@ -6,6 +6,7 @@ import type { Credential } from "@/lib/types";
 import { CategoryIcon } from "@/components/vault/category-icon";
 import { CredentialActions } from "@/components/vault/credential-actions";
 import { CredentialSecret } from "@/components/vault/credential-secret";
+import { TagChips } from "@/components/vault/tag-input";
 import { CopyButton } from "@/components/ui/copy-button";
 import { IconExternal } from "@/components/ui/icons";
 
@@ -71,6 +72,8 @@ export function CredentialRow({ credential }: { credential: Credential }) {
           ) : (
             <p className={cn("mt-1.5 text-[11px] font-medium text-amber-700")}>Kein Passwort gespeichert</p>
           )}
+
+          <TagChips tags={credential.tags} />
 
           {credential.notes && (
             <p className="mt-2 rounded-[8px] border-l-2 border-line-strong bg-surface-2/70 px-2.5 py-1.5 text-[11.5px] leading-relaxed text-muted">

@@ -7,6 +7,8 @@ import { ProjectGrid } from "@/components/projects/project-grid";
 import { AssetTypeIcon } from "@/components/assets/asset-type-icon";
 import { EmptyState } from "@/components/ui/empty-state";
 import { EnvironmentBadge } from "@/components/ui/badge";
+import { CategoryIcon } from "@/components/vault/category-icon";
+import { credentialCategoryLabel } from "@/lib/constants";
 import { IconArrowRight, IconSearch } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Suche" };
@@ -23,6 +25,8 @@ export default async function SearchPage({
   const results = query.length >= 2 ? await getSearchData(query) : null;
   const projectCount = results?.projects.length ?? 0;
   const assetCount = results?.assets.length ?? 0;
+  const credentials = results?.credentials ?? [];
+  const credentialCount = credentials.length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -53,9 +57,9 @@ export default async function SearchPage({
         <EmptyState
           icon={<IconSearch className="h-5 w-5" />}
           title={query ? "Mindestens 2 Zeichen eingeben" : "Wonach suchst du?"}
-          description="Durchsuche Projektnamen, Beschreibungen, Repositories, Hosting-Anbieter, Benutzernamen und Notizen."
+          description="Durchsuche Projekte, Repositories, Hosting, Benutzernamen und Zugänge. Mit #tag suchst du gezielt nach Tags im Passwort-Tresor."
         />
-      ) : projectCount === 0 && assetCount === 0 ? (
+      ) : projectCount === 0 && assetCount === 0 && credentialCount === 0 ? (
         <EmptyState
           icon={<IconSearch className="h-5 w-5" />}
           title={`Keine Treffer für „${query}“`}
@@ -70,8 +74,48 @@ export default async function SearchPage({
         <div className="flex flex-col gap-8">
           <p className="text-[11.5px] font-semibold uppercase tracking-wide text-subtle">
             {projectCount} {projectCount === 1 ? "Projekt" : "Projekte"} · {assetCount}{" "}
-            {assetCount === 1 ? "Eintrag" : "Einträge"} für „{query}“
+            {assetCount === 1 ? "Eintrag" : "Einträge"} · {credentialCount} {credentialCount === 1 ? "Zugang" : "Zugänge"} für „{query}“
           </p>
+
+          {credentialCount > 0 && (
+            <section aria-labelledby="search-credentials">
+              <h2 id="search-credentials" className="mb-4 font-display text-[16px] font-bold text-ink">
+                Zugänge
+              </h2>
+              <div className="card divide-y divide-line overflow-hidden">
+                {credentials.map((credential) => (
+                  <Link
+                    key={credential.id}
+                    href={`/passwords?category=${credential.category}#credential-${credential.id}`}
+                    className="flex items-start gap-3 px-4 py-3.5 transition hover:bg-surface-2"
+                  >
+                    <CategoryIcon category={credential.category} />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-[12.5px] font-semibold text-ink">{credential.label}</p>
+                        <span className="text-[10px] font-semibold text-muted">
+                          {credential.provider ?? credentialCategoryLabel(credential.category)}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 truncate text-[11px] text-muted">
+                        {[credential.url ? shortUrl(credential.url) : null, credential.username].filter(Boolean).join(" · ") || "Passwort-Tresor"}
+                      </p>
+                      {credential.tags && credential.tags.length > 0 && (
+                        <p className="mt-1 flex flex-wrap gap-1">
+                          {credential.tags.map((tag) => (
+                            <span key={tag} className="rounded-full bg-[#e9fbf3] px-2 py-0.5 text-[10px] font-semibold text-[#0b6b49] dark:bg-emerald-500/10 dark:text-emerald-300">
+                              #{tag}
+                            </span>
+                          ))}
+                        </p>
+                      )}
+                    </div>
+                    <span className="mt-1 shrink-0 text-[10.5px] font-semibold text-subtle">Öffnen →</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
           {projectCount > 0 && (
             <section aria-labelledby="search-projects">

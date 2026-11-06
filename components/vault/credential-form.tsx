@@ -9,6 +9,7 @@ import { normalizeUrl } from "@/lib/format";
 import type { Credential, CredentialCategory, CredentialInput } from "@/lib/types";
 import { Field, FormError } from "@/components/ui/field";
 import { CategoryIcon } from "@/components/vault/category-icon";
+import { TagInput } from "@/components/vault/tag-input";
 import { IconEye, IconEyeOff, IconLoader } from "@/components/ui/icons";
 
 const EMPTY: CredentialInput = {
@@ -20,6 +21,7 @@ const EMPTY: CredentialInput = {
   provider: "",
   notes: "",
   clearPassword: false,
+  tags: [],
 };
 
 function toInput(credential: Credential): CredentialInput {
@@ -33,6 +35,7 @@ function toInput(credential: Credential): CredentialInput {
     notes: credential.notes,
     clearPassword: false,
     isFavorite: credential.isFavorite,
+    tags: credential.tags ?? [],
   };
 }
 
@@ -244,6 +247,15 @@ export function CredentialForm({
           )}
         </Field>
       </div>
+
+      <Field
+        label="Tags"
+        htmlFor={`${formId}-tags`}
+        error={errors.tags}
+        hint="Mit Enter oder Komma trennen. Über Tags findest du den Zugang in der Suche wieder (z. B. #kunde-muster)."
+      >
+        <TagInput id={`${formId}-tags`} value={form.tags ?? []} onChange={(tags) => update("tags", tags)} />
+      </Field>
 
       <Field label="Notizen" htmlFor={`${formId}-notes`} error={errors.notes}>
         <textarea

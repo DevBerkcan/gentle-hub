@@ -101,6 +101,7 @@ export type Overview = {
 export type SearchResults = {
   projects: Project[];
   assets: { asset: Asset; project: Project }[];
+  credentials?: Credential[];
 };
 
 export type Health = {
@@ -166,6 +167,7 @@ export type Credential = {
   notes: string;
   isFavorite: boolean;
   sortOrder: number;
+  tags?: string[];
   updatedAt: string;
   updatedBy: string | null;
 };
@@ -181,6 +183,7 @@ export type CredentialInput = {
   clearPassword?: boolean;
   isFavorite?: boolean;
   sortOrder?: number;
+  tags?: string[];
 };
 
 export type CredentialImportItem = {
@@ -202,6 +205,7 @@ export type CredentialImportResult = {
 export type VaultStats = {
   total: number;
   byCategory: Record<string, number>;
+  byTag?: Record<string, number>;
 };
 
 export type CredentialList = {

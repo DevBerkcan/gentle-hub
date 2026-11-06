@@ -201,11 +201,13 @@ export const api = {
     }),
 
   // Password vault
-  credentials: (token: string, category?: string) =>
-    request<CredentialList>(
-      `/api/credentials${category ? `?category=${encodeURIComponent(category)}` : ""}`,
-      { token },
-    ),
+  credentials: (token: string, category?: string, query?: string, tag?: string) => {
+    const params = new URLSearchParams();
+    if (category) params.set("category", category);
+    if (query) params.set("q", query);
+    if (tag) params.set("tag", tag);
+    return request<CredentialList>(`/api/credentials${params.size > 0 ? `?${params.toString()}` : ""}`, { token });
+  },
 
   createCredential: (token: string, input: CredentialInput) =>
     request<Credential>("/api/credentials", { method: "POST", token, body: input }),

@@ -8,6 +8,7 @@ import { CredentialList } from "@/components/vault/credential-list";
 import { ImportCredentialsButton } from "@/components/vault/import-credentials-button";
 import { NewCredentialButton } from "@/components/vault/new-credential-button";
 import { VaultFilters } from "@/components/vault/vault-filters";
+import { VaultSearch } from "@/components/vault/vault-search";
 import { IconKey } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Passwörter" };
@@ -15,13 +16,17 @@ export const metadata: Metadata = { title: "Passwörter" };
 export default async function PasswordsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string | string[] }>;
+  searchParams: Promise<{ category?: string | string[]; q?: string | string[]; tag?: string | string[] }>;
 }) {
   const params = await searchParams;
-  const rawCategory = Array.isArray(params.category) ? params.category[0] : params.category;
+  const first = (value?: string | string[]) => (Array.isArray(value) ? value[0] : value)?.trim() || undefined;
+  const rawCategory = first(params.category);
   const category = isCredentialCategory(rawCategory) ? rawCategory : undefined;
+  const query = first(params.q)?.slice(0, 100);
+  const tag = first(params.tag)?.replace(/^#+/, "").slice(0, 40);
+  const filtered = Boolean(category || query || tag);
 
-  const { items, stats } = await getCredentialsData(category);
+  const { items, stats } = await getCredentialsData(category, query, tag);
 
   return (
     <div className="flex flex-col gap-5">
@@ -38,20 +43,21 @@ export default async function PasswordsPage({
       />
 
       <VaultFilters total={stats.total} byCategory={stats.byCategory} activeCategory={category} />
+      <VaultSearch category={category} query={query} activeTag={tag} byTag={stats.byTag ?? {}} />
 
       {items.length > 0 ? (
         <CredentialList items={items} />
       ) : (
         <EmptyState
           icon={<IconKey className="h-4 w-4" />}
-          title={category ? "Keine Passwörter in dieser Kategorie" : "Noch keine Passwörter"}
+          title={filtered ? "Keine passenden Passwörter" : "Noch keine Passwörter"}
           description={
-            category
-              ? "Wähle eine andere Kategorie oder lege einen neuen Eintrag an."
+            filtered
+              ? "Ändere Suche, Tag oder Kategorie oder lege einen neuen Eintrag an."
               : "Importiere einen CSV-Export aus Chrome oder lege das erste Passwort an."
           }
           action={
-            category ? (
+            filtered ? (
               <Link href="/passwords" className="btn btn-secondary">
                 Alle Passwörter anzeigen
               </Link>
