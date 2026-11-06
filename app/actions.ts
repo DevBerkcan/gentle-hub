@@ -644,6 +644,18 @@ export async function updateReplyAction(
   }
 }
 
+export async function startReportAction(projectId: string, month?: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.startReport(token, projectId, month);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
 export async function runLeadCheckAction(emailId: string): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();

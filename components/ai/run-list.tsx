@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { persona } from "@/lib/agent-personas";
 import { formatDuration, formatEur, formatTokens } from "@/lib/ai-format";
 import { formatDateTime, formatRelative } from "@/lib/format";
 import type { Agent, AgentRun } from "@/lib/types";
@@ -28,7 +29,7 @@ export function RunList({
     );
   }
 
-  const names = new Map((agents ?? []).map((agent) => [agent.id, agent.name]));
+  const names = new Map((agents ?? []).map((agent) => [agent.id, `${persona(agent.id, agent.name).firstName} · ${agent.name}`]));
 
   return (
     <ul className="card divide-y divide-line">

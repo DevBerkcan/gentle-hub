@@ -33,14 +33,14 @@ export default async function SupportPage({ searchParams }: { searchParams: Prom
           agentId="support-triage"
           size={88}
           state={critical > 0 ? "alert" : active > 0 ? "working" : "idle"}
-          title="Support-Agent"
+          title="Mert · Support-Agent"
           className="hidden sm:block"
         />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="AI Operations"
             title="Support"
-            description="Der Support-Agent sortiert Mails von Bestandskunden in Tickets: Ausfall, Fehler, Änderungswunsch oder Frage, mit Dringlichkeit und Projekt. Notfälle kommen sofort per Telegram, Änderungswünsche laufen in die Schätzung."
+            description="Mert, unser Support-Agent, sortiert Mails von Bestandskunden in Tickets: Ausfall, Fehler, Änderungswunsch oder Frage, mit Dringlichkeit und Projekt. Notfälle kommen sofort per Telegram, Änderungswünsche laufen in die Schätzung."
           />
         </div>
       </div>

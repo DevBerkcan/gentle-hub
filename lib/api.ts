@@ -39,6 +39,7 @@ import type {
   SupportStatus,
   SupportTicket,
   LeadCheck,
+  ReportProject,
   Health,
   JobStatus,
   MessengerStatus,
@@ -404,6 +405,11 @@ export const api = {
 
   updateReply: (token: string, id: string, input: { expectedApprovalVersion: number; subject: string; body: string }) =>
     request<{ reply: ReplyDraft; approvalVersion: number }>(`/api/ai/replies/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  reports: (token: string) => request<{ items: ReportProject[]; defaultMonth: string }>("/api/ai/reports", { token }),
+
+  startReport: (token: string, projectId: string, month?: string) =>
+    request<{ jobId: string; month: string }>(`/api/ai/reports/${encodeURIComponent(projectId)}`, { method: "POST", token, body: { month } }),
 
   leadCheck: (token: string, emailId: string) =>
     request<{ check?: LeadCheck | null }>(`/api/ai/emails/${encodeURIComponent(emailId)}/lead-check`, { token }),

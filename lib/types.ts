@@ -687,13 +687,13 @@ export type ApprovalDetail = {
   reply?: ReplyDraft | null;
 };
 
-export type ReplyPurpose = "acknowledge" | "offer" | "followup";
+export type ReplyPurpose = "acknowledge" | "offer" | "followup" | "report";
 
 export type ReplyStatus = "pending_approval" | "sent" | "rejected" | "superseded" | "failed";
 
 export type ReplyDraft = {
   id: string;
-  emailMessageId: string;
+  emailMessageId?: string | null;
   approvalId?: string | null;
   estimateId?: string | null;
   purpose: ReplyPurpose;
@@ -783,6 +783,20 @@ export type LeadCheck = {
   facts?: LeadFacts | null;
   insights?: LeadInsights | null;
   createdAt: string;
+};
+
+export type ReportProject = {
+  projectId: string;
+  name: string;
+  slug: string;
+  website?: string | null;
+  contactName?: string | null;
+  contactEmail?: string | null;
+  isMaintenance: boolean;
+  canReport: boolean;
+  lastMonth?: string | null;
+  lastStatus?: ReplyStatus | null;
+  lastApprovalId?: string | null;
 };
 
 export type MonitorStatus = "up" | "degraded" | "down" | "unknown";

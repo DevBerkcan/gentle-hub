@@ -5,18 +5,23 @@ import { formatRelative } from "@/lib/format";
 import type { Agent } from "@/lib/types";
 import { IconChevronRight } from "@/components/ui/icons";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
+import { persona } from "@/lib/agent-personas";
 
 export function AgentCard({ agent }: { agent: Agent }) {
+  const who = persona(agent.id, agent.name);
   return (
     <Link
       href={`/ai/agents/${encodeURIComponent(agent.id)}`}
       className="group card flex flex-col gap-3 p-4 transition hover:border-line-strong"
     >
       <div className="flex items-start gap-3">
-        <AgentAvatar agentId={agent.id} size={52} state={agent.isEnabled ? "idle" : "off"} title={agent.name} className="-my-1" />
+        <AgentAvatar agentId={agent.id} size={52} state={agent.isEnabled ? "idle" : "off"} title={`${who.firstName} – ${agent.name}`} className="-my-1" />
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-2 text-[13px] font-semibold text-ink">
-            <span className="truncate">{agent.name}</span>
+            <span className="truncate">
+              {who.firstName}
+              <span className="ml-1.5 font-medium text-muted">{agent.name}</span>
+            </span>
             <span
               className={cn(
                 "rounded-[5px] px-1.5 py-0.5 text-[9.5px] font-semibold",

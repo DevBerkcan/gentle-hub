@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { persona } from "@/lib/agent-personas";
 import Link from "next/link";
 import { getAiAgentsData, getAiCostsData } from "@/lib/data";
 import { formatEur, formatTokens } from "@/lib/ai-format";
@@ -21,7 +22,7 @@ export default async function AiCostsPage({ searchParams }: { searchParams: Prom
   const month = rawMonth && /^\d{4}-\d{2}$/.test(rawMonth) ? rawMonth : undefined;
 
   const [report, agents] = await Promise.all([getAiCostsData(month), getAiAgentsData()]);
-  const names = new Map(agents.map((agent) => [agent.id, agent.name]));
+  const names = new Map(agents.map((agent) => [agent.id, `${persona(agent.id, agent.name).firstName} · ${agent.name}`]));
   const currentMonth = report.budget.month;
   const maxDaily = Math.max(0.0001, ...report.daily.map((day) => day.amountEur));
 

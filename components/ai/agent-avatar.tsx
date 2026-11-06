@@ -77,6 +77,15 @@ const PERSONAS: Record<string, Persona> = {
       </g>
     ),
   },
+  "customer-report": {
+    palette: { light: "#f5d0fe", base: "#d946ef", dark: "#701a75", eye: "#fdf4ff" },
+    glyph: (
+      <g {...stroke}>
+        <path d="M53 94V88M58 94V84M63 94V86M68 94V82" />
+      </g>
+    ),
+    accessory: "pencil",
+  },
   "lead-check": {
     palette: { light: "#d9f99d", base: "#84cc16", dark: "#365314", eye: "#f7fee7" },
     glyph: (

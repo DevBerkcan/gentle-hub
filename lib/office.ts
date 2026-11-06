@@ -1,4 +1,5 @@
 import type { OfficeAgent, OfficeFlow, OfficeRoom } from "@/components/ai/office/office-scene";
+import { persona } from "@/lib/agent-personas";
 import type { AiOverview, ApprovalListItem, MonitorOverview, SupportTicket } from "@/lib/types";
 
 /** An agent counts as working if it ran within this window. */
@@ -23,7 +24,7 @@ export function buildOffice(
     if (!data) return null;
     return {
       id,
-      name: data.name,
+      name: `${persona(id, data.name).firstName} · ${data.name}`,
       enabled: data.isEnabled,
       working: data.isEnabled && recent(data.month.lastRunAt, now),
       alert: id === "support-triage" && support.items.some((t) => t.severity === "critical" && t.status !== "done"),
@@ -39,7 +40,7 @@ export function buildOffice(
 
   const monitor: OfficeAgent = {
     id: "website-monitor",
-    name: "Website-Wächter",
+    name: "Kaan · Website-Wächter",
     enabled: summary.total > 0,
     // A check round takes well under a minute; right after one it counts as working.
     working: Boolean(summary.lastRunAt) && now - new Date(summary.lastRunAt!).getTime() < 90_000,
@@ -74,8 +75,8 @@ export function buildOffice(
       icon: "✉️",
       color: "#f43f5e",
       href: "/ai/approvals",
-      agents: list("reply-drafter", "follow-up"),
-      subtitle: `2 Agenten · ${replyApprovals} ${replyApprovals === 1 ? "Mail" : "Mails"} zur Freigabe`,
+      agents: list("reply-drafter", "follow-up", "customer-report"),
+      subtitle: `3 Agenten · ${replyApprovals} ${replyApprovals === 1 ? "Mail" : "Mails"} zur Freigabe`,
       active: false,
     },
     {

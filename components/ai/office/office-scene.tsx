@@ -39,6 +39,7 @@ const PALETTE: Record<string, { body: string; dark: string; eye: string }> = {
   "support-triage": { body: "#f97316", dark: "#7c2d12", eye: "#fff1df" },
   "website-monitor": { body: "#06b6d4", dark: "#164e63", eye: "#e0fdff" },
   "lead-check": { body: "#84cc16", dark: "#365314", eye: "#f7fee7" },
+  "customer-report": { body: "#d946ef", dark: "#701a75", eye: "#fdf4ff" },
 };
 
 const ROOM_W = 9;

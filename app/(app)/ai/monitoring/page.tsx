@@ -25,14 +25,14 @@ export default async function MonitoringPage() {
           agentId="website-monitor"
           size={88}
           state={summary.down > 0 ? "alert" : "idle"}
-          title="Website-Wächter"
+          title="Kaan · Website-Wächter"
           className="hidden sm:block"
         />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="AI Operations"
             title="Website-Wächter"
-            description={`Prüft alle 5 Minuten die Websites eurer Live- und Beta-Projekte: Erreichbarkeit, Antwortzeit und SSL-Zertifikat. Fällt eine Seite zweimal hintereinander aus, kommt eine Telegram-Nachricht. Ohne KI, ohne laufende Kosten.${summary.lastRunAt ? ` Letzte Prüfung ${formatRelative(summary.lastRunAt)}.` : ""}`}
+            description={`Kaan prüft alle 5 Minuten die Websites eurer Live- und Beta-Projekte: Erreichbarkeit, Antwortzeit und SSL-Zertifikat. Fällt eine Seite zweimal hintereinander aus, kommt eine Telegram-Nachricht. Ohne KI, ohne laufende Kosten.${summary.lastRunAt ? ` Letzte Prüfung ${formatRelative(summary.lastRunAt)}.` : ""}`}
             action={<MonitorCheckButton />}
           />
         </div>

@@ -7,6 +7,7 @@ import { formatEur, formatTokens, TRIGGER_LABELS } from "@/lib/ai-format";
 import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/ui/page-header";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
+import { persona } from "@/lib/agent-personas";
 import { AgentSettingsForm } from "@/components/ai/agent-settings-form";
 import { PromptEditor } from "@/components/ai/prompt-editor";
 import { RunList } from "@/components/ai/run-list";
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   const { id } = await params;
   try {
     const { agent } = await getAiAgentData(id);
-    return { title: agent.name };
+    return { title: `${persona(agent.id, agent.name).firstName} · ${agent.name}` };
   } catch {
     return { title: "Agent" };
   }
@@ -44,11 +45,11 @@ export default async function AiAgentPage({ params }: PageParams) {
         Alle Agenten
       </Link>
       <div className="flex items-start gap-4">
-        <AgentAvatar agentId={agent.id} size={88} state={agent.isEnabled ? "idle" : "off"} title={agent.name} className="hidden sm:block" />
+        <AgentAvatar agentId={agent.id} size={88} state={agent.isEnabled ? "idle" : "off"} title={`${persona(agent.id, agent.name).firstName} – ${agent.name}`} className="hidden sm:block" />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow={`Agent · ${agent.id}`}
-            title={agent.name}
+            title={`${persona(agent.id, agent.name).firstName} · ${agent.name}`}
             description={agent.description}
             action={<TestRunButton agentId={agent.id} />}
           />

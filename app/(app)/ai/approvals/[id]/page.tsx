@@ -14,6 +14,7 @@ import { CounterOfferForm, CounterOfferHistory } from "@/components/ai/counter-o
 import { ReplyReview } from "@/components/ai/reply-review";
 import { LeadCheckCard } from "@/components/ai/lead-check-card";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
+import { personaLabel } from "@/lib/agent-personas";
 import { IconChevronLeft, IconExternal, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Freigabe" };
@@ -133,7 +134,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
                 <dt className="text-subtle">Agent</dt>
                 <dd className="flex items-center gap-2 font-medium text-ink">
                   <AgentAvatar agentId={approval.agentId ?? (reply ? "reply-drafter" : "estimation")} size={34} />
-                  {reply ? (reply.purpose === "followup" ? "Nachfass-Agent" : "Antwort-Agent") : "Schätz-Agent (Pauschalpreise)"}
+                  {personaLabel(approval.agentId ?? (reply ? "reply-drafter" : "estimation"))}
                 </dd>
               </div>
               <div>
