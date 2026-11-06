@@ -20,6 +20,7 @@ import type {
   ProjectKind,
   ReplyDraft,
   ReplySettings,
+  MonitorOverview,
   SearchResults,
 } from "@/lib/types";
 
@@ -152,6 +153,11 @@ export const getEmailRepliesData = cache(async (emailId: string): Promise<ReplyD
   const { token } = await requireAuth();
   const response = await api.emailReplies(token, emailId);
   return response.items;
+});
+
+export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {
+  const { token } = await requireAuth();
+  return api.monitoring(token);
 });
 
 export const getReplySettingsData = cache(async (): Promise<ReplySettings> => {

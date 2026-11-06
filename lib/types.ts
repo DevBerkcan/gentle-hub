@@ -713,6 +713,31 @@ export type ReplyDraft = {
 
 export type ReplySettings = { signature: string; fromName: string };
 
+export type MonitorStatus = "up" | "degraded" | "down" | "unknown";
+
+export type MonitorTarget = {
+  projectId: string;
+  projectName: string;
+  projectSlug: string;
+  projectKind: string;
+  url: string;
+  isEnabled: boolean;
+  status: MonitorStatus;
+  lastCheckAt?: string | null;
+  lastHttpStatus?: number | null;
+  lastResponseMs?: number | null;
+  lastError?: string | null;
+  certExpiresAt?: string | null;
+  certDaysLeft?: number | null;
+  downSince?: string | null;
+  recent: MonitorStatus[];
+};
+
+export type MonitorOverview = {
+  summary: { total: number; up: number; degraded: number; down: number; unknown: number; certExpiringSoon: number; lastRunAt?: string | null };
+  targets: MonitorTarget[];
+};
+
 export type CounterOffer = {
   id: string;
   estimateId: string;

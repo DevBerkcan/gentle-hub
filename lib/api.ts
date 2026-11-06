@@ -35,6 +35,7 @@ import type {
   ReplyDraft,
   ReplyPurpose,
   ReplySettings,
+  MonitorOverview,
   Health,
   JobStatus,
   MessengerStatus,
@@ -400,6 +401,13 @@ export const api = {
 
   updateReply: (token: string, id: string, input: { expectedApprovalVersion: number; subject: string; body: string }) =>
     request<{ reply: ReplyDraft; approvalVersion: number }>(`/api/ai/replies/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  monitoring: (token: string) => request<MonitorOverview>("/api/ai/monitoring", { token }),
+
+  monitoringCheck: (token: string) => request<{ jobId: string }>("/api/ai/monitoring/check", { method: "POST", token, body: {} }),
+
+  monitoringToggle: (token: string, projectId: string, isEnabled: boolean) =>
+    request<void>(`/api/ai/monitoring/${encodeURIComponent(projectId)}`, { method: "PUT", token, body: { isEnabled } }),
 
   replySettings: (token: string) => request<ReplySettings>("/api/ai/settings/reply", { token }),
 

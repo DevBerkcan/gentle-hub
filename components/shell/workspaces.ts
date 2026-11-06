@@ -170,6 +170,12 @@ export const WORKSPACES: Workspace[] = [
             active: ({ pathname }) => pathname.startsWith("/ai/connections"),
           },
           {
+            href: "/ai/monitoring",
+            label: "Website-Wächter",
+            icon: IconGlobe,
+            active: ({ pathname }) => pathname.startsWith("/ai/monitoring"),
+          },
+          {
             href: "/ai/history",
             label: "Workflow-Historie",
             icon: IconActivity,

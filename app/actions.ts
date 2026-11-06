@@ -643,6 +643,31 @@ export async function updateReplyAction(
   }
 }
 
+export async function checkMonitoringAction(): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.monitoringCheck(token);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function toggleMonitoringAction(projectId: string, isEnabled: boolean): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.monitoringToggle(token, projectId, isEnabled);
+    revalidatePath("/ai/monitoring");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
 export async function updateReplySettingsAction(input: ReplySettings): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();
