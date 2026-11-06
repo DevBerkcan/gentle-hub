@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { api } from "@/lib/api";
 import { requireAuth } from "@/lib/session";
+import { buildOffice } from "@/lib/office";
 import type {
   AgentDetail,
   AiOverview,
@@ -165,6 +166,16 @@ export const getSupportForEmailData = cache(async (emailId: string): Promise<Sup
   const { token } = await requireAuth();
   const response = await api.supportForEmail(token, emailId);
   return response.ticket ?? null;
+});
+
+export const getOfficeData = cache(async () => {
+  const [overview, approvals, support, monitoring] = await Promise.all([
+    getAiOverviewData(),
+    getApprovalsData("open"),
+    getSupportData("active"),
+    getMonitoringData(),
+  ]);
+  return buildOffice(overview, approvals, support, monitoring);
 });
 
 export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {

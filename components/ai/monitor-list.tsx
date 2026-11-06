@@ -101,7 +101,7 @@ function MonitorRow({ target }: { target: MonitorTarget }) {
       <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-1 whitespace-nowrap text-[11px] sm:w-[300px] sm:flex-nowrap sm:justify-end">
         <span className="tabular-nums text-muted">{target.lastResponseMs != null ? `${target.lastResponseMs} ms` : "–"}</span>
         {cert && <span className={cn("font-medium", cert.className)}>{cert.text}</span>}
-        <span className="text-subtle">{target.lastCheckAt ? formatRelative(target.lastCheckAt) : "nie"}</span>
+        <span className="text-subtle" suppressHydrationWarning>{target.lastCheckAt ? formatRelative(target.lastCheckAt) : "nie"}</span>
         <button
           type="button"
           disabled={pending}

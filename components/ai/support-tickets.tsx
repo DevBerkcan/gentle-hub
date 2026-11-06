@@ -90,7 +90,7 @@ export function SupportTicketCard({ ticket, highlight }: { ticket: SupportTicket
             Vom Website-Wächter bestätigt
           </span>
         )}
-        <span className="ml-auto text-[10.5px] text-subtle">
+        <span className="ml-auto text-[10.5px] text-subtle" suppressHydrationWarning>
           {STATUS_LABELS[ticket.status]} · {formatRelative(ticket.createdAt)}
         </span>
       </div>

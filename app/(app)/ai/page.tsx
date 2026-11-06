@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAiOverviewData, getEmailsData } from "@/lib/data";
+import { getAiOverviewData, getEmailsData, getOfficeData } from "@/lib/data";
+import { AgentOffice } from "@/components/ai/office/agent-office";
 import { formatEur } from "@/lib/ai-format";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -14,7 +15,7 @@ import { IconActivity, IconAlert, IconArrowRight, IconCheck, IconClock, IconSpar
 export const metadata: Metadata = { title: "AI Operations" };
 
 export default async function AiDashboardPage() {
-  const [overview, emails] = await Promise.all([getAiOverviewData(), getEmailsData()]);
+  const [overview, emails, office] = await Promise.all([getAiOverviewData(), getEmailsData(), getOfficeData()]);
   const { settings, budget, agents, jobs } = overview;
   const runsThisMonth = agents.reduce((sum, agent) => sum + agent.month.runs, 0);
   const failuresThisMonth = agents.reduce((sum, agent) => sum + agent.month.failedRuns, 0);
@@ -42,6 +43,8 @@ export default async function AiDashboardPage() {
           </>
         }
       />
+
+      <AgentOffice rooms={office.rooms} flows={office.flows} height={460} />
 
       {settings.isDryRun && (
         <p className="rounded-[10px] border border-accent/30 bg-accent-soft px-4 py-3 text-[12px] leading-relaxed text-ink">

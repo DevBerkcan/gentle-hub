@@ -142,6 +142,12 @@ export const WORKSPACES: Workspace[] = [
         items: [
           { href: "/ai", label: "Dashboard", icon: IconSparkles, active: ({ pathname }) => pathname === "/ai" },
           {
+            href: "/ai/office",
+            label: "Agenten-Büro",
+            icon: IconApps,
+            active: ({ pathname }) => pathname.startsWith("/ai/office"),
+          },
+          {
             href: "/ai/approvals",
             label: "Freigaben",
             icon: IconCheck,
