@@ -81,7 +81,7 @@ export function ReplyReview({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 id="reply-heading" className="flex items-center gap-2 text-[14px] font-semibold text-ink">
             <IconMail className="h-4 w-4 text-accent" />
-            {reply.purpose === "offer" ? "Angebotsmail" : "Antwort an den Kunden"}
+            {reply.purpose === "offer" ? "Angebotsmail" : reply.purpose === "followup" ? "Nachfass-Mail" : "Antwort an den Kunden"}
           </h2>
           {editable && (
             <button type="button" onClick={save} disabled={pending || !dirty} className="btn btn-secondary h-8 text-[11.5px]">

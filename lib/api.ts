@@ -36,6 +36,8 @@ import type {
   ReplyPurpose,
   ReplySettings,
   MonitorOverview,
+  SupportStatus,
+  SupportTicket,
   Health,
   JobStatus,
   MessengerStatus,
@@ -401,6 +403,15 @@ export const api = {
 
   updateReply: (token: string, id: string, input: { expectedApprovalVersion: number; subject: string; body: string }) =>
     request<{ reply: ReplyDraft; approvalVersion: number }>(`/api/ai/replies/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  supportTickets: (token: string, status?: string) =>
+    request<{ items: SupportTicket[]; active: number }>(`/api/ai/support${status ? `?status=${encodeURIComponent(status)}` : ""}`, { token }),
+
+  supportForEmail: (token: string, emailId: string) =>
+    request<{ ticket?: SupportTicket | null }>(`/api/ai/support/email/${encodeURIComponent(emailId)}`, { token }),
+
+  setSupportStatus: (token: string, id: string, status: SupportStatus) =>
+    request<SupportTicket>(`/api/ai/support/${encodeURIComponent(id)}`, { method: "PUT", token, body: { status } }),
 
   monitoring: (token: string) => request<MonitorOverview>("/api/ai/monitoring", { token }),
 

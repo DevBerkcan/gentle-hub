@@ -21,6 +21,7 @@ import type {
   ReplyDraft,
   ReplySettings,
   MonitorOverview,
+  SupportTicket,
   SearchResults,
 } from "@/lib/types";
 
@@ -153,6 +154,17 @@ export const getEmailRepliesData = cache(async (emailId: string): Promise<ReplyD
   const { token } = await requireAuth();
   const response = await api.emailReplies(token, emailId);
   return response.items;
+});
+
+export const getSupportData = cache(async (status?: string) => {
+  const { token } = await requireAuth();
+  return api.supportTickets(token, status);
+});
+
+export const getSupportForEmailData = cache(async (emailId: string): Promise<SupportTicket | null> => {
+  const { token } = await requireAuth();
+  const response = await api.supportForEmail(token, emailId);
+  return response.ticket ?? null;
 });
 
 export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {

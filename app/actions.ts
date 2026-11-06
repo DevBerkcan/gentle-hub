@@ -26,6 +26,7 @@ import type {
   PriceCatalogEntry,
   ReplyPurpose,
   ReplySettings,
+  SupportStatus,
   NotificationPreferences,
   PairingCode,
   ProjectInput,
@@ -638,6 +639,19 @@ export async function updateReplyAction(
     const { approvalVersion } = await api.updateReply(token, id, input);
     revalidatePath("/ai", "layout");
     return { ok: true, approvalVersion };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function setSupportStatusAction(id: string, status: SupportStatus): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.setSupportStatus(token, id, status);
+    revalidatePath("/ai/support");
+    return { ok: true };
   } catch (error) {
     return toFailure(error);
   }

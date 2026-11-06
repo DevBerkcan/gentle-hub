@@ -2,6 +2,7 @@ import type { OverviewCounts } from "@/lib/types";
 import { CREDENTIAL_CATEGORIES } from "@/lib/constants";
 import {
   IconActivity,
+  IconAlert,
   IconApps,
   IconCheck,
   IconFolder,
@@ -145,6 +146,12 @@ export const WORKSPACES: Workspace[] = [
             label: "Freigaben",
             icon: IconCheck,
             active: ({ pathname }) => pathname.startsWith("/ai/approvals"),
+          },
+          {
+            href: "/ai/support",
+            label: "Support",
+            icon: IconAlert,
+            active: ({ pathname }) => pathname.startsWith("/ai/support"),
           },
           {
             href: "/ai/agents",

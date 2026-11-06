@@ -12,6 +12,7 @@ import { EstimateEditor } from "@/components/ai/estimate-editor";
 import { ApprovalDecision } from "@/components/ai/approval-actions";
 import { CounterOfferForm, CounterOfferHistory } from "@/components/ai/counter-offer";
 import { ReplyReview } from "@/components/ai/reply-review";
+import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { IconChevronLeft, IconExternal, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Freigabe" };
@@ -128,7 +129,10 @@ export default async function AiApprovalPage({ params }: PageParams) {
               </div>
               <div>
                 <dt className="text-subtle">Agent</dt>
-                <dd className="font-medium text-ink">{reply ? "Antwort-Agent" : "Schätz-Agent (Pauschalpreise)"}</dd>
+                <dd className="flex items-center gap-2 font-medium text-ink">
+                  <AgentAvatar agentId={approval.agentId ?? (reply ? "reply-drafter" : "estimation")} size={34} />
+                  {reply ? (reply.purpose === "followup" ? "Nachfass-Agent" : "Antwort-Agent") : "Schätz-Agent (Pauschalpreise)"}
+                </dd>
               </div>
               <div>
                 <dt className="text-subtle">Erstellt</dt>

@@ -56,7 +56,7 @@ export function ReplyPanel({ emailId, replies, canOffer }: { emailId: string; re
               <span className={cn("rounded-[5px] px-1.5 py-0.5 text-[10px] font-semibold", STATUS[reply.status].className)}>
                 {STATUS[reply.status].label}
               </span>
-              <span className="font-medium text-ink">{reply.purpose === "offer" ? "Angebotsmail" : "Erste Antwort"}</span>
+              <span className="font-medium text-ink">{reply.purpose === "offer" ? "Angebotsmail" : reply.purpose === "followup" ? "Nachfass-Mail" : "Erste Antwort"}</span>
               <span className="text-muted">
                 {reply.sentAt ? `gesendet ${formatDateTime(reply.sentAt)}` : `erstellt ${formatDateTime(reply.createdAt)}`}
               </span>

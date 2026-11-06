@@ -335,3 +335,131 @@ dialog[open] {
     scroll-behavior: auto !important;
   }
 }
+
+/* Agent avatars: floating, blinking robots (see components/ai/agent-avatar.tsx). */
+@keyframes avatar-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes avatar-shadow {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scaleX(0.82);
+    opacity: 0.12;
+  }
+}
+
+@keyframes avatar-blink {
+  0%,
+  91%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes avatar-glow {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes avatar-scan {
+  0%,
+  100% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes avatar-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-28deg);
+  }
+}
+
+.agent-avatar .avatar-bob {
+  animation: avatar-bob 3.4s ease-in-out infinite;
+  animation-delay: var(--avatar-delay, 0ms);
+}
+
+.agent-avatar .avatar-shadow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: avatar-shadow 3.4s ease-in-out infinite;
+  animation-delay: var(--avatar-delay, 0ms);
+}
+
+.agent-avatar .avatar-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: avatar-blink 4.8s infinite;
+  animation-delay: var(--avatar-delay, 0ms);
+}
+
+.agent-avatar .avatar-antenna,
+.agent-avatar .avatar-radar {
+  animation: avatar-glow 2.4s ease-in-out infinite;
+  animation-delay: var(--avatar-delay, 0ms);
+}
+
+.agent-avatar .avatar-arm-right {
+  transform-box: fill-box;
+  transform-origin: 50% 10%;
+}
+
+.agent-avatar:hover .avatar-arm-right,
+.group:hover .agent-avatar .avatar-arm-right {
+  animation: avatar-wave 0.9s ease-in-out 2;
+}
+
+.agent-avatar--working .avatar-bob {
+  animation-duration: 1.4s;
+}
+
+.agent-avatar--working .avatar-eyes {
+  animation: avatar-scan 1.6s ease-in-out infinite;
+}
+
+.agent-avatar--working .avatar-antenna {
+  animation-duration: 0.8s;
+}
+
+.agent-avatar--off {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+.agent-avatar--off .avatar-bob,
+.agent-avatar--off .avatar-shadow,
+.agent-avatar--off .avatar-antenna {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-avatar * {
+    animation: none !important;
+  }
+}

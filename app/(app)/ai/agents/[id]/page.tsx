@@ -6,6 +6,7 @@ import { getAiAgentData } from "@/lib/data";
 import { formatEur, formatTokens, TRIGGER_LABELS } from "@/lib/ai-format";
 import { formatDateTime } from "@/lib/format";
 import { PageHeader } from "@/components/ui/page-header";
+import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { AgentSettingsForm } from "@/components/ai/agent-settings-form";
 import { PromptEditor } from "@/components/ai/prompt-editor";
 import { RunList } from "@/components/ai/run-list";
@@ -42,12 +43,17 @@ export default async function AiAgentPage({ params }: PageParams) {
         <IconChevronLeft className="h-3.5 w-3.5" />
         Alle Agenten
       </Link>
-      <PageHeader
-        eyebrow={`Agent · ${agent.id}`}
-        title={agent.name}
-        description={agent.description}
-        action={<TestRunButton agentId={agent.id} />}
-      />
+      <div className="flex items-start gap-4">
+        <AgentAvatar agentId={agent.id} size={88} state={agent.isEnabled ? "idle" : "off"} title={agent.name} className="hidden sm:block" />
+        <div className="min-w-0 flex-1">
+          <PageHeader
+            eyebrow={`Agent · ${agent.id}`}
+            title={agent.name}
+            description={agent.description}
+            action={<TestRunButton agentId={agent.id} />}
+          />
+        </div>
+      </div>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex flex-col gap-6">

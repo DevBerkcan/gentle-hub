@@ -3,7 +3,8 @@ import { cn } from "@/lib/cn";
 import { formatEur, TRIGGER_LABELS } from "@/lib/ai-format";
 import { formatRelative } from "@/lib/format";
 import type { Agent } from "@/lib/types";
-import { IconChevronRight, IconSparkles } from "@/components/ui/icons";
+import { IconChevronRight } from "@/components/ui/icons";
+import { AgentAvatar } from "@/components/ai/agent-avatar";
 
 export function AgentCard({ agent }: { agent: Agent }) {
   return (
@@ -12,14 +13,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
       className="group card flex flex-col gap-3 p-4 transition hover:border-line-strong"
     >
       <div className="flex items-start gap-3">
-        <span
-          className={cn(
-            "flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px]",
-            agent.isEnabled ? "bg-accent-soft text-accent" : "bg-surface-2 text-subtle",
-          )}
-        >
-          <IconSparkles className="h-4 w-4" />
-        </span>
+        <AgentAvatar agentId={agent.id} size={52} state={agent.isEnabled ? "idle" : "off"} title={agent.name} className="-my-1" />
         <div className="min-w-0 flex-1">
           <p className="flex items-center gap-2 text-[13px] font-semibold text-ink">
             <span className="truncate">{agent.name}</span>

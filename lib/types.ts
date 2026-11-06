@@ -687,7 +687,7 @@ export type ApprovalDetail = {
   reply?: ReplyDraft | null;
 };
 
-export type ReplyPurpose = "acknowledge" | "offer";
+export type ReplyPurpose = "acknowledge" | "offer" | "followup";
 
 export type ReplyStatus = "pending_approval" | "sent" | "rejected" | "superseded" | "failed";
 
@@ -712,6 +712,33 @@ export type ReplyDraft = {
 };
 
 export type ReplySettings = { signature: string; fromName: string };
+
+export type SupportCategory = "outage" | "bug" | "change" | "question" | "other";
+export type SupportSeverity = "critical" | "high" | "normal" | "low";
+export type SupportStatus = "open" | "in_progress" | "done";
+
+export type SupportTicket = {
+  id: string;
+  emailMessageId: string;
+  projectId?: string | null;
+  projectName?: string | null;
+  projectSlug?: string | null;
+  category: SupportCategory;
+  severity: SupportSeverity;
+  title: string;
+  summary: string;
+  nextStep?: string | null;
+  affectedUrl?: string | null;
+  siteDown: boolean;
+  status: SupportStatus;
+  fromAddress?: string | null;
+  fromName?: string | null;
+  emailSubject?: string | null;
+  closedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
 
 export type MonitorStatus = "up" | "degraded" | "down" | "unknown";
 
