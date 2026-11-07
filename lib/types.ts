@@ -744,7 +744,38 @@ export type ReplyDraft = {
   updatedBy?: string | null;
 };
 
-export type ReplySettings = { signature: string; fromName: string };
+export type SignatureMode = "text" | "brand";
+
+/** Structured brand signature; the server turns it into plain text and HTML (never stored as HTML). */
+export type SignatureProfile = {
+  greeting: string;
+  company: string;
+  tagline: string;
+  contactEmail: string;
+  website: string;
+  phone: string;
+  legal: string;
+  showAgent: boolean;
+  html: boolean;
+  animatedLogo: boolean;
+};
+
+export type ReplySettings = {
+  signature: string;
+  fromName: string;
+  signatureMode: SignatureMode;
+  brand: SignatureProfile;
+  logoBaseUrl?: string;
+};
+
+export type ReplySettingsInput = {
+  signature?: string;
+  fromName?: string;
+  signatureMode?: SignatureMode;
+  brand?: Partial<SignatureProfile>;
+};
+
+export type SignaturePreview = { agentId: string; mailbox: string; text: string; html: string; logoUrl: string };
 
 export type SupportCategory = "outage" | "bug" | "change" | "question" | "other";
 export type SupportSeverity = "critical" | "high" | "normal" | "low";

@@ -35,6 +35,9 @@ import type {
   ReplyDraft,
   ReplyPurpose,
   ReplySettings,
+  ReplySettingsInput,
+  SignaturePreview,
+  SignatureProfile,
   MonitorOverview,
   SupportStatus,
   SupportTicket,
@@ -446,8 +449,11 @@ export const api = {
 
   replySettings: (token: string) => request<ReplySettings>("/api/ai/settings/reply", { token }),
 
-  updateReplySettings: (token: string, input: ReplySettings) =>
+  updateReplySettings: (token: string, input: ReplySettingsInput) =>
     request<ReplySettings>("/api/ai/settings/reply", { method: "PUT", token, body: input }),
+
+  signaturePreview: (token: string, input: { agentId: string; brand: Partial<SignatureProfile> }) =>
+    request<SignaturePreview>("/api/ai/settings/reply/preview", { method: "POST", token, body: input }),
 
   counterOffer: (token: string, id: string, input: { targetTotalEur?: number | null; note?: string | null }) =>
     request<{ jobId: string }>(`/api/ai/estimates/${encodeURIComponent(id)}/counter-offer`, { method: "POST", token, body: input }),

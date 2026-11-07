@@ -25,7 +25,9 @@ import type {
   EstimateUpdateInput,
   PriceCatalogEntry,
   ReplyPurpose,
-  ReplySettings,
+  ReplySettingsInput,
+  SignaturePreview,
+  SignatureProfile,
   SupportStatus,
   NotificationPreferences,
   PairingCode,
@@ -731,7 +733,22 @@ export async function toggleMonitoringAction(projectId: string, isEnabled: boole
   }
 }
 
-export async function updateReplySettingsAction(input: ReplySettings): Promise<ActionResult> {
+/** Renders unsaved signature settings; nothing is stored or sent. */
+export async function signaturePreviewAction(
+  agentId: string,
+  brand: Partial<SignatureProfile>,
+): Promise<ActionResult<{ preview: SignaturePreview }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    return { ok: true, preview: await api.signaturePreview(token, { agentId, brand }) };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateReplySettingsAction(input: ReplySettingsInput): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();
 
