@@ -55,8 +55,8 @@ export function buildOffice(
       icon: "📥",
       color: "#3b82f6",
       href: "/ai/emails",
-      agents: list("email-intelligence", "crm-matching"),
-      subtitle: `2 Agenten · ${runs("email-intelligence", "crm-matching")} Läufe im Monat`,
+      agents: list("email-intelligence", "crm-matching", "voice-notes"),
+      subtitle: `3 Agenten · ${runs("email-intelligence", "crm-matching", "voice-notes")} Läufe im Monat`,
       active: false,
     },
     {

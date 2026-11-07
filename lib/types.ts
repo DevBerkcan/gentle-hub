@@ -799,6 +799,29 @@ export type ReportProject = {
   lastApprovalId?: string | null;
 };
 
+export type VoiceNote = {
+  id: string;
+  source: "voice" | "text";
+  durationSeconds?: number | null;
+  transcript?: string | null;
+  projectId?: string | null;
+  projectName?: string | null;
+  projectSlug?: string | null;
+  kind?: "meeting" | "task" | "idea" | "lead" | "other" | null;
+  title?: string | null;
+  content?: {
+    summary?: string | null;
+    tasks?: { title?: string | null; due?: string | null }[] | null;
+    decisions?: string[] | null;
+    openQuestions?: string[] | null;
+  } | null;
+  status: "processing" | "done" | "failed";
+  error?: string | null;
+  isDone: boolean;
+  from?: string | null;
+  createdAt: string;
+};
+
 export type MonitorStatus = "up" | "degraded" | "down" | "unknown";
 
 export type MonitorTarget = {

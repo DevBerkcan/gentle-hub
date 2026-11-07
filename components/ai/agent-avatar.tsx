@@ -77,6 +77,16 @@ const PERSONAS: Record<string, Persona> = {
       </g>
     ),
   },
+  "voice-notes": {
+    palette: { light: "#bae6fd", base: "#0ea5e9", dark: "#0c4a6e", eye: "#e0f2fe" },
+    glyph: (
+      <g {...stroke}>
+        <rect x="57" y="81" width="6" height="9" rx="3" />
+        <path d="M54 87.5a6 6 0 0 0 12 0M60 93.5v1.5" />
+      </g>
+    ),
+    accessory: "headset",
+  },
   "customer-report": {
     palette: { light: "#f5d0fe", base: "#d946ef", dark: "#701a75", eye: "#fdf4ff" },
     glyph: (

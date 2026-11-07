@@ -40,6 +40,7 @@ import type {
   SupportTicket,
   LeadCheck,
   ReportProject,
+  VoiceNote,
   Health,
   JobStatus,
   MessengerStatus,
@@ -405,6 +406,11 @@ export const api = {
 
   updateReply: (token: string, id: string, input: { expectedApprovalVersion: number; subject: string; body: string }) =>
     request<{ reply: ReplyDraft; approvalVersion: number }>(`/api/ai/replies/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  voiceNotes: (token: string) => request<{ items: VoiceNote[] }>("/api/ai/notes", { token }),
+
+  setVoiceNoteDone: (token: string, id: string, isDone: boolean) =>
+    request<void>(`/api/ai/notes/${encodeURIComponent(id)}`, { method: "PUT", token, body: { isDone } }),
 
   reports: (token: string) => request<{ items: ReportProject[]; defaultMonth: string }>("/api/ai/reports", { token }),
 

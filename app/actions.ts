@@ -644,6 +644,19 @@ export async function updateReplyAction(
   }
 }
 
+export async function setVoiceNoteDoneAction(id: string, isDone: boolean): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.setVoiceNoteDone(token, id, isDone);
+    revalidatePath("/ai/notes");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
 export async function startReportAction(projectId: string, month?: string): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();

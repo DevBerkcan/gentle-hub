@@ -40,6 +40,7 @@ const PALETTE: Record<string, { body: string; dark: string; eye: string }> = {
   "website-monitor": { body: "#06b6d4", dark: "#164e63", eye: "#e0fdff" },
   "lead-check": { body: "#84cc16", dark: "#365314", eye: "#f7fee7" },
   "customer-report": { body: "#d946ef", dark: "#701a75", eye: "#fdf4ff" },
+  "voice-notes": { body: "#0ea5e9", dark: "#0c4a6e", eye: "#e0f2fe" },
 };
 
 const ROOM_W = 9;

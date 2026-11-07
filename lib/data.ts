@@ -157,6 +157,12 @@ export const getEmailRepliesData = cache(async (emailId: string): Promise<ReplyD
   return response.items;
 });
 
+export const getVoiceNotesData = cache(async () => {
+  const { token } = await requireAuth();
+  const response = await api.voiceNotes(token);
+  return response.items;
+});
+
 export const getReportsData = cache(async () => {
   const { token } = await requireAuth();
   return api.reports(token);
