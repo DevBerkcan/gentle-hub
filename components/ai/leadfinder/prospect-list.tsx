@@ -27,7 +27,8 @@ function Badge({ children, tone = "neutral" }: { children: React.ReactNode; tone
 /** Sales hooks from the website check: what Gentle Group could improve. */
 function SiteBadges({ prospect }: { prospect: Prospect }) {
   const year = new Date().getFullYear();
-  if (prospect.enrichStatus === "no_website") return <Badge tone="hot">Keine Website</Badge>;
+  if (prospect.enrichStatus === "no_website")
+    return <Badge tone="hot">{prospect.lastError ? `Keine Website · ${prospect.lastError}` : "Keine Website"}</Badge>;
   if (prospect.enrichStatus === "pending") return <Badge>wird geprüft …</Badge>;
   if (prospect.enrichStatus === "budget") return <Badge>wartet auf Kontingent</Badge>;
   if (prospect.enrichStatus === "failed") return <Badge tone="warn">{prospect.lastError ?? "nicht erreichbar"}</Badge>;
@@ -110,7 +111,7 @@ function ProspectItem({ initial }: { initial: Prospect }) {
             {prospect.websiteUrl && (
               <a href={prospect.websiteUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-muted hover:text-ink">
                 <IconGlobe className="h-3 w-3" />
-                {prospect.websiteUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+                {prospect.enrichStatus === "no_website" ? "Profil ansehen" : prospect.websiteUrl.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
               </a>
             )}
             {prospect.live?.mapsUrl && (
