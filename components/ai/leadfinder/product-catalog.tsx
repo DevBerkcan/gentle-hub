@@ -26,6 +26,8 @@ export function ProductCatalog({ initial, categories }: { initial: OutreachProdu
   const [saved, setSaved] = useState(false);
   const [pending, startTransition] = useTransition();
   const missingLinks = rows.filter((r) => r.isActive && r.kind !== "service" && !r.url).length;
+  // Opened once on load when links are missing; must not snap shut while the last link is typed.
+  const [initiallyOpen] = useState(() => initial.some((p) => p.isActive && p.kind !== "service" && !p.url));
 
   function update(index: number, change: Partial<Row>) {
     setRows((current) => current.map((row, i) => (i === index ? { ...row, ...change } : row)));
@@ -61,7 +63,7 @@ export function ProductCatalog({ initial, categories }: { initial: OutreachProdu
   }
 
   return (
-    <details className="card p-5" open={missingLinks > 0}>
+    <details className="card p-5" open={initiallyOpen}>
       <summary className="cursor-pointer text-[13px] font-semibold text-ink">
         Produkte für die Ansprache
         {missingLinks > 0 && <span className="ml-2 text-[11px] font-normal text-amber-700 dark:text-amber-300">{missingLinks} ohne Test-Link</span>}
