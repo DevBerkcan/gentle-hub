@@ -38,11 +38,13 @@ export function LeadSearches({
   const [pending, startTransition] = useTransition();
   const busy = searches.some((s) => s.status === "queued" || s.status === "running");
 
+  // Every refresh loads live Google data for the visible leads, so only poll while a search
+  // runs (usually under a minute). Enrichment takes longer; it has a manual refresh button.
   useEffect(() => {
-    if (!busy && pendingEnrichment === 0) return;
-    const timer = setInterval(() => router.refresh(), 6000);
+    if (!busy) return;
+    const timer = setInterval(() => router.refresh(), 10_000);
     return () => clearInterval(timer);
-  }, [busy, pendingEnrichment, router]);
+  }, [busy, router]);
 
   const enterprise = usage.find((u) => u.sku === "details-enterprise");
   const capped = enterprise ? enterprise.calls >= enterprise.cap : false;
@@ -58,6 +60,12 @@ export function LeadSearches({
             {!capped && <IconLoader className="h-3 w-3" />}
             {pendingEnrichment} Lead{pendingEnrichment === 1 ? "" : "s"} {capped ? "warten auf das nächste Monatskontingent" : "werden angereichert"}
           </span>
+        )}
+        {pendingEnrichment > 0 && !capped && !busy && (
+          <button type="button" className="btn btn-ghost h-7 px-2 text-[11px]" onClick={() => router.refresh()}>
+            <IconRefresh className="h-3 w-3" />
+            Aktualisieren
+          </button>
         )}
         {capped && (
           <button
