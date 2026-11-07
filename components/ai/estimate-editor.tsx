@@ -170,7 +170,7 @@ export function EstimateEditor({
                   <label className="flex flex-1 items-center gap-1.5 sm:flex-none">
                     <input
                       type="number"
-                      step="10"
+                      step="0.01"
                       min="0"
                       className="input h-9 text-right text-[13px] font-semibold tabular-nums"
                       value={item.priceEur ?? 0}

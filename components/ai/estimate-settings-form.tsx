@@ -92,7 +92,7 @@ export function EstimateSettingsForm({ settings }: { settings: EstimateSettings 
               <input
                 type="number"
                 min="0"
-                step="10"
+                step="0.01"
                 className="input h-8 text-right text-[12.5px] font-semibold tabular-nums"
                 value={entry.priceEur || ""}
                 onChange={(event) => update(index, { priceEur: Number(event.target.value) })}
