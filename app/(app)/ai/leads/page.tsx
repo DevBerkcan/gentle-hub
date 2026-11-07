@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getLeadFinderData, getProspectsData } from "@/lib/data";
+import { getLeadFinderData, getOutreachProductsData, getProspectsData } from "@/lib/data";
+import { ProductCatalog } from "@/components/ai/leadfinder/product-catalog";
 import { cn } from "@/lib/cn";
 import { PageHeader } from "@/components/ui/page-header";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
@@ -43,7 +44,7 @@ export default async function LeadFinderPage({ searchParams }: { searchParams: P
     page: /^\d{1,4}$/.test(first(raw.page) ?? "") ? first(raw.page) : undefined,
   };
 
-  const overview = await getLeadFinderData();
+  const [overview, products] = await Promise.all([getLeadFinderData(), getOutreachProductsData()]);
   const list = await getProspectsData({ searchId: params.search, status: params.status, page: params.page ? Number(params.page) : 1 });
   const pages = Math.max(1, Math.ceil(list.total / list.pageSize));
   const running = overview.searches.some((s) => s.status === "queued" || s.status === "running");
@@ -84,6 +85,8 @@ export default async function LeadFinderPage({ searchParams }: { searchParams: P
           activeSearchId={params.search}
         />
       </div>
+
+      <ProductCatalog initial={products} categories={overview.categories} />
 
       <section className="flex flex-col gap-3" aria-labelledby="prospects-heading">
         <div className="flex flex-wrap items-center gap-2">

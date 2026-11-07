@@ -864,6 +864,46 @@ export type ProspectList = { items: Prospect[]; total: number; page: number; pag
 
 export type ProspectFilter = { searchId?: string; status?: string; category?: string; withEmail?: boolean; page?: number };
 
+// ---- Outreach (Cem) --------------------------------------------------------------------
+
+export type OutreachKind = "trial" | "funnel" | "service";
+
+export type OutreachProduct = {
+  id: string;
+  name: string;
+  pitch: string;
+  kind: OutreachKind;
+  url?: string | null;
+  trialDays?: number | null;
+  categories: string[];
+  forNoWebsite: boolean;
+  isActive: boolean;
+};
+
+export type CallScript = {
+  opening?: string | null;
+  reason?: string | null;
+  questions?: string[] | null;
+  pitch?: string | null;
+  objections?: { objection?: string | null; answer?: string | null }[] | null;
+  close?: string | null;
+};
+
+export type OutreachDraft = {
+  id: string;
+  prospectId: string;
+  productName: string;
+  status: "pending" | "done" | "failed";
+  lastError?: string | null;
+  script?: CallScript | null;
+  letterSubject?: string | null;
+  letterText?: string | null;
+  recipient?: string | null;
+  createdAt: string;
+};
+
+export type OutreachState = { items: OutreachDraft[]; suggestedProductId?: string | null; products: OutreachProduct[] };
+
 export type SupportCategory = "outage" | "bug" | "change" | "question" | "other";
 export type SupportSeverity = "critical" | "high" | "normal" | "low";
 export type SupportStatus = "open" | "in_progress" | "done";

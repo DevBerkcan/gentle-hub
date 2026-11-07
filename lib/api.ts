@@ -41,6 +41,8 @@ import type {
   EmployeeSignatureList,
   LeadFinderOverview,
   LeadSearch,
+  OutreachProduct,
+  OutreachState,
   Prospect,
   ProspectFilter,
   ProspectList,
@@ -478,6 +480,21 @@ export const api = {
 
   updateProspect: (token: string, id: string, input: { status?: string; notes?: string | null }) =>
     request<Prospect>(`/api/leadfinder/prospects/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  outreachProducts: (token: string) => request<{ items: OutreachProduct[] }>("/api/leadfinder/products", { token }),
+
+  saveOutreachProducts: (token: string, products: (Omit<OutreachProduct, "id"> & { id?: string })[]) =>
+    request<{ items: OutreachProduct[] }>("/api/leadfinder/products", { method: "PUT", token, body: { products } }),
+
+  outreach: (token: string, prospectId: string) =>
+    request<OutreachState>(`/api/leadfinder/prospects/${encodeURIComponent(prospectId)}/outreach`, { token }),
+
+  startOutreach: (token: string, prospectId: string, productId?: string | null) =>
+    request<{ id: string; productName: string; status: string }>(`/api/leadfinder/prospects/${encodeURIComponent(prospectId)}/outreach`, {
+      method: "POST",
+      token,
+      body: { productId: productId ?? null },
+    }),
 
   restartLeadEnrichment: (token: string) => request<{ reset: number }>("/api/leadfinder/enrich", { method: "POST", token }),
 

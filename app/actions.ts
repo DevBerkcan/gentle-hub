@@ -29,6 +29,8 @@ import type {
   EmployeeSignature,
   EmployeeSignatureInput,
   LeadSearch,
+  OutreachProduct,
+  OutreachState,
   Prospect,
   SignaturePreview,
   SignatureProfile,
@@ -762,6 +764,42 @@ export async function updateProspectAction(id: string, input: { status?: string;
   try {
     const prospect = await api.updateProspect(token, id, input);
     return { ok: true, prospect };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function outreachAction(prospectId: string): Promise<ActionResult<{ state: OutreachState }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    return { ok: true, state: await api.outreach(token, prospectId) };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function startOutreachAction(prospectId: string, productId?: string | null): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.startOutreach(token, prospectId, productId);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function saveOutreachProductsAction(products: (Omit<OutreachProduct, "id"> & { id?: string })[]): Promise<ActionResult<{ items: OutreachProduct[] }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { items } = await api.saveOutreachProducts(token, products);
+    revalidatePath("/ai/leads");
+    return { ok: true, items };
   } catch (error) {
     return toFailure(error);
   }

@@ -133,6 +133,16 @@ const PERSONAS: Record<string, Persona> = {
     ),
     accessory: "radar",
   },
+  outreach: {
+    palette: { light: "#bbf7d0", base: "#22c55e", dark: "#14532d", eye: "#f0fdf4" },
+    glyph: (
+      <g {...stroke}>
+        <path d="M52 84h16v10H52z" />
+        <path d="m52 84 8 6 8-6" />
+      </g>
+    ),
+    accessory: "headset",
+  },
   "lead-finder": {
     palette: { light: "#fde68a", base: "#f59e0b", dark: "#78350f", eye: "#fffbeb" },
     glyph: (

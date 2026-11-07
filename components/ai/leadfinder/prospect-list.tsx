@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 import { PROSPECT_STATUS_LABELS } from "@/lib/leadfinder";
 import type { Prospect, ProspectStatus } from "@/lib/types";
 import { IconCheck, IconExternal, IconGlobe, IconLoader, IconPhone } from "@/components/ui/icons";
+import { OutreachPanel } from "@/components/ai/leadfinder/outreach-panel";
 
 const EDITABLE: ProspectStatus[] = ["new", "qualified", "contacted", "interested", "not_interested", "do_not_contact"];
 
@@ -64,6 +65,7 @@ function ProspectItem({ initial }: { initial: Prospect }) {
   const [prospect, setProspect] = useState(initial);
   const [notes, setNotes] = useState(initial.notes ?? "");
   const [open, setOpen] = useState(false);
+  const [outreachOpen, setOutreachOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -140,9 +142,20 @@ function ProspectItem({ initial }: { initial: Prospect }) {
           <button type="button" className="btn btn-ghost h-8 px-2 text-[11.5px]" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
             Notiz{prospect.notes ? " ✎" : ""}
           </button>
+          {!["do_not_contact", "outside", "closed"].includes(prospect.status) && (
+            <button
+              type="button"
+              className={cn("btn h-8 px-2 text-[11.5px]", outreachOpen ? "btn-primary" : "btn-ghost")}
+              aria-expanded={outreachOpen}
+              onClick={() => setOutreachOpen((v) => !v)}
+            >
+              Ansprache
+            </button>
+          )}
         </div>
       </div>
       {error && <p className="text-[11px] text-rose-600">{error}</p>}
+      {outreachOpen && <OutreachPanel prospectId={prospect.id} />}
       {open && (
         <div className="flex flex-col gap-1.5">
           <textarea

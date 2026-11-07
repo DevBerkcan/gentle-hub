@@ -23,6 +23,7 @@ import type {
   ReplySettings,
   EmployeeSignatureList,
   LeadFinderOverview,
+  OutreachProduct,
   ProspectFilter,
   ProspectList,
   MonitorOverview,
@@ -213,6 +214,11 @@ export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {
 export const getLeadFinderData = cache(async (): Promise<LeadFinderOverview> => {
   const { token } = await requireAuth();
   return api.leadFinder(token);
+});
+
+export const getOutreachProductsData = cache(async (): Promise<OutreachProduct[]> => {
+  const { token } = await requireAuth();
+  return (await api.outreachProducts(token)).items;
 });
 
 export const getProspectsData = cache(async (filter: ProspectFilter): Promise<ProspectList> => {
