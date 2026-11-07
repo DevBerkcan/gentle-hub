@@ -21,6 +21,7 @@ import type {
   ProjectKind,
   ReplyDraft,
   ReplySettings,
+  EmployeeSignatureList,
   MonitorOverview,
   SupportTicket,
   SearchResults,
@@ -204,6 +205,11 @@ export const getOfficeData = cache(async () => {
 export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {
   const { token } = await requireAuth();
   return api.monitoring(token);
+});
+
+export const getEmployeeSignaturesData = cache(async (): Promise<EmployeeSignatureList> => {
+  const { token } = await requireAuth();
+  return api.employeeSignatures(token);
 });
 
 export const getReplySettingsData = cache(async (): Promise<ReplySettings> => {

@@ -36,6 +36,9 @@ import type {
   ReplyPurpose,
   ReplySettings,
   ReplySettingsInput,
+  EmployeeSignature,
+  EmployeeSignatureInput,
+  EmployeeSignatureList,
   SignaturePreview,
   SignatureProfile,
   MonitorOverview,
@@ -451,6 +454,20 @@ export const api = {
 
   updateReplySettings: (token: string, input: ReplySettingsInput) =>
     request<ReplySettings>("/api/ai/settings/reply", { method: "PUT", token, body: input }),
+
+  employeeSignatures: (token: string) => request<EmployeeSignatureList>("/api/signatures", { token }),
+
+  createEmployeeSignature: (token: string, input: EmployeeSignatureInput) =>
+    request<EmployeeSignature>("/api/signatures", { method: "POST", token, body: input }),
+
+  updateEmployeeSignature: (token: string, id: string, input: EmployeeSignatureInput) =>
+    request<EmployeeSignature>(`/api/signatures/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  deleteEmployeeSignature: (token: string, id: string) =>
+    request<void>(`/api/signatures/${encodeURIComponent(id)}`, { method: "DELETE", token }),
+
+  previewEmployeeSignature: (token: string, input: EmployeeSignatureInput) =>
+    request<EmployeeSignature>("/api/signatures/preview", { method: "POST", token, body: input }),
 
   signaturePreview: (token: string, input: { agentId: string; brand: Partial<SignatureProfile> }) =>
     request<SignaturePreview>("/api/ai/settings/reply/preview", { method: "POST", token, body: input }),

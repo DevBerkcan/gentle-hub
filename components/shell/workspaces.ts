@@ -236,6 +236,12 @@ export const TOOL_SECTION: NavSection = {
   items: [
     { href: "/search", label: "Suche", icon: IconSearch, active: ({ pathname }) => pathname.startsWith("/search") },
     {
+      href: "/signatures",
+      label: "E-Mail-Signaturen",
+      icon: IconMail,
+      active: ({ pathname }) => pathname.startsWith("/signatures"),
+    },
+    {
       href: "/settings",
       label: "Einstellungen",
       icon: IconSettings,
@@ -248,6 +254,6 @@ export const TOOL_SECTION: NavSection = {
 export function workspaceForPath(pathname: string): WorkspaceKey | null {
   if (pathname === "/ai" || pathname.startsWith("/ai/")) return "agents";
   if (pathname.startsWith("/passwords")) return "passwords";
-  if (pathname.startsWith("/search") || pathname.startsWith("/settings")) return null;
+  if (pathname.startsWith("/search") || pathname.startsWith("/settings") || pathname.startsWith("/signatures")) return null;
   return "projects";
 }

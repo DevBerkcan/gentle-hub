@@ -26,6 +26,8 @@ import type {
   PriceCatalogEntry,
   ReplyPurpose,
   ReplySettingsInput,
+  EmployeeSignature,
+  EmployeeSignatureInput,
   SignaturePreview,
   SignatureProfile,
   SupportStatus,
@@ -728,6 +730,47 @@ export async function toggleMonitoringAction(projectId: string, isEnabled: boole
     await api.monitoringToggle(token, projectId, isEnabled);
     revalidatePath("/ai/monitoring");
     return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function saveEmployeeSignatureAction(
+  id: string | null,
+  input: EmployeeSignatureInput,
+): Promise<ActionResult<{ signature: EmployeeSignature }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const signature = id ? await api.updateEmployeeSignature(token, id, input) : await api.createEmployeeSignature(token, input);
+    revalidatePath("/signatures");
+    return { ok: true, signature };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function deleteEmployeeSignatureAction(id: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.deleteEmployeeSignature(token, id);
+    revalidatePath("/signatures");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+/** Renders an unsaved team signature; nothing is stored. */
+export async function previewEmployeeSignatureAction(input: EmployeeSignatureInput): Promise<ActionResult<{ signature: EmployeeSignature }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    return { ok: true, signature: await api.previewEmployeeSignature(token, input) };
   } catch (error) {
     return toFailure(error);
   }

@@ -777,6 +777,27 @@ export type ReplySettingsInput = {
 
 export type SignaturePreview = { agentId: string; mailbox: string; text: string; html: string; logoUrl: string };
 
+export type EmployeeSignatureInput = {
+  name: string;
+  role: string;
+  email: string;
+  phone: string;
+  mobile: string;
+  includeGreeting: boolean;
+  animatedLogo: boolean;
+};
+
+/** A team member's signature; html/text are rendered by the server with the central brand. */
+export type EmployeeSignature = EmployeeSignatureInput & {
+  id: string;
+  html: string;
+  text: string;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
+
+export type EmployeeSignatureList = { items: EmployeeSignature[]; brand: SignatureProfile; brandActive: boolean };
+
 export type SupportCategory = "outage" | "bug" | "change" | "question" | "other";
 export type SupportSeverity = "critical" | "high" | "normal" | "low";
 export type SupportStatus = "open" | "in_progress" | "done";
