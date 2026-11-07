@@ -798,6 +798,72 @@ export type EmployeeSignature = EmployeeSignatureInput & {
 
 export type EmployeeSignatureList = { items: EmployeeSignature[]; brand: SignatureProfile; brandActive: boolean };
 
+// ---- Lead-Finder (Arda) ----------------------------------------------------------------
+
+export type LeadCategoryOption = { key: string; label: string; group: string };
+
+export type LeadSearchStatus = "queued" | "running" | "done" | "failed";
+
+export type LeadSearch = {
+  id: string;
+  location: string;
+  radiusKm: number;
+  categories: string[];
+  status: LeadSearchStatus;
+  tilesDone: number;
+  tilesTotal: number;
+  placesFound: number;
+  newLeads: number;
+  lastError?: string | null;
+  createdAt: string;
+  finishedAt?: string | null;
+};
+
+export type PlacesUsage = { sku: "search-ids" | "search-pro" | "details-pro" | "details-enterprise"; calls: number; cap: number };
+
+export type LeadFinderOverview = {
+  configured: boolean;
+  usage: PlacesUsage[];
+  categories: LeadCategoryOption[];
+  searches: LeadSearch[];
+  counts: Record<string, number>;
+};
+
+export type ProspectStatus =
+  | "new"
+  | "qualified"
+  | "contacted"
+  | "interested"
+  | "not_interested"
+  | "do_not_contact"
+  | "outside"
+  | "closed";
+
+export type Prospect = {
+  id: string;
+  searchId: string;
+  category: string;
+  categoryLabel: string;
+  status: ProspectStatus;
+  enrichStatus: "pending" | "done" | "no_website" | "failed" | "budget";
+  websiteUrl?: string | null;
+  impressumUrl?: string | null;
+  companyName?: string | null;
+  contactName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  site?: { https: boolean; mobileViewport: boolean; copyrightYear?: number | null; cms?: string | null; responseMs: number; hasCookieConsent: boolean } | null;
+  notes?: string | null;
+  lastError?: string | null;
+  createdAt: string;
+  live?: { name?: string | null; address?: string | null; mapsUrl?: string | null; businessStatus?: string | null } | null;
+};
+
+export type ProspectList = { items: Prospect[]; total: number; page: number; pageSize: number; liveDetails: boolean };
+
+export type ProspectFilter = { searchId?: string; status?: string; category?: string; withEmail?: boolean; page?: number };
+
 export type SupportCategory = "outage" | "bug" | "change" | "question" | "other";
 export type SupportSeverity = "critical" | "high" | "normal" | "low";
 export type SupportStatus = "open" | "in_progress" | "done";

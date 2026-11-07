@@ -28,6 +28,8 @@ import type {
   ReplySettingsInput,
   EmployeeSignature,
   EmployeeSignatureInput,
+  LeadSearch,
+  Prospect,
   SignaturePreview,
   SignatureProfile,
   SupportStatus,
@@ -730,6 +732,49 @@ export async function toggleMonitoringAction(projectId: string, isEnabled: boole
     await api.monitoringToggle(token, projectId, isEnabled);
     revalidatePath("/ai/monitoring");
     return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function startLeadSearchAction(input: {
+  location: string;
+  radiusKm: number;
+  categories: string[];
+  customCategory?: string | null;
+}): Promise<ActionResult<{ search: LeadSearch }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const search = await api.startLeadSearch(token, input);
+    revalidatePath("/ai/leads");
+    return { ok: true, search };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateProspectAction(id: string, input: { status?: string; notes?: string | null }): Promise<ActionResult<{ prospect: Prospect }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const prospect = await api.updateProspect(token, id, input);
+    return { ok: true, prospect };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function restartLeadEnrichmentAction(): Promise<ActionResult<{ reset: number }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const { reset } = await api.restartLeadEnrichment(token);
+    revalidatePath("/ai/leads");
+    return { ok: true, reset };
   } catch (error) {
     return toFailure(error);
   }

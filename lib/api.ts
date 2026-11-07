@@ -39,6 +39,11 @@ import type {
   EmployeeSignature,
   EmployeeSignatureInput,
   EmployeeSignatureList,
+  LeadFinderOverview,
+  LeadSearch,
+  Prospect,
+  ProspectFilter,
+  ProspectList,
   SignaturePreview,
   SignatureProfile,
   MonitorOverview,
@@ -454,6 +459,27 @@ export const api = {
 
   updateReplySettings: (token: string, input: ReplySettingsInput) =>
     request<ReplySettings>("/api/ai/settings/reply", { method: "PUT", token, body: input }),
+
+  leadFinder: (token: string) => request<LeadFinderOverview>("/api/leadfinder", { token }),
+
+  startLeadSearch: (token: string, input: { location: string; radiusKm: number; categories: string[]; customCategory?: string | null }) =>
+    request<LeadSearch>("/api/leadfinder/searches", { method: "POST", token, body: input }),
+
+  prospects: (token: string, filter: ProspectFilter) => {
+    const params = new URLSearchParams();
+    if (filter.searchId) params.set("searchId", filter.searchId);
+    if (filter.status) params.set("status", filter.status);
+    if (filter.category) params.set("category", filter.category);
+    if (filter.withEmail) params.set("withEmail", "true");
+    if (filter.page && filter.page > 1) params.set("page", String(filter.page));
+    const query = params.toString();
+    return request<ProspectList>(`/api/leadfinder/prospects${query ? `?${query}` : ""}`, { token });
+  },
+
+  updateProspect: (token: string, id: string, input: { status?: string; notes?: string | null }) =>
+    request<Prospect>(`/api/leadfinder/prospects/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  restartLeadEnrichment: (token: string) => request<{ reset: number }>("/api/leadfinder/enrich", { method: "POST", token }),
 
   employeeSignatures: (token: string) => request<EmployeeSignatureList>("/api/signatures", { token }),
 

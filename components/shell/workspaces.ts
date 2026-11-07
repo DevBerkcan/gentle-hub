@@ -161,6 +161,12 @@ export const WORKSPACES: Workspace[] = [
             active: ({ pathname }) => pathname.startsWith("/ai/approvals"),
           },
           {
+            href: "/ai/leads",
+            label: "Lead-Finder",
+            icon: IconUsers,
+            active: ({ pathname }) => pathname.startsWith("/ai/leads"),
+          },
+          {
             href: "/ai/support",
             label: "Support",
             icon: IconAlert,

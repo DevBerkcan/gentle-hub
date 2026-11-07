@@ -22,6 +22,9 @@ import type {
   ReplyDraft,
   ReplySettings,
   EmployeeSignatureList,
+  LeadFinderOverview,
+  ProspectFilter,
+  ProspectList,
   MonitorOverview,
   SupportTicket,
   SearchResults,
@@ -205,6 +208,16 @@ export const getOfficeData = cache(async () => {
 export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {
   const { token } = await requireAuth();
   return api.monitoring(token);
+});
+
+export const getLeadFinderData = cache(async (): Promise<LeadFinderOverview> => {
+  const { token } = await requireAuth();
+  return api.leadFinder(token);
+});
+
+export const getProspectsData = cache(async (filter: ProspectFilter): Promise<ProspectList> => {
+  const { token } = await requireAuth();
+  return api.prospects(token, filter);
 });
 
 export const getEmployeeSignaturesData = cache(async (): Promise<EmployeeSignatureList> => {

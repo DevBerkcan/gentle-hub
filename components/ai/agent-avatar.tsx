@@ -133,6 +133,16 @@ const PERSONAS: Record<string, Persona> = {
     ),
     accessory: "radar",
   },
+  "lead-finder": {
+    palette: { light: "#fde68a", base: "#f59e0b", dark: "#78350f", eye: "#fffbeb" },
+    glyph: (
+      <g {...stroke}>
+        <path d="M60 95s-6-6.2-6-10.5a6 6 0 0 1 12 0C66 88.8 60 95 60 95z" />
+        <circle cx="60" cy="84.5" r="2" />
+      </g>
+    ),
+    accessory: "radar",
+  },
 };
 
 const FALLBACK: Persona = {

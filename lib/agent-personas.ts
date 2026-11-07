@@ -15,6 +15,7 @@ export const AGENT_PERSONAS: Record<string, AgentPersona> = {
   "voice-notes": { firstName: "Deniz", role: "Sprachnotizen" },
   "daily-briefing": { firstName: "Leyla", role: "Tagesbriefing" },
   "draft-review": { firstName: "Ece", role: "Qualitätsprüfung" },
+  "lead-finder": { firstName: "Arda", role: "Lead-Finder" },
 };
 
 export function persona(agentId: string | null | undefined, fallbackName?: string): AgentPersona {
