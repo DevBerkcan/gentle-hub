@@ -685,6 +685,39 @@ export type ApprovalDetail = {
   emailFrom?: string | null;
   counterOffers: CounterOffer[];
   reply?: ReplyDraft | null;
+  review?: DraftReview | null;
+};
+
+export type DraftReview = {
+  id: string;
+  draftVersion: number;
+  verdict: "ok" | "check";
+  score?: number | null;
+  findings: { type?: string | null; text?: string | null }[];
+  createdAt: string;
+};
+
+export type BriefingItem = { key: string; category: string; title: string; detail: string; link: string; weight: number };
+
+export type Briefing = {
+  id: string;
+  day: string;
+  headline: string;
+  summary?: string | null;
+  priorities: { title: string; why: string; link?: string | null; category?: string | null }[];
+  facts: {
+    day: string;
+    newRequests: number;
+    repliesSent: number;
+    openApprovals: number;
+    activeTickets: number;
+    sitesDown: number;
+    unansweredRequests: number;
+    spentEur: number;
+    budgetEur: number;
+    items: BriefingItem[];
+  };
+  createdAt: string;
 };
 
 export type ReplyPurpose = "acknowledge" | "offer" | "followup" | "report";

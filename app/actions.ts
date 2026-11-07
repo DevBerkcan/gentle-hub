@@ -644,6 +644,18 @@ export async function updateReplyAction(
   }
 }
 
+export async function briefingNowAction(): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.briefingNow(token);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
 export async function setVoiceNoteDoneAction(id: string, isDone: boolean): Promise<ActionResult> {
   const token = await getSessionToken();
   if (!token) return noSession();

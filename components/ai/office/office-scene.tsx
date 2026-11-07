@@ -41,6 +41,8 @@ const PALETTE: Record<string, { body: string; dark: string; eye: string }> = {
   "lead-check": { body: "#84cc16", dark: "#365314", eye: "#f7fee7" },
   "customer-report": { body: "#d946ef", dark: "#701a75", eye: "#fdf4ff" },
   "voice-notes": { body: "#0ea5e9", dark: "#0c4a6e", eye: "#e0f2fe" },
+  "daily-briefing": { body: "#eab308", dark: "#713f12", eye: "#fefce8" },
+  "draft-review": { body: "#14b8a6", dark: "#134e4a", eye: "#f0fdfa" },
 };
 
 const ROOM_W = 9;
@@ -317,7 +319,7 @@ function Room({
   register: Register;
 }) {
   const [x, z] = position;
-  const spacing = room.agents.length > 2 ? 2.9 : 4;
+  const spacing = room.agents.length > 3 ? 2.1 : room.agents.length > 2 ? 2.9 : 4;
   const desks: Vec2[] = room.agents.map((_, index) => [(index - (room.agents.length - 1) / 2) * spacing, -1.7]);
 
   return (

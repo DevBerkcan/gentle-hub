@@ -4,9 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateReplyAction } from "@/app/actions";
 import { formatDateTime } from "@/lib/format";
-import type { ReplyDraft } from "@/lib/types";
+import type { DraftReview, ReplyDraft } from "@/lib/types";
 import { FormError, SuccessNote } from "@/components/ui/field";
 import { ApprovalDecision } from "@/components/ai/approval-actions";
+import { DraftReviewBox } from "@/components/ai/draft-review-box";
 import { IconCheck, IconLoader, IconMail } from "@/components/ui/icons";
 
 const STATUS_TEXT: Record<ReplyDraft["status"], string> = {
@@ -28,7 +29,9 @@ export function ReplyReview({
   version,
   contentHash,
   isOpen,
+  review,
 }: {
+  review?: DraftReview | null;
   reply: ReplyDraft;
   approvalId: string;
   version: number;
@@ -66,6 +69,8 @@ export function ReplyReview({
 
   return (
     <div className="flex flex-col gap-6">
+      {editable && <DraftReviewBox review={review} version={version} />}
+
       {editable && (
         <ApprovalDecision
           approvalId={approvalId}

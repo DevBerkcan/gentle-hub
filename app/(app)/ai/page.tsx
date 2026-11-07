@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAiOverviewData, getEmailsData, getOfficeData } from "@/lib/data";
+import { getAiOverviewData, getBriefingData, getEmailsData, getOfficeData } from "@/lib/data";
+import { BriefingCard } from "@/components/ai/briefing-card";
 import { AgentOffice } from "@/components/ai/office/agent-office";
 import { formatEur } from "@/lib/ai-format";
 import { PageHeader } from "@/components/ui/page-header";
@@ -15,7 +16,7 @@ import { IconActivity, IconAlert, IconArrowRight, IconCheck, IconClock, IconSpar
 export const metadata: Metadata = { title: "AI Operations" };
 
 export default async function AiDashboardPage() {
-  const [overview, emails, office] = await Promise.all([getAiOverviewData(), getEmailsData(), getOfficeData()]);
+  const [overview, emails, office, briefing] = await Promise.all([getAiOverviewData(), getEmailsData(), getOfficeData(), getBriefingData()]);
   const { settings, budget, agents, jobs } = overview;
   const runsThisMonth = agents.reduce((sum, agent) => sum + agent.month.runs, 0);
   const failuresThisMonth = agents.reduce((sum, agent) => sum + agent.month.failedRuns, 0);
@@ -43,6 +44,8 @@ export default async function AiDashboardPage() {
           </>
         }
       />
+
+      <BriefingCard briefing={briefing} compact />
 
       <AgentOffice rooms={office.rooms} flows={office.flows} height={460} />
 

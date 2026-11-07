@@ -41,6 +41,7 @@ import type {
   LeadCheck,
   ReportProject,
   VoiceNote,
+  Briefing,
   Health,
   JobStatus,
   MessengerStatus,
@@ -406,6 +407,10 @@ export const api = {
 
   updateReply: (token: string, id: string, input: { expectedApprovalVersion: number; subject: string; body: string }) =>
     request<{ reply: ReplyDraft; approvalVersion: number }>(`/api/ai/replies/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  briefing: (token: string) => request<{ briefing?: Briefing | null }>("/api/ai/briefing", { token }),
+
+  briefingNow: (token: string) => request<{ jobId: string }>("/api/ai/briefing", { method: "POST", token, body: {} }),
 
   voiceNotes: (token: string) => request<{ items: VoiceNote[] }>("/api/ai/notes", { token }),
 

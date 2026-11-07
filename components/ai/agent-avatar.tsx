@@ -77,6 +77,24 @@ const PERSONAS: Record<string, Persona> = {
       </g>
     ),
   },
+  "daily-briefing": {
+    palette: { light: "#fef08a", base: "#eab308", dark: "#713f12", eye: "#fefce8" },
+    glyph: (
+      <g {...stroke}>
+        <circle cx="60" cy="88" r="3.5" />
+        <path d="M60 80.5v2M60 93.5v2M52.5 88h2M65.5 88h2M54.7 82.7l1.4 1.4M63.9 91.9l1.4 1.4M54.7 93.3l1.4-1.4M63.9 84.1l1.4-1.4" />
+      </g>
+    ),
+  },
+  "draft-review": {
+    palette: { light: "#99f6e4", base: "#14b8a6", dark: "#134e4a", eye: "#f0fdfa" },
+    glyph: (
+      <g {...stroke}>
+        <path d="m54 88.5 4 4 8-9" />
+      </g>
+    ),
+    accessory: "glasses",
+  },
   "voice-notes": {
     palette: { light: "#bae6fd", base: "#0ea5e9", dark: "#0c4a6e", eye: "#e0f2fe" },
     glyph: (

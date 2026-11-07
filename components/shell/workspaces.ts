@@ -3,6 +3,7 @@ import { CREDENTIAL_CATEGORIES } from "@/lib/constants";
 import {
   IconActivity,
   IconAlert,
+  IconSun,
   IconApps,
   IconCheck,
   IconFolder,
@@ -141,6 +142,12 @@ export const WORKSPACES: Workspace[] = [
         title: "AI Operations",
         items: [
           { href: "/ai", label: "Dashboard", icon: IconSparkles, active: ({ pathname }) => pathname === "/ai" },
+          {
+            href: "/ai/briefing",
+            label: "Tagesbriefing",
+            icon: IconSun,
+            active: ({ pathname }) => pathname.startsWith("/ai/briefing"),
+          },
           {
             href: "/ai/office",
             label: "Agenten-Büro",

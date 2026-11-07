@@ -13,6 +13,8 @@ export const AGENT_PERSONAS: Record<string, AgentPersona> = {
   "website-monitor": { firstName: "Kaan", role: "Website-Wächter" },
   "customer-report": { firstName: "Aylin", role: "Kundenberichte" },
   "voice-notes": { firstName: "Deniz", role: "Sprachnotizen" },
+  "daily-briefing": { firstName: "Leyla", role: "Tagesbriefing" },
+  "draft-review": { firstName: "Ece", role: "Qualitätsprüfung" },
 };
 
 export function persona(agentId: string | null | undefined, fallbackName?: string): AgentPersona {

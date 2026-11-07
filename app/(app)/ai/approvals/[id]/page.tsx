@@ -81,6 +81,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
               version={approval.version}
               contentHash={detail.contentHash}
               isOpen={isOpen}
+              review={detail.review}
             />
           )}
 
