@@ -24,7 +24,7 @@ const PRODUCTS = [
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ expired?: string | string[] }>;
+  searchParams: Promise<{ expired?: string | string[]; eingerichtet?: string | string[] }>;
 }) {
   let user = null;
   try {
@@ -38,6 +38,7 @@ export default async function LoginPage({
   const backendOnline = health?.status === "ok";
   const params = await searchParams;
   const expired = Boolean(Array.isArray(params.expired) ? params.expired[0] : params.expired);
+  const accountReady = Boolean(Array.isArray(params.eingerichtet) ? params.eingerichtet[0] : params.eingerichtet);
 
   return (
     <main className="relative grid min-h-dvh lg:grid-cols-[1fr_460px]">
@@ -123,10 +124,16 @@ export default async function LoginPage({
               </div>
             )}
 
+            {accountReady && (
+              <div className="mt-4 rounded-[7px] border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-[11.5px] leading-relaxed text-emerald-800">
+                Dein Passwort ist gespeichert. Melde dich jetzt mit deiner E-Mail-Adresse an.
+              </div>
+            )}
+
             <LoginForm backendOnline={backendOnline} />
 
             <p className="mt-5 border-t border-line pt-4 text-center text-[10.5px] leading-relaxed text-subtle">
-              Passwort vergessen? Wende dich an Medin. Konten werden nicht selbst registriert.
+              Passwort vergessen? Ein Inhaber schickt dir einen neuen Link. Konten werden nur eingeladen.
             </p>
           </div>
 

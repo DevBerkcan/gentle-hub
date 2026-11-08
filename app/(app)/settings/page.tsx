@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getHealth } from "@/lib/data";
+import { getHealth, getTeamData } from "@/lib/data";
+import { TeamManager } from "@/components/settings/team-manager";
 import { requireAuth } from "@/lib/session";
 import { API_URL } from "@/lib/constants";
 import { formatDateTime, initials } from "@/lib/format";
@@ -22,7 +23,7 @@ export const metadata: Metadata = { title: "Einstellungen" };
 
 export default async function SettingsPage() {
   const { user } = await requireAuth();
-  const health = await getHealth();
+  const [health, team] = await Promise.all([getHealth(), user.isOwner ? getTeamData() : Promise.resolve(null)]);
   const online = health?.status === "ok";
 
   return (
@@ -48,7 +49,7 @@ export default async function SettingsPage() {
                 <p className="truncate text-[12px] text-muted">{user.email}</p>
                 <p className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-mint-soft px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
                   <IconShield className="h-3 w-3" />
-                  Freigegebener Zugang
+                  {user.isOwner ? "Inhaber" : "Teammitglied"}
                 </p>
               </div>
               <form action={logoutAction}>
@@ -73,11 +74,13 @@ export default async function SettingsPage() {
                   Konten mit Zugriff
                 </dt>
                 <dd className="mt-0.5 text-[12px] font-medium text-ink">
-                  medin@gentlegroup.de · berkcan@gentlegroup.de
+                  {team ? `${team.filter((m) => m.isActive).length} aktiv · siehe Team` : "Verwaltet von den Inhabern"}
                 </dd>
               </div>
             </dl>
           </section>
+
+          {team && <TeamManager members={team} />}
 
           <section className="card p-5 sm:p-6" aria-labelledby="password-heading">
             <div className="mb-4 flex items-center gap-2.5">
@@ -158,7 +161,8 @@ export default async function SettingsPage() {
               <li>Geheimnisse sind mit AES-256-GCM verschlüsselt.</li>
               <li>Die Anzeige eines Geheimnisses wird protokolliert.</li>
               <li>Sitzungen laufen nach 30 Tagen ab.</li>
-              <li>Nur zwei freigegebene Konten haben Zugriff.</li>
+              <li>Zugriff nur für Inhaber und eingeladene Teammitglieder.</li>
+              <li>Einladungslinks sind einmalig und 7 Tage gültig.</li>
             </ul>
           </section>
 
@@ -168,8 +172,8 @@ export default async function SettingsPage() {
               Hilfe
             </h2>
             <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted">
-              Passwort vergessen oder ein Konto freigeben? Wende dich an Medin. Konten werden
-              bewusst nicht selbst registriert.
+              Passwort vergessen? Ein Inhaber erstellt dir unter „Team“ einen neuen Link. Konten werden
+              bewusst nicht selbst registriert, sondern nur eingeladen.
             </p>
           </section>
         </aside>

@@ -62,7 +62,27 @@ export type User = {
   email: string;
   displayName: string;
   lastLoginAt: string | null;
+  /** Owners (server allowlist) may invite and deactivate team members. */
+  isOwner?: boolean;
 };
+
+export type TeamMemberStatus = "owner" | "active" | "invited" | "invite_expired" | "deactivated";
+
+export type TeamMember = {
+  id: string;
+  email: string;
+  displayName: string;
+  isOwner: boolean;
+  isActive: boolean;
+  status: TeamMemberStatus;
+  lastLoginAt?: string | null;
+  inviteExpiresAt?: string | null;
+  invitedBy?: string | null;
+};
+
+export type TeamInvite = { member: TeamMember; inviteUrl: string; expiresAt: string };
+
+export type InvitationInfo = { email: string; displayName: string; expiresAt: string };
 
 export type LoginResponse = {
   token: string;

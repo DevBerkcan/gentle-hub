@@ -69,6 +69,9 @@ import type {
   SearchResults,
   SecretReveal,
   User,
+  InvitationInfo,
+  TeamInvite,
+  TeamMember,
 } from "@/lib/types";
 
 export class ApiError extends Error {
@@ -152,6 +155,24 @@ export const api = {
   me: (token: string) => request<User>("/api/auth/me", { token }),
 
   logout: (token: string) => request<void>("/api/auth/logout", { method: "POST", token }),
+
+  team: (token: string) => request<{ items: TeamMember[] }>("/api/team", { token }),
+
+  inviteMember: (token: string, input: { email: string; displayName: string }) =>
+    request<TeamInvite>("/api/team/invite", { method: "POST", token, body: input }),
+
+  reinviteMember: (token: string, id: string) =>
+    request<TeamInvite>(`/api/team/${encodeURIComponent(id)}/invite`, { method: "POST", token }),
+
+  updateMember: (token: string, id: string, input: { displayName?: string; isActive?: boolean }) =>
+    request<TeamMember>(`/api/team/${encodeURIComponent(id)}`, { method: "PUT", token, body: input }),
+
+  /** Public: whoever holds the link may see whose invitation it is. */
+  invitation: (inviteToken: string) =>
+    request<InvitationInfo>(`/api/auth/invitation?token=${encodeURIComponent(inviteToken)}`),
+
+  acceptInvitation: (inviteToken: string, password: string) =>
+    request<{ email: string }>("/api/auth/accept-invitation", { method: "POST", body: { token: inviteToken, password } }),
 
   changePassword: (token: string, currentPassword: string, newPassword: string) =>
     request<{ ok: boolean; message: string }>("/api/auth/change-password", {

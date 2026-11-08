@@ -24,6 +24,7 @@ import type {
   EmployeeSignatureList,
   LeadFinderOverview,
   OutreachProduct,
+  TeamMember,
   ProspectFilter,
   ProspectList,
   MonitorOverview,
@@ -214,6 +215,11 @@ export const getMonitoringData = cache(async (): Promise<MonitorOverview> => {
 export const getLeadFinderData = cache(async (): Promise<LeadFinderOverview> => {
   const { token } = await requireAuth();
   return api.leadFinder(token);
+});
+
+export const getTeamData = cache(async (): Promise<TeamMember[]> => {
+  const { token } = await requireAuth();
+  return (await api.team(token)).items;
 });
 
 export const getOutreachProductsData = cache(async (): Promise<OutreachProduct[]> => {

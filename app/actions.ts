@@ -29,6 +29,8 @@ import type {
   EmployeeSignature,
   EmployeeSignatureInput,
   LeadSearch,
+  InvitationInfo,
+  TeamInvite,
   OutreachProduct,
   OutreachState,
   Prospect,
@@ -764,6 +766,63 @@ export async function updateProspectAction(id: string, input: { status?: string;
   try {
     const prospect = await api.updateProspect(token, id, input);
     return { ok: true, prospect };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function inviteMemberAction(input: { email: string; displayName: string }): Promise<ActionResult<{ invite: TeamInvite }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const invite = await api.inviteMember(token, input);
+    revalidatePath("/settings");
+    return { ok: true, invite };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function reinviteMemberAction(id: string): Promise<ActionResult<{ invite: TeamInvite }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const invite = await api.reinviteMember(token, id);
+    revalidatePath("/settings");
+    return { ok: true, invite };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function updateMemberAction(id: string, input: { displayName?: string; isActive?: boolean }): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.updateMember(token, id, input);
+    revalidatePath("/settings");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+/** Public (no session): the invited member checks the link and sets her own password. */
+export async function invitationAction(inviteToken: string): Promise<ActionResult<{ info: InvitationInfo }>> {
+  try {
+    return { ok: true, info: await api.invitation(inviteToken) };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function acceptInvitationAction(inviteToken: string, password: string): Promise<ActionResult<{ email: string }>> {
+  try {
+    const { email } = await api.acceptInvitation(inviteToken, password);
+    return { ok: true, email };
   } catch (error) {
     return toFailure(error);
   }
