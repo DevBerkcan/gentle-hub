@@ -7,7 +7,7 @@ export const AGENT_PERSONAS: Record<string, AgentPersona> = {
   "lead-check": { firstName: "Selin", role: "Lead-Check" },
   "project-notes": { firstName: "Defne", role: "Projektnotizen" },
   estimation: { firstName: "Emre", role: "Pauschal-Schätzung" },
-  "reply-drafter": { firstName: "Zeynep", role: "Kundenantworten" },
+  "reply-drafter": { firstName: "Marie", role: "Kundenantworten" },
   "follow-up": { firstName: "Burak", role: "Nachfassen" },
   "support-triage": { firstName: "Mert", role: "Support" },
   "website-monitor": { firstName: "Kaan", role: "Website-Wächter" },
@@ -23,7 +23,7 @@ export function persona(agentId: string | null | undefined, fallbackName?: strin
   return (agentId && AGENT_PERSONAS[agentId]) || { firstName: fallbackName ?? "Agent", role: fallbackName ?? "" };
 }
 
-/** "Zeynep · Kundenantworten" */
+/** "Marie · Kundenantworten" */
 export function personaLabel(agentId: string | null | undefined, fallbackName?: string) {
   const p = persona(agentId, fallbackName);
   return p.role ? `${p.firstName} · ${p.role}` : p.firstName;
