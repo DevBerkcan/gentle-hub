@@ -10,6 +10,7 @@ import type { ActionFailure, ActionResult, LoginState } from "@/lib/action-types
 import type {
   Agent,
   BriefKind,
+  SuiteAction,
   GoLiveCheck,
   AgentUpdateInput,
   AiSettings,
@@ -1017,6 +1018,20 @@ export async function goLiveCheckAction(url: string, workflowId?: string | null)
     revalidatePath("/ai/vorgaenge");
     if (workflowId) revalidatePath(`/ai/vorgaenge/${workflowId}`);
     return { ok: true, check };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function suiteAction(vorgangId: string, action: SuiteAction, recipientEmail?: string | null): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.suiteAction(token, vorgangId, action, recipientEmail);
+    revalidatePath(`/ai/vorgaenge/${vorgangId}`);
+    revalidatePath("/ai/vorgaenge");
+    return { ok: true };
   } catch (error) {
     return toFailure(error);
   }

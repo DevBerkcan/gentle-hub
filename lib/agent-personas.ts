@@ -55,9 +55,9 @@ export const PLANNED_PERSONAS: Record<string, AgentPersona> = {
 
 /** Colleagues without an AI agent of their own: they work without AI or come with phase 2. */
 export const TEAM_EXTRAS: { id: string; href?: string; note: string; planned?: boolean }[] = [
-  { id: "offer-contract", note: "Erstellt Angebot und Vertrag in GentleSuite. Kommt in Phase 2.", planned: true },
-  { id: "project-control", note: "Legt Projekt und Meilensteine in GentleSuite an. Kommt in Phase 2.", planned: true },
-  { id: "billing", note: "Bereitet die Rechnung vor, wenn der Auftrag fertig ist. Kommt in Phase 2.", planned: true },
+  { id: "offer-contract", href: "/ai/vorgaenge", note: "Legt aus Emres freigegebener Schätzung Angebot und Vertragsentwurf in GentleSuite an und verschickt das Angebot auf deinen Klick. Ohne KI." },
+  { id: "project-control", note: "Legt Projekt und Meilensteine in GentleSuite an. Kommt später.", planned: true },
+  { id: "billing", href: "/ai/vorgaenge", note: "Verfolgt das Angebot bis zur Unterschrift und erinnert ans Überführen in GentleSuite. Rechnungen legt sie nicht selbst an. Ohne KI." },
   { id: "website-monitor", href: "/ai/monitoring", note: "Prüft alle Websites regelmäßig, ganz ohne KI." },
   { id: "lead-finder", href: "/ai/leads", note: "Sucht Firmen über Google Places, ganz ohne KI." },
 ];

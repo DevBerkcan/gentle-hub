@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { RequirementsView } from "@/components/ai/requirements-view";
 import { StageTrack } from "@/components/ai/delivery/stage-track";
 import { BriefPanel } from "@/components/ai/delivery/brief-panel";
+import { SuitePanel } from "@/components/ai/delivery/suite-panel";
 import { GoLiveForm, GoLiveResult } from "@/components/ai/delivery/golive-form";
 import { IconChevronLeft, IconMail } from "@/components/ui/icons";
 
@@ -31,7 +32,7 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
     throw error;
   }
 
-  const { vorgang, requirements, estimate, briefs, goLiveChecks } = detail;
+  const { vorgang, requirements, estimate, briefs, goLiveChecks, suite } = detail;
 
   return (
     <div className="flex flex-col gap-6">
@@ -50,6 +51,18 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
+          <section className="flex flex-col gap-3" aria-labelledby="suite-heading">
+            <div>
+              <h2 id="suite-heading" className="text-[13px] font-semibold text-ink">
+                Angebot, Vertrag, Rechnung (GentleSuite)
+              </h2>
+              <p className="text-[11.5px] text-muted">
+                Can übernimmt Emres freigegebene Schätzung 1:1 als Angebot und legt den Vertragsentwurf an. Jeder Schritt schreibt in GentleSuite und läuft nur nach deiner Bestätigung. Melis verfolgt das Angebot bis zur Rechnung; die entsteht in GentleSuite über „Überführen“.
+              </p>
+            </div>
+            <SuitePanel vorgangId={vorgang.id} suite={suite} estimateApproved={estimate?.status === "approved"} />
+          </section>
+
           <section className="flex flex-col gap-3" aria-labelledby="brief-heading">
             <div>
               <h2 id="brief-heading" className="text-[13px] font-semibold text-ink">

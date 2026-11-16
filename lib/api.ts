@@ -76,6 +76,9 @@ import type {
   GoLiveCheck,
   Vorgang,
   VorgangDetail,
+  SuiteAction,
+  SuiteState,
+  SuiteDocument,
 } from "@/lib/types";
 
 export class ApiError extends Error {
@@ -564,4 +567,10 @@ export const api = {
 
   goLiveCheck: (token: string, url: string, workflowId?: string | null) =>
     request<GoLiveCheck>("/api/ai/golive", { method: "POST", token, body: { url, workflowId: workflowId ?? null } }),
+
+  suiteAction: (token: string, id: string, action: SuiteAction, recipientEmail?: string | null) =>
+    request<{ document: SuiteDocument; suite: SuiteState }>(
+      `/api/ai/vorgaenge/${encodeURIComponent(id)}/suite/${action}`,
+      { method: "POST", token, body: { confirm: true, recipientEmail: recipientEmail ?? null } },
+    ),
 };

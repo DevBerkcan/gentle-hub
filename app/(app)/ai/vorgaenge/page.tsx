@@ -22,10 +22,10 @@ export default async function VorgaengePage() {
       <PageHeader
         eyebrow="AI Operations"
         title="Vorgänge"
-        description="Jede Kundenanfrage auf einem Weg: Defne schreibt die Anforderungen, Emre schätzt, Marie formuliert das Angebot, Baran, Onur und Tolga planen den Bau und Tolga prüft vor dem Go-Live."
+        description="Jede Kundenanfrage auf einem Weg: Defne schreibt die Anforderungen, Emre schätzt, Can legt Angebot und Vertrag in GentleSuite an, Baran, Onur und Tolga planen den Bau, Tolga prüft vor dem Go-Live und Melis verfolgt alles bis zur Rechnung."
       />
 
-      <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+      <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
         {counts.map((stage) => (
           <div key={stage.key} className="card px-3 py-2">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-subtle">{stage.label}</p>

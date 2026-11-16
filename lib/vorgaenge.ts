@@ -4,10 +4,11 @@ import type { VorgangStage } from "@/lib/types";
 export const VORGANG_STAGES: { key: VorgangStage; label: string; who: string }[] = [
   { key: "requirements", label: "Anforderungen", who: "Defne" },
   { key: "estimate", label: "Schätzung", who: "Emre" },
-  { key: "offer", label: "Angebot", who: "Marie" },
-  { key: "offer_sent", label: "Angebot raus", who: "Du" },
+  { key: "offer", label: "Angebot", who: "Can" },
+  { key: "offer_sent", label: "Angebot raus", who: "Can" },
   { key: "build", label: "Bauauftrag", who: "Baran, Onur, Tolga" },
   { key: "live", label: "Live", who: "Tolga" },
+  { key: "invoiced", label: "Rechnung", who: "Melis" },
 ];
 
 export function stageIndex(stage: VorgangStage) {

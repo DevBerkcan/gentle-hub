@@ -1104,7 +1104,7 @@ export type RequirementsContent = ProjectNoteContent & {
   integrations?: string[];
 };
 
-export type VorgangStage = "requirements" | "estimate" | "offer" | "offer_sent" | "build" | "live";
+export type VorgangStage = "requirements" | "estimate" | "offer" | "offer_sent" | "build" | "live" | "invoiced";
 
 export type Vorgang = {
   id: string;
@@ -1195,4 +1195,36 @@ export type VorgangDetail = {
   } | null;
   briefs: BuildBrief[];
   goLiveChecks: GoLiveCheck[];
+  suite: SuiteState;
+};
+
+export type SuiteKind = "quote" | "contract";
+
+export type SuiteAction = "quote" | "send" | "order" | "contract";
+
+export type SuiteDocument = {
+  kind: SuiteKind;
+  state: "creating" | "created" | "failed";
+  suiteId?: string | null;
+  number?: string | null;
+  suiteStatus?: string | null;
+  amountNet?: number | null;
+  sentAt?: string | null;
+  sentTo?: string | null;
+  signatureStatus?: string | null;
+  paymentOption?: string | null;
+  hasPaymentPlan?: boolean;
+  transferredAt?: string | null;
+  lastError?: string | null;
+  createdAt: string;
+  createdBy?: string | null;
+  url?: string | null;
+};
+
+export type SuiteState = {
+  configured: boolean;
+  customerId?: string | null;
+  customerName?: string | null;
+  requesterEmail?: string | null;
+  documents: SuiteDocument[];
 };

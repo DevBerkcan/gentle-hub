@@ -5,11 +5,12 @@ import type { VorgangStage } from "@/lib/types";
 /** Six dots from requirements to live; done steps filled, current one ringed. */
 export function StageTrack({ stage, showLabels = false }: { stage: VorgangStage; showLabels?: boolean }) {
   const current = stageIndex(stage);
+  const last = VORGANG_STAGES.length - 1;
   return (
     <ol className={cn("flex items-start", showLabels ? "gap-0" : "gap-1")} aria-label={`Stand: ${VORGANG_STAGES[current].label}`}>
       {VORGANG_STAGES.map((item, index) => {
-        const done = index < current || (stage === "live" && index === current);
-        const active = index === current && stage !== "live";
+        const done = index < current || (current === last && index === current);
+        const active = index === current && current !== last;
         return (
           <li key={item.key} className={cn("flex items-center", showLabels && "flex-1 flex-col gap-1 text-center")}>
             <span className={cn("flex w-full items-center", showLabels && "justify-center")}>
