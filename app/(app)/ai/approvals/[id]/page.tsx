@@ -6,7 +6,8 @@ import { getApprovalData, getLeadCheckData } from "@/lib/data";
 import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
-import type { ProjectNoteContent } from "@/lib/types";
+import type { RequirementsContent } from "@/lib/types";
+import { RequirementsView } from "@/components/ai/requirements-view";
 import { PageHeader } from "@/components/ui/page-header";
 import { EstimateEditor } from "@/components/ai/estimate-editor";
 import { ApprovalDecision } from "@/components/ai/approval-actions";
@@ -21,10 +22,10 @@ export const metadata: Metadata = { title: "Freigabe" };
 
 type PageParams = { params: Promise<{ id: string }> };
 
-function parseNote(json?: string | null): ProjectNoteContent {
+function parseNote(json?: string | null): RequirementsContent {
   if (!json) return {};
   try {
-    return JSON.parse(json) as ProjectNoteContent;
+    return JSON.parse(json) as RequirementsContent;
   } catch {
     return {};
   }
@@ -167,33 +168,13 @@ export default async function AiApprovalPage({ params }: PageParams) {
           {note && (
             <section className="card flex flex-col gap-3 p-4" aria-labelledby="note-heading">
               <h2 id="note-heading" className="text-[12.5px] font-semibold text-ink">
-                Projektnotiz
+                Anforderungen (Defne)
               </h2>
-              {noteContent.projectDescription && <p className="text-[12px] leading-relaxed text-ink">{noteContent.projectDescription}</p>}
-              <NoteList title="Fachliche Anforderungen" items={noteContent.businessRequirements} />
-              <NoteList title="Technische Anforderungen" items={noteContent.technicalRequirements} />
-              <NoteList title="Offene Fragen" items={noteContent.openQuestions} />
-              <NoteList title="Risiken" items={noteContent.risks} />
-              <NoteList title="Aufgaben" items={noteContent.tasks?.map((task) => task.title ?? "")} />
+              <RequirementsView content={noteContent} compact />
             </section>
           )}
         </aside>
       </div>
-    </div>
-  );
-}
-
-function NoteList({ title, items }: { title: string; items?: (string | undefined)[] }) {
-  const values = (items ?? []).filter((item): item is string => Boolean(item?.trim()));
-  if (values.length === 0) return null;
-  return (
-    <div>
-      <h3 className="text-[10px] font-semibold uppercase tracking-wide text-subtle">{title}</h3>
-      <ul className="mt-1 flex list-disc flex-col gap-0.5 pl-4 text-[11.5px] leading-relaxed text-ink">
-        {values.map((value, index) => (
-          <li key={index}>{value}</li>
-        ))}
-      </ul>
     </div>
   );
 }

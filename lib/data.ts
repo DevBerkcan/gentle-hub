@@ -246,3 +246,14 @@ export const getEstimateSettingsData = cache(async (): Promise<EstimateSettings>
   const { token } = await requireAuth();
   return api.estimateSettings(token);
 });
+
+export const getVorgaengeData = cache(async () => {
+  const { token } = await requireAuth();
+  const [vorgaenge, checks] = await Promise.all([api.vorgaenge(token), api.goLiveChecks(token)]);
+  return { items: vorgaenge.items, checks: checks.items };
+});
+
+export const getVorgangData = cache(async (id: string) => {
+  const { token } = await requireAuth();
+  return api.vorgang(token, id);
+});

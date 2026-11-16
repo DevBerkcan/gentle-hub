@@ -72,6 +72,10 @@ import type {
   InvitationInfo,
   TeamInvite,
   TeamMember,
+  BriefKind,
+  GoLiveCheck,
+  Vorgang,
+  VorgangDetail,
 } from "@/lib/types";
 
 export class ApiError extends Error {
@@ -548,4 +552,16 @@ export const api = {
 
   updateEstimateSettings: (token: string, bufferPercent: number, catalog: PriceCatalogEntry[]) =>
     request<EstimateSettings>("/api/ai/settings/estimate", { method: "PUT", token, body: { bufferPercent, catalog } }),
+
+  vorgaenge: (token: string) => request<{ items: Vorgang[] }>("/api/ai/vorgaenge", { token }),
+
+  vorgang: (token: string, id: string) => request<VorgangDetail>(`/api/ai/vorgaenge/${encodeURIComponent(id)}`, { token }),
+
+  requestBriefs: (token: string, id: string, kinds: BriefKind[]) =>
+    request<{ briefIds: string[] }>(`/api/ai/vorgaenge/${encodeURIComponent(id)}/briefs`, { method: "POST", token, body: { kinds } }),
+
+  goLiveChecks: (token: string) => request<{ items: GoLiveCheck[] }>("/api/ai/golive", { token }),
+
+  goLiveCheck: (token: string, url: string, workflowId?: string | null) =>
+    request<GoLiveCheck>("/api/ai/golive", { method: "POST", token, body: { url, workflowId: workflowId ?? null } }),
 };

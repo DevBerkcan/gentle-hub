@@ -1092,3 +1092,107 @@ export type EstimateUpdateInput = {
   content: EstimateContent;
   items: EstimateItemInput[];
 };
+
+export type UserStory = { role?: string; goal?: string; benefit?: string; acceptanceCriteria?: string[] };
+
+/** Defne's requirements: the classic note fields plus user stories and scope. */
+export type RequirementsContent = ProjectNoteContent & {
+  userStories?: UserStory[];
+  inScope?: string[];
+  outOfScope?: string[];
+  pages?: string[];
+  integrations?: string[];
+};
+
+export type VorgangStage = "requirements" | "estimate" | "offer" | "offer_sent" | "build" | "live";
+
+export type Vorgang = {
+  id: string;
+  title?: string | null;
+  createdAt: string;
+  customerName?: string | null;
+  stage: VorgangStage;
+  estimateStatus?: string | null;
+  estimateTotal?: number | null;
+  offerStatus?: string | null;
+  briefsDone: number;
+  briefsPending: number;
+  goLivePassed?: boolean | null;
+  emailMessageId?: string | null;
+};
+
+export type BriefKind = "frontend" | "backend" | "deployment";
+
+export type FrontendPlan = {
+  summary?: string;
+  stack?: string[] | string;
+  pages?: { route?: string; title?: string; purpose?: string; sections?: string[] }[];
+  components?: string[];
+  contentNeeded?: string[];
+  designNotes?: string[];
+  accessibility?: string[];
+  acceptanceChecks?: string[];
+  openQuestions?: string[];
+  claudeCodePrompt?: string;
+};
+
+export type BackendPlan = {
+  summary?: string;
+  needed?: boolean;
+  stack?: string[] | string;
+  dataModel?: { entity?: string; fields?: string[] }[];
+  endpoints?: { method?: string; path?: string; purpose?: string; auth?: string }[];
+  integrations?: string[];
+  security?: string[];
+  privacy?: string[];
+  acceptanceChecks?: string[];
+  openQuestions?: string[];
+  claudeCodePrompt?: string;
+};
+
+export type DeploymentPlan = {
+  summary?: string;
+  targets?: { part?: string; platform?: string; steps?: string[] }[];
+  envVars?: { name?: string; purpose?: string; secret?: boolean }[];
+  domain?: string[] | string;
+  goLiveChecklist?: string[];
+  monitoring?: string[];
+  openQuestions?: string[];
+};
+
+export type BuildBrief = {
+  id: string;
+  kind: BriefKind;
+  status: "pending" | "done" | "failed";
+  agentRunId?: string | null;
+  content?: FrontendPlan & BackendPlan & DeploymentPlan;
+  lastError?: string | null;
+  createdAt: string;
+  createdBy?: string | null;
+};
+
+export type GoLiveItem = { key: string; label: string; result: "ok" | "warning" | "error"; detail?: string | null };
+
+export type GoLiveCheck = {
+  id: string;
+  workflowId?: string | null;
+  url: string;
+  passed: boolean;
+  items: GoLiveItem[];
+  createdAt: string;
+  createdBy?: string | null;
+};
+
+export type VorgangDetail = {
+  vorgang: Vorgang;
+  requirements?: RequirementsContent | null;
+  estimate?: {
+    id: string;
+    status: string;
+    approvalId?: string | null;
+    totals: EstimateTotals;
+    items: { title: string; amountEur: number }[];
+  } | null;
+  briefs: BuildBrief[];
+  goLiveChecks: GoLiveCheck[];
+};

@@ -153,6 +153,36 @@ const PERSONAS: Record<string, Persona> = {
     ),
     accessory: "radar",
   },
+  "frontend-plan": {
+    palette: { light: "#c7d2fe", base: "#6366f1", dark: "#312e81", eye: "#eef2ff" },
+    glyph: (
+      <g {...stroke}>
+        <rect x="51" y="82" width="18" height="12" rx="2" />
+        <path d="M51 86h18" />
+      </g>
+    ),
+    accessory: "pencil",
+  },
+  "backend-plan": {
+    palette: { light: "#e2e8f0", base: "#475569", dark: "#0f172a", eye: "#a5f3fc" },
+    glyph: (
+      <g {...stroke}>
+        <ellipse cx="60" cy="83.5" rx="7" ry="2.5" />
+        <path d="M53 83.5v9c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-9M53 88c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5" />
+      </g>
+    ),
+    accessory: "glasses",
+  },
+  deployment: {
+    palette: { light: "#fed7aa", base: "#f97316", dark: "#7c2d12", eye: "#fff7ed" },
+    glyph: (
+      <g {...stroke}>
+        <path d="M60 81c3 2.5 4.5 6 4 10h-8c-.5-4 1-7.5 4-10z" />
+        <path d="M57 94l-1.5 2M63 94l1.5 2M60 94v2.5" />
+      </g>
+    ),
+    accessory: "headset",
+  },
 };
 
 const FALLBACK: Persona = {

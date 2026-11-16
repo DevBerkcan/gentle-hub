@@ -9,6 +9,8 @@ import { getSessionToken } from "@/lib/session";
 import type { ActionFailure, ActionResult, LoginState } from "@/lib/action-types";
 import type {
   Agent,
+  BriefKind,
+  GoLiveCheck,
   AgentUpdateInput,
   AiSettings,
   AiSettingsInput,
@@ -987,6 +989,34 @@ export async function updateEstimateSettingsAction(
     await api.updateEstimateSettings(token, bufferPercent, catalog);
     revalidatePath("/ai/settings");
     return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function requestBriefsAction(vorgangId: string, kinds: BriefKind[]): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.requestBriefs(token, vorgangId, kinds);
+    revalidatePath(`/ai/vorgaenge/${vorgangId}`);
+    revalidatePath("/ai/vorgaenge");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function goLiveCheckAction(url: string, workflowId?: string | null): Promise<ActionResult<{ check: GoLiveCheck }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const check = await api.goLiveCheck(token, url, workflowId);
+    revalidatePath("/ai/vorgaenge");
+    if (workflowId) revalidatePath(`/ai/vorgaenge/${workflowId}`);
+    return { ok: true, check };
   } catch (error) {
     return toFailure(error);
   }
