@@ -79,6 +79,8 @@ import type {
   SuiteAction,
   SuiteState,
   SuiteDocument,
+  SiteIntake,
+  SiteState,
 } from "@/lib/types";
 
 export class ApiError extends Error {
@@ -573,4 +575,13 @@ export const api = {
       `/api/ai/vorgaenge/${encodeURIComponent(id)}/suite/${action}`,
       { method: "POST", token, body: { confirm: true, recipientEmail: recipientEmail ?? null } },
     ),
+
+  createManualVorgang: (token: string, intake: SiteIntake) =>
+    request<{ id: string; title: string }>("/api/ai/vorgaenge/manual", { method: "POST", token, body: intake }),
+
+  buildSite: (token: string, id: string) =>
+    request<void>(`/api/ai/vorgaenge/${encodeURIComponent(id)}/site/build`, { method: "POST", token, body: {} }),
+
+  publishSite: (token: string, id: string, published: boolean) =>
+    request<SiteState>(`/api/ai/vorgaenge/${encodeURIComponent(id)}/site/publish`, { method: "POST", token, body: { published } }),
 };

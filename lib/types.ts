@@ -1119,6 +1119,7 @@ export type Vorgang = {
   briefsPending: number;
   goLivePassed?: boolean | null;
   emailMessageId?: string | null;
+  source?: "email" | "manual";
 };
 
 export type BriefKind = "frontend" | "backend" | "deployment";
@@ -1196,6 +1197,31 @@ export type VorgangDetail = {
   briefs: BuildBrief[];
   goLiveChecks: GoLiveCheck[];
   suite: SuiteState;
+  site: SiteState;
+};
+
+export type SiteIntake = {
+  businessName?: string | null;
+  niche?: string | null;
+  city?: string | null;
+  contactName?: string | null;
+  instagram?: string | null;
+  website?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  notes?: string | null;
+};
+
+export type SiteState = {
+  status: "none" | "building" | "ready" | "failed";
+  intake?: SiteIntake | null;
+  brandCheck?: import("@/lib/site").BrandCheck | null;
+  content?: import("@/lib/site").SiteContent | null;
+  lastError?: string | null;
+  previewToken?: string | null;
+  isPublished: boolean;
+  publishedAt?: string | null;
+  updatedAt?: string | null;
 };
 
 export type SuiteKind = "quote" | "contract";

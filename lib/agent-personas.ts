@@ -33,6 +33,7 @@ export const AGENT_PERSONAS: Record<string, AgentPersona> = {
   "frontend-plan": { firstName: "Baran", role: "Frontend", team: "entwicklung" },
   "backend-plan": { firstName: "Onur", role: "Backend", team: "entwicklung" },
   deployment: { firstName: "Tolga", role: "Deployment", team: "entwicklung" },
+  "site-builder": { firstName: "Lara", role: "Branding & Website", team: "entwicklung" },
   "website-monitor": { firstName: "Kaan", role: "Website-Wächter", team: "entwicklung" },
   "email-intelligence": { firstName: "Elif", role: "E-Mail-Analyse", team: "buero" },
   "crm-matching": { firstName: "Kerem", role: "CRM-Zuordnung", team: "buero" },

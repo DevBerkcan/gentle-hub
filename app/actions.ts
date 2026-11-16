@@ -10,6 +10,7 @@ import type { ActionFailure, ActionResult, LoginState } from "@/lib/action-types
 import type {
   Agent,
   BriefKind,
+  SiteIntake,
   SuiteAction,
   GoLiveCheck,
   AgentUpdateInput,
@@ -1031,6 +1032,45 @@ export async function suiteAction(vorgangId: string, action: SuiteAction, recipi
     await api.suiteAction(token, vorgangId, action, recipientEmail);
     revalidatePath(`/ai/vorgaenge/${vorgangId}`);
     revalidatePath("/ai/vorgaenge");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function createManualVorgangAction(intake: SiteIntake): Promise<ActionResult<{ id: string }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const created = await api.createManualVorgang(token, intake);
+    revalidatePath("/ai/vorgaenge");
+    return { ok: true, id: created.id };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function buildSiteAction(vorgangId: string): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.buildSite(token, vorgangId);
+    revalidatePath(`/ai/vorgaenge/${vorgangId}`);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function publishSiteAction(vorgangId: string, published: boolean): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.publishSite(token, vorgangId, published);
+    revalidatePath(`/ai/vorgaenge/${vorgangId}`);
     return { ok: true };
   } catch (error) {
     return toFailure(error);

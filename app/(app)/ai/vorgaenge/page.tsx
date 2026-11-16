@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StageTrack } from "@/components/ai/delivery/stage-track";
 import { GoLiveForm, GoLiveResult } from "@/components/ai/delivery/golive-form";
+import { ManualVorgangForm } from "@/components/ai/delivery/manual-vorgang-form";
 import { IconActivity, IconChevronRight } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Vorgänge" };
@@ -24,6 +25,16 @@ export default async function VorgaengePage() {
         title="Vorgänge"
         description="Jede Kundenanfrage auf einem Weg: Defne schreibt die Anforderungen, Emre schätzt, Can legt Angebot und Vertrag in GentleSuite an, Baran, Onur und Tolga planen den Bau, Tolga prüft vor dem Go-Live und Melis verfolgt alles bis zur Rechnung."
       />
+
+      <details className="card group p-4">
+        <summary className="cursor-pointer list-none text-[13px] font-semibold text-ink">
+          + Vorgang ohne E-Mail anlegen
+          <span className="ml-2 text-[11.5px] font-normal text-muted">Kundin aus Instagram, Telefon oder Messe</span>
+        </summary>
+        <div className="mt-4">
+          <ManualVorgangForm />
+        </div>
+      </details>
 
       <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
         {counts.map((stage) => (
@@ -48,6 +59,7 @@ export default async function VorgaengePage() {
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[12.5px] font-semibold text-ink">{item.title ?? "Anfrage"}</p>
                   <p className="text-[11px] text-muted">
+                    {item.source === "manual" && <span className="mr-1 rounded bg-surface-2 px-1 text-[10px] font-semibold">ohne E-Mail</span>}
                     {item.customerName ?? "Kunde unbekannt"} · {formatRelative(item.createdAt)}
                     {item.estimateTotal != null && <> · {formatEur(item.estimateTotal)} netto</>}
                   </p>

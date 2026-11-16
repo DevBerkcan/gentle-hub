@@ -10,6 +10,7 @@ import { RequirementsView } from "@/components/ai/requirements-view";
 import { StageTrack } from "@/components/ai/delivery/stage-track";
 import { BriefPanel } from "@/components/ai/delivery/brief-panel";
 import { SuitePanel } from "@/components/ai/delivery/suite-panel";
+import { SitePanel } from "@/components/ai/delivery/site-panel";
 import { GoLiveForm, GoLiveResult } from "@/components/ai/delivery/golive-form";
 import { IconChevronLeft, IconMail } from "@/components/ui/icons";
 
@@ -32,7 +33,7 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
     throw error;
   }
 
-  const { vorgang, requirements, estimate, briefs, goLiveChecks, suite } = detail;
+  const { vorgang, requirements, estimate, briefs, goLiveChecks, suite, site } = detail;
 
   return (
     <div className="flex flex-col gap-6">
@@ -51,6 +52,18 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
+          <section className="flex flex-col gap-3" aria-labelledby="site-heading">
+            <div>
+              <h2 id="site-heading" className="text-[13px] font-semibold text-ink">
+                Website (Lara und Tolga)
+              </h2>
+              <p className="text-[11.5px] text-muted">
+                Aus dem Gentle-Baukasten: Lara übernimmt ein vorhandenes Branding oder entwirft eins, schreibt alle Texte und erfindet keine Fakten. Tolga stellt die Seite als Vorschau-Link online (nicht in Google, Impressum und Datenschutz als Platzhalter). Auf die Domain der Kundin kommt sie erst nach deiner Freigabe.
+              </p>
+            </div>
+            <SitePanel vorgangId={vorgang.id} site={site} />
+          </section>
+
           <section className="flex flex-col gap-3" aria-labelledby="suite-heading">
             <div>
               <h2 id="suite-heading" className="text-[13px] font-semibold text-ink">
