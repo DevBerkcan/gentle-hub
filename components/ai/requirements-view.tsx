@@ -14,8 +14,8 @@ export function RequirementsView({ content, compact = false }: { content: Requir
             {stories.map((story, index) => (
               <li key={index} className="rounded-lg border border-line bg-surface-2/50 px-3 py-2 text-[11.5px] leading-relaxed text-ink">
                 <p>
-                  Als <strong>{story.role || "Nutzer:in"}</strong> möchte ich {story.goal}
-                  {story.benefit ? <>, damit {story.benefit}</> : null}.
+                  Als <strong>{strip(story.role, /^als\s+/i) || "Nutzer:in"}</strong> möchte ich {strip(story.goal, /^(?:ich\s+)?möchte\s+(?:ich\s+)?/i)}
+                  {story.benefit ? <>, damit {strip(story.benefit, /^,?\s*damit\s+/i)}</> : null}.
                 </p>
                 {!compact && (story.acceptanceCriteria ?? []).length > 0 && (
                   <ul className="mt-1 list-disc pl-4 text-[11px] text-muted">
@@ -43,6 +43,11 @@ export function RequirementsView({ content, compact = false }: { content: Requir
       <RequirementList title="Aufgaben" items={content.tasks?.map((task) => task.title ?? "")} />
     </div>
   );
+}
+
+/** The model sometimes repeats the sentence frame ("Als …", "möchte ich …", "damit …") inside the fields. */
+function strip(value: string | undefined, prefix: RegExp) {
+  return (value ?? "").trim().replace(prefix, "").replace(/[.\s]+$/, "");
 }
 
 export function RequirementList({ title, items }: { title: string; items?: (string | undefined)[] }) {
