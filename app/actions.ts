@@ -1076,3 +1076,16 @@ export async function publishSiteAction(vorgangId: string, published: boolean): 
     return toFailure(error);
   }
 }
+
+export async function updateEstimateRatesAction(pricingMode: "flat" | "hourly", rates: Record<string, number>): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.updateEstimateRates(token, pricingMode, rates);
+    revalidatePath("/ai/settings");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}

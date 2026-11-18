@@ -590,7 +590,7 @@ export type CrmStatus = { configured: boolean; reachable: boolean; frontendUrl?:
 // Notes, estimates and approvals
 // ---------------------------------------------------------------------------
 
-export type EstimateRole = "pm" | "design" | "dev" | "qa";
+export type EstimateRole = "pm" | "design" | "dev" | "qa" | "marketing";
 
 export type EstimateRisk = { description?: string | null; impactHours?: number | null };
 
@@ -1073,7 +1073,12 @@ export type PriceCatalogEntry = { title: string; description?: string | null; pr
 
 export type EmailWork = { note?: ProjectNote | null; estimate?: Estimate | null };
 
-export type EstimateSettings = { rates: Record<EstimateRole, number>; bufferPercent: number; catalog: PriceCatalogEntry[] };
+export type EstimateSettings = {
+  rates: Record<EstimateRole, number>;
+  bufferPercent: number;
+  catalog: PriceCatalogEntry[];
+  pricingMode?: "flat" | "hourly";
+};
 
 export type EstimateItemInput = {
   title: string;

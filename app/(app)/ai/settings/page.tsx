@@ -3,6 +3,7 @@ import { getAiOverviewData, getEstimateSettingsData, getReplySettingsData } from
 import { PageHeader } from "@/components/ui/page-header";
 import { AiSettingsForm } from "@/components/ai/ai-settings-form";
 import { EstimateSettingsForm } from "@/components/ai/estimate-settings-form";
+import { EstimateRatesForm } from "@/components/ai/estimate-rates-form";
 import { ReplySettingsForm } from "@/components/ai/reply-settings-form";
 import { IconShield } from "@/components/ui/icons";
 
@@ -26,6 +27,7 @@ export default async function AiSettingsPage() {
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
           <AiSettingsForm settings={settings} />
+          <EstimateRatesForm settings={estimateSettings} />
           <EstimateSettingsForm settings={estimateSettings} />
           <ReplySettingsForm settings={replySettings} />
         </div>

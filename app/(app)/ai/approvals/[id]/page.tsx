@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
-import { getApprovalData, getLeadCheckData } from "@/lib/data";
+import { getApprovalData, getLeadCheckData, getVorgangData } from "@/lib/data";
+import { SuitePanel } from "@/components/ai/delivery/suite-panel";
 import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { formatDateTime } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -16,7 +17,7 @@ import { ReplyReview } from "@/components/ai/reply-review";
 import { LeadCheckCard } from "@/components/ai/lead-check-card";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { personaLabel } from "@/lib/agent-personas";
-import { IconChevronLeft, IconExternal, IconMail } from "@/components/ui/icons";
+import { IconChevronLeft, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Freigabe" };
 
@@ -47,7 +48,8 @@ export default async function AiApprovalPage({ params }: PageParams) {
   const isOpen = approval.status === "pending" && new Date(approval.expiresAt) > new Date();
   const canCounter = Boolean(estimate) && (isOpen || estimate?.status === "rejected");
   const noteContent = parseNote(note?.contentJson);
-  const offer = estimate?.offerDraftJson ? (JSON.parse(estimate.offerDraftJson) as { subject?: string; lines?: unknown[]; totalNetEur?: number }) : null;
+  // After approval the quote is made in GentleSuite (Can), not as a file here.
+  const vorgang = estimate?.status === "approved" && estimate.workflowId ? await getVorgangData(estimate.workflowId).catch(() => null) : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -62,11 +64,10 @@ export default async function AiApprovalPage({ params }: PageParams) {
         action={
           <>
             <span className={cn("rounded-[6px] px-2 py-1 text-[11px] font-semibold", meta.className)}>{meta.label}</span>
-            {estimate && (
-              <a href={`/ai/estimates/${estimate.id}/docx`} className="btn btn-secondary">
-                <IconExternal className="h-3.5 w-3.5" />
-                DOCX
-              </a>
+            {estimate?.workflowId && (
+              <Link href={`/ai/vorgaenge/${estimate.workflowId}`} className="btn btn-secondary">
+                Zum Vorgang
+              </Link>
             )}
           </>
         }
@@ -103,18 +104,18 @@ export default async function AiApprovalPage({ params }: PageParams) {
             </section>
           )}
 
-          {offer && (
-            <section className="card flex flex-col gap-2 p-4" aria-labelledby="offer-heading">
-              <h2 id="offer-heading" className="text-[13px] font-semibold text-ink">
-                Angebotsentwurf vorbereitet
-              </h2>
-              <p className="text-[12px] text-muted">
-                {offer.subject} · {offer.lines?.length ?? 0} Positionen · {formatEur(offer.totalNetEur)} netto
-              </p>
-              <p className="text-[11px] text-subtle">
-                Interner Entwurf. Sobald GentleSuite angebunden ist, wird daraus nach einer weiteren Freigabe ein Angebotsentwurf
-                in GentleSuite. Versendet wird nichts automatisch.
-              </p>
+          {vorgang && (
+            <section className="flex flex-col gap-3" aria-labelledby="suite-heading">
+              <div>
+                <h2 id="suite-heading" className="text-[13px] font-semibold text-ink">
+                  Weiter in GentleSuite
+                </h2>
+                <p className="text-[11.5px] text-muted">
+                  Kein Word-Dokument: Can legt aus dieser freigegebenen Schätzung das Angebot direkt in GentleSuite an ({formatEur(estimate?.totals.totalNetEur)} netto).
+                  Jeder Schritt läuft erst nach deiner Bestätigung, verschickt wird nichts automatisch.
+                </p>
+              </div>
+              <SuitePanel vorgangId={vorgang.vorgang.id} suite={vorgang.suite} estimateApproved />
             </section>
           )}
 

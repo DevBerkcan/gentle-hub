@@ -13,6 +13,7 @@ const ROLES: { value: EstimateRole; label: string }[] = [
   { value: "design", label: "Design" },
   { value: "dev", label: "Entwicklung" },
   { value: "qa", label: "QS" },
+  { value: "marketing", label: "Marketing" },
 ];
 
 const hoursFormat = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 });

@@ -584,4 +584,7 @@ export const api = {
 
   publishSite: (token: string, id: string, published: boolean) =>
     request<SiteState>(`/api/ai/vorgaenge/${encodeURIComponent(id)}/site/publish`, { method: "POST", token, body: { published } }),
+
+  updateEstimateRates: (token: string, pricingMode: "flat" | "hourly", rates: Record<string, number>) =>
+    request<EstimateSettings>("/api/ai/settings/estimate", { method: "PUT", token, body: { pricingMode, rates } }),
 };
