@@ -117,7 +117,7 @@ export function ApprovalDecision({
   );
 }
 
-export function StartEstimateButton({ emailId }: { emailId: string }) {
+export function StartEstimateButton({ emailId, label = "Notiz und Schätzung erstellen" }: { emailId: string; label?: string }) {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -142,7 +142,7 @@ export function StartEstimateButton({ emailId }: { emailId: string }) {
         className="btn btn-secondary h-8 w-fit text-[11.5px]"
       >
         {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconSparkles className="h-3.5 w-3.5" />}
-        Notiz und Schätzung erstellen
+        {label}
       </button>
       {message && <p className="text-[10.5px] text-emerald-700">{message}</p>}
       {error && <p className="text-[10.5px] text-rose-600">{error}</p>}

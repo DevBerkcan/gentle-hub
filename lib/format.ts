@@ -135,3 +135,10 @@ export function formatSecretPreview(value: string): string {
   if (value.length <= 4) return "••••••••";
   return `${"•".repeat(Math.min(18, value.length))}`;
 }
+
+/** True if the (UTC) timestamp is older than the given minutes; the API sends UTC without "Z" in some places. */
+export function isOlderThanMinutes(value: string | null | undefined, minutes: number): boolean {
+  if (!value) return false;
+  const time = new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(value) ? value : `${value}Z`).getTime();
+  return Number.isFinite(time) && Date.now() - time > minutes * 60_000;
+}

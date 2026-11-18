@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ApiError } from "@/lib/api";
 import { getCrmStatusData, getEmailCrmLinkData, getEmailData, getEmailRepliesData, getEmailWorkData, getLeadCheckData, getSupportForEmailData } from "@/lib/data";
 import { REQUEST_TYPE_LABELS } from "@/lib/ai-format";
-import { formatDate, formatDateTime } from "@/lib/format";
+import { formatDate, formatDateTime, isOlderThanMinutes } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { EmailIntelligenceResult } from "@/lib/types";
 import { PageHeader } from "@/components/ui/page-header";
@@ -156,7 +156,16 @@ export default async function AiEmailPage({ params }: PageParams) {
                   </span>
                 </div>
               ) : work.note ? (
-                <p className="text-[12px] text-muted">Projektnotiz ist erstellt, die Schätzung läuft.</p>
+                isOlderThanMinutes(work.note.createdAt, 3) ? (
+                  <>
+                    <p className="text-[12px] text-muted">
+                      Projektnotiz ist da, aber Emres Schätzung fehlt (wahrscheinlich fehlgeschlagen, Details beim Agenten). Erneut starten nutzt die vorhandene Notiz:
+                    </p>
+                    <StartEstimateButton emailId={email.id} label="Schätzung erneut starten" />
+                  </>
+                ) : (
+                  <p className="text-[12px] text-muted">Projektnotiz ist erstellt, die Schätzung läuft.</p>
+                )
               ) : analysis.isCustomerRequest ? (
                 <p className="text-[12px] text-muted">Notiz und Schätzung werden automatisch erstellt.</p>
               ) : (
