@@ -81,6 +81,12 @@ import type {
   SuiteDocument,
   SiteIntake,
   SiteState,
+  Tender,
+  TenderDetail,
+  TenderManualInput,
+  TenderSettings,
+  TenderSourceStats,
+  TenderStatus,
 } from "@/lib/types";
 
 export class ApiError extends Error {
@@ -587,4 +593,29 @@ export const api = {
 
   updateEstimateRates: (token: string, pricingMode: "flat" | "hourly", rates: Record<string, number>) =>
     request<EstimateSettings>("/api/ai/settings/estimate", { method: "PUT", token, body: { pricingMode, rates } }),
+
+  tenders: (token: string, view: string) =>
+    request<{ items: Tender[]; stats: TenderSourceStats[] }>(`/api/ai/tenders?view=${encodeURIComponent(view)}`, { token }),
+
+  tender: (token: string, id: string) => request<TenderDetail>(`/api/ai/tenders/${encodeURIComponent(id)}`, { token }),
+
+  addTender: (token: string, input: TenderManualInput) =>
+    request<{ id: string }>("/api/ai/tenders/manual", { method: "POST", token, body: input }),
+
+  fetchTenders: (token: string) => request<{ jobId: string }>("/api/ai/tenders/fetch", { method: "POST", token, body: {} }),
+
+  rescoreTender: (token: string, id: string) =>
+    request<void>(`/api/ai/tenders/${encodeURIComponent(id)}/score`, { method: "POST", token, body: {} }),
+
+  setTenderStatus: (token: string, id: string, status: TenderStatus, reason?: string | null) =>
+    request<{ tender: Tender }>(`/api/ai/tenders/${encodeURIComponent(id)}/status`, { method: "PUT", token, body: { status, reason: reason ?? null } }),
+
+  tenderToVorgang: (token: string, id: string) =>
+    request<{ id: string }>(`/api/ai/tenders/${encodeURIComponent(id)}/vorgang`, { method: "POST", token, body: {} }),
+
+  tenderSettings: (token: string) =>
+    request<{ settings: TenderSettings; mailboxes: { id: string; label: string; emailAddress: string }[] }>("/api/ai/tenders/settings", { token }),
+
+  saveTenderSettings: (token: string, settings: TenderSettings) =>
+    request<{ settings: TenderSettings }>("/api/ai/tenders/settings", { method: "PUT", token, body: settings }),
 };

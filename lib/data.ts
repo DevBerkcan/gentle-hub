@@ -257,3 +257,14 @@ export const getVorgangData = cache(async (id: string) => {
   const { token } = await requireAuth();
   return api.vorgang(token, id);
 });
+
+export const getTendersData = cache(async (view: string) => {
+  const { token } = await requireAuth();
+  const [list, settings] = await Promise.all([api.tenders(token, view), api.tenderSettings(token)]);
+  return { ...list, ...settings };
+});
+
+export const getTenderData = cache(async (id: string) => {
+  const { token } = await requireAuth();
+  return api.tender(token, id);
+});

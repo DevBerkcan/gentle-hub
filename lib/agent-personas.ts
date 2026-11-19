@@ -46,6 +46,7 @@ export const AGENT_PERSONAS: Record<string, AgentPersona> = {
   "lead-finder": { firstName: "Arda", role: "Lead-Finder", team: "vertrieb" },
   "lead-check": { firstName: "Selin", role: "Lead-Check", team: "vertrieb" },
   outreach: { firstName: "Cem", role: "Ansprache", team: "vertrieb" },
+  "tender-scout": { firstName: "Nora", role: "Ausschreibungen", team: "vertrieb" },
 };
 
 export const PLANNED_PERSONAS: Record<string, AgentPersona> = {

@@ -1259,3 +1259,58 @@ export type SuiteState = {
   requesterEmail?: string | null;
   documents: SuiteDocument[];
 };
+
+export type TenderStatus = "new" | "scoring" | "scored" | "failed" | "bid" | "submitted" | "won" | "lost" | "skipped";
+
+export type Tender = {
+  id: string;
+  source: "ted" | "mail" | "manual";
+  title: string;
+  buyer?: string | null;
+  region?: string | null;
+  url?: string | null;
+  publishedAt?: string | null;
+  deadlineAt?: string | null;
+  valueEur?: number | null;
+  cpv?: string | null;
+  status: TenderStatus;
+  fit?: number | null;
+  recommendation?: "bid" | "skip" | null;
+  lastError?: string | null;
+  outcomeReason?: string | null;
+  workflowId?: string | null;
+  emailMessageId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy?: string | null;
+};
+
+export type TenderSourceStats = { source: string; found: number; recommended: number; submitted: number; won: number; lost: number };
+
+export type TenderAnalysis = {
+  fit?: number;
+  recommendation?: "bid" | "skip";
+  summary?: string;
+  reasons?: string[];
+  risks?: string[];
+  requirements?: string[];
+  questions?: string[];
+  draft?: { subject?: string; coverLetter?: string; approach?: string[] };
+};
+
+export type TenderDetail = { tender: Tender; description?: string | null; analysis?: TenderAnalysis | null };
+
+export type TenderSettings = {
+  enabled: boolean;
+  cpv: string[];
+  regions: string[];
+  keywords: string[];
+  excludeKeywords: string[];
+  minValueEur?: number | null;
+  maxValueEur?: number | null;
+  maxScoresPerRun: number;
+  profile: string;
+  mailboxConnectionId?: string | null;
+};
+
+export type TenderManualInput = { title: string; url?: string | null; buyer?: string | null; deadline?: string | null; valueEur?: number | null; text: string };

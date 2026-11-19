@@ -173,6 +173,16 @@ const PERSONAS: Record<string, Persona> = {
     ),
     accessory: "glasses",
   },
+  "tender-scout": {
+    palette: { light: "#ddd6fe", base: "#7c3aed", dark: "#3b0764", eye: "#f5f3ff" },
+    glyph: (
+      <g {...stroke}>
+        <circle cx="58" cy="86" r="5.5" />
+        <path d="m62 90 5 5" />
+      </g>
+    ),
+    accessory: "radar",
+  },
   "site-builder": {
     palette: { light: "#fbcfe8", base: "#db2777", dark: "#831843", eye: "#fdf2f8" },
     glyph: (

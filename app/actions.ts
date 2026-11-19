@@ -10,6 +10,9 @@ import type { ActionFailure, ActionResult, LoginState } from "@/lib/action-types
 import type {
   Agent,
   BriefKind,
+  TenderManualInput,
+  TenderSettings,
+  TenderStatus,
   SiteIntake,
   SuiteAction,
   GoLiveCheck,
@@ -1088,4 +1091,53 @@ export async function updateEstimateRatesAction(pricingMode: "flat" | "hourly", 
   } catch (error) {
     return toFailure(error);
   }
+}
+
+async function tenderAction<T extends object>(run: (token: string) => Promise<T>, paths: string[]): Promise<ActionResult<T>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const result = await run(token);
+    for (const path of paths) revalidatePath(path);
+    return { ok: true, ...result };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function addTenderAction(input: TenderManualInput) {
+  return tenderAction((token) => api.addTender(token, input), ["/ai/ausschreibungen"]);
+}
+
+export async function fetchTendersAction() {
+  return tenderAction(async (token) => {
+    await api.fetchTenders(token);
+    return {};
+  }, ["/ai/ausschreibungen"]);
+}
+
+export async function rescoreTenderAction(id: string) {
+  return tenderAction(async (token) => {
+    await api.rescoreTender(token, id);
+    return {};
+  }, [`/ai/ausschreibungen/${id}`]);
+}
+
+export async function setTenderStatusAction(id: string, status: TenderStatus, reason?: string | null) {
+  return tenderAction(async (token) => {
+    await api.setTenderStatus(token, id, status, reason);
+    return {};
+  }, [`/ai/ausschreibungen/${id}`, "/ai/ausschreibungen"]);
+}
+
+export async function tenderToVorgangAction(id: string) {
+  return tenderAction((token) => api.tenderToVorgang(token, id), [`/ai/ausschreibungen/${id}`, "/ai/vorgaenge"]);
+}
+
+export async function saveTenderSettingsAction(settings: TenderSettings) {
+  return tenderAction(async (token) => {
+    await api.saveTenderSettings(token, settings);
+    return {};
+  }, ["/ai/ausschreibungen"]);
 }
