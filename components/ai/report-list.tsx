@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import { shortUrl } from "@/lib/format";
 import type { ReportProject } from "@/lib/types";
 import { IconLoader } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const STATUS: Record<string, string> = {
   pending_approval: "Wartet auf Freigabe",
@@ -61,7 +62,7 @@ function ReportRow({ project, month }: { project: ReportProject; month: string }
           onClick={() =>
             startTransition(async () => {
               const result = await startReportAction(project.projectId, month);
-              setMessage(result.ok ? "Aylin schreibt den Bericht …" : result.error);
+              setMessage(result.ok ? `${agentName("customer-report")} schreibt den Bericht …` : result.error);
               if (result.ok) setTimeout(() => router.refresh(), 12_000);
             })
           }

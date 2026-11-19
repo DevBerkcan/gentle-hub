@@ -6,6 +6,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { VoiceNoteCard } from "@/components/ai/voice-note-card";
 import { IconMail } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Sprachnotizen" };
 
@@ -22,14 +23,14 @@ export default async function VoiceNotesPage({ searchParams }: { searchParams: P
           agentId="voice-notes"
           size={88}
           state={notes.some((note) => note.status === "processing") ? "working" : "idle"}
-          title="Deniz · Sprachnotizen"
+          title={`${agentName("voice-notes")} · Sprachnotizen`}
           className="hidden sm:block"
         />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="AI Operations"
             title="Sprachnotizen"
-            description={`Sprich nach einem Termin einfach eine Sprachnachricht an den GentleHub-Bot in Telegram (oder tippe eine Notiz). Deniz schreibt sie ab, ordnet sie dem Projekt zu und macht Aufgaben, Entscheidungen und offene Fragen daraus. ${open} offen.`}
+            description={`Sprich nach einem Termin einfach eine Sprachnachricht an den GentleHub-Bot in Telegram (oder tippe eine Notiz). ${agentName("voice-notes")} schreibt sie ab, ordnet sie dem Projekt zu und macht Aufgaben, Entscheidungen und offene Fragen daraus. ${open} offen.`}
           />
         </div>
       </div>

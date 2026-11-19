@@ -8,6 +8,7 @@ import { formatEur } from "@/lib/ai-format";
 import type { Briefing } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { IconArrowRight, IconLoader, IconRefresh } from "@/components/ui/icons";
+import { agentName, agentGenitive } from "@/lib/agent-personas";
 
 function dayLabel(day: string) {
   return new Date(`${day}T12:00:00Z`).toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "2-digit", timeZone: "UTC" });
@@ -22,7 +23,7 @@ export function BriefingCard({ briefing, compact = false }: { briefing: Briefing
   function refresh() {
     startTransition(async () => {
       const result = await briefingNowAction();
-      setMessage(result.ok ? "Leyla schreibt ein neues Briefing …" : result.error);
+      setMessage(result.ok ? `${agentName("daily-briefing")} schreibt ein neues Briefing …` : result.error);
       if (result.ok) setTimeout(() => router.refresh(), 12_000);
     });
   }
@@ -30,13 +31,13 @@ export function BriefingCard({ briefing, compact = false }: { briefing: Briefing
   return (
     <section className="card flex flex-col gap-3 p-4" aria-labelledby="briefing-heading">
       <div className="flex items-start gap-3">
-        <AgentAvatar agentId="daily-briefing" size={compact ? 44 : 56} state={pending ? "working" : "idle"} title="Leyla · Tagesbriefing" />
+        <AgentAvatar agentId="daily-briefing" size={compact ? 44 : 56} state={pending ? "working" : "idle"} title={`${agentName("daily-briefing")} · Tagesbriefing`} />
         <div className="min-w-0 flex-1">
           <p className="text-[10.5px] font-semibold uppercase tracking-wide text-subtle">
-            {briefing ? `Leylas Briefing · ${dayLabel(briefing.day)}` : "Leylas Briefing"}
+            {briefing ? `${agentGenitive("daily-briefing")} Briefing · ${dayLabel(briefing.day)}` : `${agentGenitive("daily-briefing")} Briefing`}
           </p>
           <h2 id="briefing-heading" className="text-[14px] font-semibold text-ink">
-            {briefing?.headline ?? "Noch kein Briefing – Leyla meldet sich jeden Morgen zwischen 7 und 10 Uhr."}
+            {briefing?.headline ?? `Noch kein Briefing – ${agentName("daily-briefing")} meldet sich jeden Morgen zwischen 7 und 10 Uhr.`}
           </h2>
         </div>
         <button type="button" onClick={refresh} disabled={pending} className="btn btn-ghost btn-icon h-8 w-8" aria-label="Briefing jetzt neu erstellen">

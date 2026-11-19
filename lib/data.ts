@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { api } from "@/lib/api";
-import { requireAuth } from "@/lib/session";
+import { requireAuth as requireSession } from "@/lib/session";
+import { setAgentNames } from "@/lib/agent-personas";
 import { buildOffice } from "@/lib/office";
 import type {
   AgentDetail,
@@ -31,6 +32,24 @@ import type {
   SupportTicket,
   SearchResults,
 } from "@/lib/types";
+
+/** Custom agent names, loaded once per request; failures fall back to the default names. */
+export const getAgentNames = cache(async (token: string): Promise<Record<string, string>> => {
+  try {
+    const result = await api.agentNames(token);
+    setAgentNames(result.names);
+    return result.names;
+  } catch {
+    return {};
+  }
+});
+
+/** Session check plus agent names, so every page shows the names the user chose. */
+const requireAuth = cache(async () => {
+  const session = await requireSession();
+  await getAgentNames(session.token);
+  return session;
+});
 
 export const getOverviewData = cache(async (): Promise<Overview> => {
   const { token } = await requireAuth();
@@ -267,4 +286,11 @@ export const getTendersData = cache(async (view: string) => {
 export const getTenderData = cache(async (id: string) => {
   const { token } = await requireAuth();
   return api.tender(token, id);
+});
+
+export const getAgentNamesData = cache(async () => {
+  const { token } = await requireAuth();
+  const result = await api.agentNames(token);
+  setAgentNames(result.names);
+  return result;
 });

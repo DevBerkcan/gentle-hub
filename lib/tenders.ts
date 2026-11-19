@@ -1,8 +1,9 @@
 import type { TenderStatus } from "@/lib/types";
+import { agentName } from "@/lib/agent-personas";
 
 export const TENDER_STATUS: Record<TenderStatus, { label: string; className: string }> = {
   new: { label: "Neu", className: "bg-slate-100 text-slate-700" },
-  scoring: { label: "Nora prüft", className: "bg-sky-50 text-sky-700" },
+  scoring: { get label() { return `${agentName("tender-scout")} prüft`; }, className: "bg-sky-50 text-sky-700" },
   scored: { label: "Bewertet", className: "bg-indigo-50 text-indigo-700" },
   failed: { label: "Fehler", className: "bg-rose-50 text-rose-700" },
   bid: { label: "Wir bewerben uns", className: "bg-amber-50 text-amber-800" },

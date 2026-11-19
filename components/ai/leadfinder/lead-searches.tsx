@@ -7,6 +7,7 @@ import { restartLeadEnrichmentAction } from "@/app/actions";
 import { cn } from "@/lib/cn";
 import type { LeadSearch, PlacesUsage } from "@/lib/types";
 import { IconLoader, IconRefresh } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const STATUS: Record<LeadSearch["status"], string> = {
   queued: "wartet",
@@ -142,7 +143,7 @@ export function LeadSearches({
             </li>
           ))}
         </ul>
-        <p className="mt-2 leading-relaxed">Die Grenzen liegen unter Googles freiem Monatskontingent. Ist eine erreicht, ruft Arda nichts mehr ab.</p>
+        <p className="mt-2 leading-relaxed">Die Grenzen liegen unter Googles freiem Monatskontingent. Ist eine erreicht, ruft {agentName("lead-finder")} nichts mehr ab.</p>
       </details>
     </section>
   );

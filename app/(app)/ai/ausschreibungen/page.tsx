@@ -11,6 +11,7 @@ import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { TenderToolbar } from "@/components/ai/tenders/tender-toolbar";
 import { TenderSettingsForm } from "@/components/ai/tenders/tender-settings-form";
 import { IconChevronRight, IconSearch } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Ausschreibungen" };
 
@@ -27,12 +28,12 @@ export default async function TendersPage({ searchParams }: Params) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-4">
-        <AgentAvatar agentId="tender-scout" size={88} state={scoring ? "working" : "idle"} title="Nora · Ausschreibungen" className="hidden sm:block" />
+        <AgentAvatar agentId="tender-scout" size={88} state={scoring ? "working" : "idle"} title={`${agentName("tender-scout")} · Ausschreibungen`} className="hidden sm:block" />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="Vertrieb"
             title="Ausschreibungen"
-            description="Nora sucht öffentliche Ausschreibungen (TED), liest die Suchalarme der Portale aus dem Ausschreibungs-Postfach und bewertet jede Ausschreibung für Gentle Group: Passung, Empfehlung, geforderte Nachweise und ein Anschreiben als Entwurf. Einreichen tust du. Dein Ergebnis mit Grund macht ihre Empfehlungen besser."
+            description={`${agentName("tender-scout")} sucht öffentliche Ausschreibungen (TED), liest die Suchalarme der Portale aus dem Ausschreibungs-Postfach und bewertet jede Ausschreibung für Gentle Group: Passung, Empfehlung, geforderte Nachweise und ein Anschreiben als Entwurf. Einreichen tust du. Dein Ergebnis mit Grund macht ihre Empfehlungen besser.`}
           />
         </div>
       </div>
@@ -84,7 +85,7 @@ export default async function TendersPage({ searchParams }: Params) {
             return (
               <li key={tender.id}>
                 <Link href={`/ai/ausschreibungen/${tender.id}`} className="card group flex items-center gap-3 p-3 transition hover:border-line-strong">
-                  <span className={cn("w-12 shrink-0 rounded-[6px] py-1 text-center text-[12px] font-semibold tabular-nums", fitClass(tender.fit))} title="Passung laut Nora">
+                  <span className={cn("w-12 shrink-0 rounded-[6px] py-1 text-center text-[12px] font-semibold tabular-nums", fitClass(tender.fit))} title={`Passung laut ${agentName("tender-scout")}`}>
                     {tender.fit ?? "…"}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -109,7 +110,7 @@ export default async function TendersPage({ searchParams }: Params) {
       )}
 
       <details className="card p-4">
-        <summary className="cursor-pointer list-none text-[12.5px] font-semibold text-ink">Einstellungen: was Nora sucht</summary>
+        <summary className="cursor-pointer list-none text-[12.5px] font-semibold text-ink">Einstellungen: was {agentName("tender-scout")} sucht</summary>
         <div className="mt-4">
           <TenderSettingsForm settings={settings} mailboxes={mailboxes} />
         </div>

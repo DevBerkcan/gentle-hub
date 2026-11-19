@@ -1141,3 +1141,16 @@ export async function saveTenderSettingsAction(settings: TenderSettings) {
     return {};
   }, ["/ai/ausschreibungen"]);
 }
+
+export async function saveAgentNamesAction(names: Record<string, string>): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.saveAgentNames(token, names);
+    revalidatePath("/", "layout");
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}

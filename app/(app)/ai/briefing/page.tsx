@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getBriefingData } from "@/lib/data";
 import { PageHeader } from "@/components/ui/page-header";
 import { BriefingCard } from "@/components/ai/briefing-card";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Tagesbriefing" };
 
@@ -15,14 +16,14 @@ export default async function BriefingPage() {
       <PageHeader
         eyebrow="AI Operations"
         title="Tagesbriefing"
-        description="Leyla schaut jeden Morgen auf alles, was Aufmerksamkeit braucht, und sagt dir, womit du anfangen solltest. Das Briefing kommt auch per Telegram (Einstellung „Morgendliche Zusammenfassung“)."
+        description={`${agentName("daily-briefing")} schaut jeden Morgen auf alles, was Aufmerksamkeit braucht, und sagt dir, womit du anfangen solltest. Das Briefing kommt auch per Telegram (Einstellung „Morgendliche Zusammenfassung“).`}
       />
       <BriefingCard briefing={briefing} />
 
       {items.length > 0 && (
         <section className="flex flex-col gap-2" aria-labelledby="all-items">
           <h2 id="all-items" className="text-[13px] font-semibold text-ink">
-            Alles, was Leyla gesehen hat
+            Alles, was {agentName("daily-briefing")} gesehen hat
           </h2>
           <ul className="card divide-y divide-line overflow-hidden">
             {items.map((item) => (

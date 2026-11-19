@@ -57,20 +57,35 @@ export const PLANNED_PERSONAS: Record<string, AgentPersona> = {
 
 /** Colleagues without an AI agent of their own: they work without AI or come with phase 2. */
 export const TEAM_EXTRAS: { id: string; href?: string; note: string; planned?: boolean }[] = [
-  { id: "offer-contract", href: "/ai/vorgaenge", note: "Legt aus Emres freigegebener Schätzung Angebot und Vertragsentwurf in GentleSuite an und verschickt das Angebot auf deinen Klick. Ohne KI." },
+  { id: "offer-contract", href: "/ai/vorgaenge", note: "Legt aus der freigegebenen Schätzung Angebot und Vertragsentwurf in GentleSuite an und verschickt das Angebot auf deinen Klick. Ohne KI." },
   { id: "project-control", note: "Legt Projekt und Meilensteine in GentleSuite an. Kommt später.", planned: true },
   { id: "billing", href: "/ai/vorgaenge", note: "Verfolgt das Angebot bis zur Unterschrift und erinnert ans Überführen in GentleSuite. Rechnungen legt sie nicht selbst an. Ohne KI." },
   { id: "website-monitor", href: "/ai/monitoring", note: "Prüft alle Websites regelmäßig, ganz ohne KI." },
   { id: "lead-finder", href: "/ai/leads", note: "Sucht Firmen über Google Places, ganz ohne KI." },
 ];
 
+/** Names the user gave the agents in the AI settings (same for everyone); defaults otherwise. */
+let customNames: Record<string, string> = {};
+
+export function setAgentNames(names?: Record<string, string> | null) {
+  customNames = { ...(names ?? {}) };
+}
+
+/** Current first name of an agent, e.g. agentName("site-builder") → "Lara". */
+export function agentName(agentId: string): string {
+  return customNames[agentId] ?? (AGENT_PERSONAS[agentId] ?? PLANNED_PERSONAS[agentId])?.firstName ?? "Agent";
+}
+
+/** "Emres", but "Jonas'" for names ending in s, x or z. */
+export function agentGenitive(agentId: string): string {
+  const name = agentName(agentId);
+  return /[sßxz]$/i.test(name) ? `${name}'` : `${name}s`;
+}
+
 export function persona(agentId: string | null | undefined, fallbackName?: string): AgentPersona {
-  return (
-    (agentId && (AGENT_PERSONAS[agentId] ?? PLANNED_PERSONAS[agentId])) || {
-      firstName: fallbackName ?? "Agent",
-      role: fallbackName ?? "",
-    }
-  );
+  const base = agentId ? (AGENT_PERSONAS[agentId] ?? PLANNED_PERSONAS[agentId]) : undefined;
+  if (!base) return { firstName: fallbackName ?? "Agent", role: fallbackName ?? "" };
+  return { ...base, firstName: customNames[agentId!] ?? base.firstName };
 }
 
 /** "Marie · Kundenantworten" */

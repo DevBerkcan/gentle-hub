@@ -8,6 +8,7 @@ import type { FieldErrors } from "@/lib/action-types";
 import type { LeadCategoryOption } from "@/lib/types";
 import { FormError } from "@/components/ui/field";
 import { IconLoader, IconSearch } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const RADII = [5, 10, 20, 30, 50];
 
@@ -44,7 +45,7 @@ export function LeadSearchForm({ categories, disabled }: { categories: LeadCateg
         setErrors(result.errors ?? {});
         return;
       }
-      setMessage("Arda sucht. Die Liste füllt sich in den nächsten Minuten.");
+      setMessage(`${agentName("lead-finder")} sucht. Die Liste füllt sich in den nächsten Minuten.`);
       router.refresh();
     });
   }
@@ -134,7 +135,7 @@ export function LeadSearchForm({ categories, disabled }: { categories: LeadCateg
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-[10.5px] leading-relaxed text-subtle">
           Die Suche selbst ist bei Google kostenlos. Pro gefundenem Betrieb fällt ein Detail-Abruf an; die ersten 900 im Monat sind frei, danach
-          stoppt Arda automatisch.
+          stoppt {agentName("lead-finder")} automatisch.
         </p>
         <button type="submit" disabled={pending || count === 0 || Boolean(disabled)} className="btn btn-primary">
           {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconSearch className="h-3.5 w-3.5" />}

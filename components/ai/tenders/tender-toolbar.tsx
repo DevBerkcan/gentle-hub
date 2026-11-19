@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { addTenderAction, fetchTendersAction } from "@/app/actions";
 import type { TenderManualInput } from "@/lib/types";
+import { agentName } from "@/lib/agent-personas";
 
 /** "Search TED now", paste a project from any portal, and refresh while Nora is still scoring. */
 export function TenderToolbar({ scoring }: { scoring: boolean }) {
@@ -26,7 +27,7 @@ export function TenderToolbar({ scoring }: { scoring: boolean }) {
     startTransition(async () => {
       const result = await fetchTendersAction();
       if (!result.ok) setError(result.error);
-      else setMessage("Nora sucht bei TED. Neue Treffer erscheinen in ein bis zwei Minuten.");
+      else setMessage(`${agentName("tender-scout")} sucht bei TED. Neue Treffer erscheinen in ein bis zwei Minuten.`);
       setTimeout(() => router.refresh(), 8_000);
     });
   }
@@ -49,7 +50,7 @@ export function TenderToolbar({ scoring }: { scoring: boolean }) {
         return;
       }
       setValues({ title: "", text: "" });
-      setMessage("Erfasst. Nora bewertet die Ausschreibung gleich.");
+      setMessage(`Erfasst. ${agentName("tender-scout")} bewertet die Ausschreibung gleich.`);
       router.push(`/ai/ausschreibungen/${result.id}`);
     });
   }
@@ -73,7 +74,7 @@ export function TenderToolbar({ scoring }: { scoring: boolean }) {
         <button type="button" className="btn btn-primary" disabled={pending} onClick={fetchNow}>
           Jetzt bei TED suchen
         </button>
-        <span className="text-[11px] text-muted">Nora sucht zweimal am Tag automatisch. Portal-Alarme kommen über das Ausschreibungs-Postfach.</span>
+        <span className="text-[11px] text-muted">{agentName("tender-scout")} sucht zweimal am Tag automatisch. Portal-Alarme kommen über das Ausschreibungs-Postfach.</span>
       </div>
       {message && <p className="text-[11.5px] text-emerald-700">{message}</p>}
       {error && <p className="text-[11.5px] text-rose-600">{error}</p>}

@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { saveTenderSettingsAction } from "@/app/actions";
 import type { TenderSettings } from "@/lib/types";
+import { agentName } from "@/lib/agent-personas";
 
 const list = (value: string) =>
   value
@@ -84,7 +85,7 @@ export function TenderSettingsForm({
     <form onSubmit={submit} className="flex flex-col gap-3">
       <label className="flex items-center gap-2 text-[12px] font-semibold text-ink">
         <input type="checkbox" checked={form.enabled} onChange={(event) => set("enabled", event.target.checked)} />
-        Nora sucht automatisch
+        {agentName("tender-scout")} sucht automatisch
       </label>
       <div className="grid gap-3 sm:grid-cols-2">
         {input("cpv", "CPV-Codes", "72413000 Website-Gestaltung, 72420000 Internet-Entwicklung, 72415000 Webhosting, 72422000 Webanwendungen")}
@@ -104,7 +105,7 @@ export function TenderSettingsForm({
               </option>
             ))}
           </select>
-          <span className="text-[10.5px] text-muted">Mails aus diesem Postfach liest nur Nora (Suchalarme der Portale), nicht Elif.</span>
+          <span className="text-[10.5px] text-muted">Mails aus diesem Postfach liest nur {agentName("tender-scout")} (Suchalarme der Portale), nicht {agentName("email-intelligence")}.</span>
           {errors.mailboxConnectionId && <span className="text-rose-600">{errors.mailboxConnectionId}</span>}
         </label>
       </div>
@@ -112,7 +113,7 @@ export function TenderSettingsForm({
         <span className="font-semibold text-ink">Profil von Gentle Group</span>
         <textarea className="input min-h-28" maxLength={3000} value={form.profile} onChange={(event) => set("profile", event.target.value)} />
         <span className="text-[10.5px] text-muted">
-          Daran misst Nora die Passung. Referenzen, Zertifikate und Grenzen hier eintragen, Nora erfindet nichts dazu.
+          Daran misst {agentName("tender-scout")} die Passung. Referenzen, Zertifikate und Grenzen hier eintragen, {agentName("tender-scout")} erfindet nichts dazu.
         </span>
         {errors.profile && <span className="text-rose-600">{errors.profile}</span>}
       </label>

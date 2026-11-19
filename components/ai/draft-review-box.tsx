@@ -1,6 +1,7 @@
 import { cn } from "@/lib/cn";
 import type { DraftReview } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
+import { agentName } from "@/lib/agent-personas";
 
 const TYPE_LABELS: Record<string, string> = {
   tone: "Ton",
@@ -29,16 +30,16 @@ export function DraftReviewBox({ review, version }: { review?: DraftReview | nul
       )}
       aria-label="Qualitätsprüfung"
     >
-      <AgentAvatar agentId="draft-review" size={40} state={!review || stale ? "working" : "idle"} title="Ece · Qualitätsprüfung" />
+      <AgentAvatar agentId="draft-review" size={40} state={!review || stale ? "working" : "idle"} title={`${agentName("draft-review")} · Qualitätsprüfung`} />
       <div className="min-w-0 flex-1 text-[12px]">
         <p className="font-semibold text-ink">
           {!review
-            ? "Ece prüft den Entwurf …"
+            ? `${agentName("draft-review")} prüft den Entwurf …`
             : stale
-              ? "Ece prüft die geänderte Fassung …"
+              ? `${agentName("draft-review")} prüft die geänderte Fassung …`
               : ok
-                ? `Ece: passt so${review.score ? ` (${review.score}/10)` : ""}`
-                : `Ece: bitte kurz prüfen${review.score ? ` (${review.score}/10)` : ""}`}
+                ? `${agentName("draft-review")}: passt so${review.score ? ` (${review.score}/10)` : ""}`
+                : `${agentName("draft-review")}: bitte kurz prüfen${review.score ? ` (${review.score}/10)` : ""}`}
         </p>
         {review && !stale && review.findings.length > 0 && (
           <ul className="mt-1 flex flex-col gap-0.5 text-[11.5px] leading-relaxed text-ink">

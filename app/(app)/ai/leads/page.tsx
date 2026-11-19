@@ -11,6 +11,7 @@ import { LeadSearches } from "@/components/ai/leadfinder/lead-searches";
 import { ProspectList } from "@/components/ai/leadfinder/prospect-list";
 import { PROSPECT_STATUS_LABELS } from "@/lib/leadfinder";
 import { IconUsers } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Lead-Finder" };
 
@@ -53,12 +54,12 @@ export default async function LeadFinderPage({ searchParams }: { searchParams: P
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-4">
-        <AgentAvatar agentId="lead-finder" size={88} state={running ? "working" : "idle"} title="Arda · Lead-Finder" className="hidden sm:block" />
+        <AgentAvatar agentId="lead-finder" size={88} state={running ? "working" : "idle"} title={`${agentName("lead-finder")} · Lead-Finder`} className="hidden sm:block" />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="AI Operations"
             title="Lead-Finder"
-            description="Arda sucht bei Google Maps Betriebe einer Branche im Umkreis, prüft deren Website und liest Ansprechpartner, Telefon und E-Mail aus dem Impressum. Kontaktiert wird niemand automatisch."
+            description={`${agentName("lead-finder")} sucht bei Google Maps Betriebe einer Branche im Umkreis, prüft deren Website und liest Ansprechpartner, Telefon und E-Mail aus dem Impressum. Kontaktiert wird niemand automatisch.`}
           />
         </div>
       </div>

@@ -10,6 +10,7 @@ import { StageTrack } from "@/components/ai/delivery/stage-track";
 import { GoLiveForm, GoLiveResult } from "@/components/ai/delivery/golive-form";
 import { ManualVorgangForm } from "@/components/ai/delivery/manual-vorgang-form";
 import { IconActivity, IconChevronRight } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Vorgänge" };
 
@@ -23,7 +24,7 @@ export default async function VorgaengePage() {
       <PageHeader
         eyebrow="AI Operations"
         title="Vorgänge"
-        description="Jede Kundenanfrage auf einem Weg: Defne schreibt die Anforderungen, Emre schätzt, Can legt Angebot und Vertrag in GentleSuite an, Baran, Onur und Tolga planen den Bau, Tolga prüft vor dem Go-Live und Melis verfolgt alles bis zur Rechnung."
+        description={`Jede Kundenanfrage auf einem Weg: ${agentName("project-notes")} schreibt die Anforderungen, ${agentName("estimation")} schätzt, ${agentName("offer-contract")} legt Angebot und Vertrag in GentleSuite an, ${agentName("frontend-plan")}, ${agentName("backend-plan")} und ${agentName("deployment")} planen den Bau, ${agentName("deployment")} prüft vor dem Go-Live und ${agentName("billing")} verfolgt alles bis zur Rechnung.`}
       />
 
       <details className="card group p-4">
@@ -49,7 +50,7 @@ export default async function VorgaengePage() {
         <EmptyState
           icon={<IconActivity className="h-4 w-4" />}
           title="Noch keine Vorgänge"
-          description="Sobald eine Kundenanfrage per E-Mail kommt und Defne die Anforderungen geschrieben hat, erscheint sie hier."
+          description={`Sobald eine Kundenanfrage per E-Mail kommt und ${agentName("project-notes")} die Anforderungen geschrieben hat, erscheint sie hier.`}
         />
       ) : (
         <ul className="flex flex-col gap-2">
@@ -83,7 +84,7 @@ export default async function VorgaengePage() {
             Go-Live-Check
           </h2>
           <p className="text-[11.5px] text-muted">
-            Tolga prüft eine beliebige Website: HTTPS, Zertifikat, Impressum, Datenschutz, Tracking ohne Einwilligung, noindex, Meta-Daten, Smartphone-Tauglichkeit, 404-Seite und Antwortzeit. Gemessen, nicht geraten.
+            {agentName("deployment")} prüft eine beliebige Website: HTTPS, Zertifikat, Impressum, Datenschutz, Tracking ohne Einwilligung, noindex, Meta-Daten, Smartphone-Tauglichkeit, 404-Seite und Antwortzeit. Gemessen, nicht geraten.
           </p>
         </div>
         <GoLiveForm />

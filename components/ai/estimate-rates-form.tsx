@@ -7,6 +7,7 @@ import { cn } from "@/lib/cn";
 import type { EstimateRole, EstimateSettings } from "@/lib/types";
 import { FormError, SuccessNote } from "@/components/ui/field";
 import { IconCheck, IconLoader } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const ROLES: { value: EstimateRole; label: string; hint: string }[] = [
   { value: "pm", label: "Projektleitung", hint: "Konzept, Abstimmung, Steuerung" },
@@ -43,7 +44,7 @@ export function EstimateRatesForm({ settings }: { settings: EstimateSettings }) 
         setError(result.error);
         return;
       }
-      setMessage(mode === "hourly" ? "Gespeichert. Emre schätzt ab jetzt Stunden, die Preise rechnet der Server aus deinen Sätzen." : "Gespeichert.");
+      setMessage(mode === "hourly" ? `Gespeichert. ${agentName("estimation")} schätzt ab jetzt Stunden, die Preise rechnet der Server aus deinen Sätzen.` : "Gespeichert.");
       router.refresh();
     });
   }
@@ -55,7 +56,7 @@ export function EstimateRatesForm({ settings }: { settings: EstimateSettings }) 
           Stundensätze und Preisberechnung
         </h2>
         <p className="mt-0.5 text-[11px] leading-relaxed text-muted">
-          Mit „Aus Stunden berechnen“ schätzt Emre nur realistische Stunden je Paket und Rolle. Den Preis rechnet der Server: Stunden × dein Satz. So
+          Mit „Aus Stunden berechnen“ schätzt {agentName("estimation")} nur realistische Stunden je Paket und Rolle. Den Preis rechnet der Server: Stunden × dein Satz. So
           kann das Modell nichts aufrunden. Produkte aus dem Pauschalkatalog behalten ihren festen Preis.
         </p>
       </div>
@@ -67,7 +68,7 @@ export function EstimateRatesForm({ settings }: { settings: EstimateSettings }) 
         {(
           [
             { value: "hourly", label: "Aus Stunden berechnen", hint: "Stunden × Stundensatz, genau und nachvollziehbar" },
-            { value: "flat", label: "Pauschalen schätzen", hint: "Emre setzt Paketpreise selbst, orientiert am Katalog" },
+            { value: "flat", label: "Pauschalen schätzen", hint: `${agentName("estimation")} setzt Paketpreise selbst, orientiert am Katalog` },
           ] as const
         ).map((option) => (
           <label

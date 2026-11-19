@@ -8,6 +8,7 @@ import type { FieldErrors } from "@/lib/action-types";
 import type { LeadCategoryOption, OutreachKind, OutreachProduct } from "@/lib/types";
 import { FormError } from "@/components/ui/field";
 import { IconCheck, IconLoader, IconPlus, IconTrash } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const KINDS: { value: OutreachKind; label: string }[] = [
   { value: "trial", label: "Testphase" },
@@ -69,7 +70,7 @@ export function ProductCatalog({ initial, categories }: { initial: OutreachProdu
         {missingLinks > 0 && <span className="ml-2 text-[11px] font-normal text-amber-700 dark:text-amber-300">{missingLinks} ohne Test-Link</span>}
       </summary>
       <p className="mt-1 text-[11px] leading-relaxed text-muted">
-        Cem wählt pro Lead das passende Produkt nach Branche; Betriebe ohne eigene Website bekommen das Website-Angebot. Den Link zur Testphase oder zum
+        {agentName("outreach")} wählt pro Lead das passende Produkt nach Branche; Betriebe ohne eigene Website bekommen das Website-Angebot. Den Link zur Testphase oder zum
         Funnel setzt der Server ein, die KI erfindet keine Links.
       </p>
       <FormError message={error} />

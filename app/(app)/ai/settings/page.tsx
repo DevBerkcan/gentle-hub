@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
-import { getAiOverviewData, getEstimateSettingsData, getReplySettingsData } from "@/lib/data";
+import { getAgentNamesData, getAiAgentsData, getAiOverviewData, getEstimateSettingsData, getReplySettingsData } from "@/lib/data";
 import { PageHeader } from "@/components/ui/page-header";
 import { AiSettingsForm } from "@/components/ai/ai-settings-form";
 import { EstimateSettingsForm } from "@/components/ai/estimate-settings-form";
 import { EstimateRatesForm } from "@/components/ai/estimate-rates-form";
 import { ReplySettingsForm } from "@/components/ai/reply-settings-form";
+import { AgentNamesForm } from "@/components/ai/agent-names-form";
 import { IconShield } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "AI-Einstellungen" };
 
 export default async function AiSettingsPage() {
-  const [{ settings }, estimateSettings, replySettings] = await Promise.all([
+  const [{ settings }, estimateSettings, replySettings, agents, agentNames] = await Promise.all([
     getAiOverviewData(),
     getEstimateSettingsData(),
     getReplySettingsData(),
+    getAiAgentsData(),
+    getAgentNamesData(),
   ]);
 
   return (
@@ -21,12 +24,17 @@ export default async function AiSettingsPage() {
       <PageHeader
         eyebrow="AI Operations"
         title="Einstellungen"
-        description="Globales Budget, Not-Aus und Status des KI-Anbieters."
+        description="Globales Budget, Not-Aus, Agenten und ihre Namen, Schätzung und Antworten."
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
           <AiSettingsForm settings={settings} />
+          <AgentNamesForm
+            agents={agents.map((agent) => ({ id: agent.id, name: agent.name, description: agent.description, isEnabled: agent.isEnabled }))}
+            names={agentNames.names}
+            defaults={agentNames.defaults}
+          />
           <EstimateRatesForm settings={estimateSettings} />
           <EstimateSettingsForm settings={estimateSettings} />
           <ReplySettingsForm settings={replySettings} />

@@ -10,6 +10,7 @@ import type { SiteState } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { CopyButton } from "@/components/ui/copy-button";
 import { IconExternal } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 /** Lara builds branding and the page from the building kit; Tolga keeps the preview link online. */
 export function SitePanel({ vorgangId, site }: { vorgangId: string; site: SiteState }) {
@@ -48,10 +49,10 @@ export function SitePanel({ vorgangId, site }: { vorgangId: string; site: SiteSt
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-3">
-        <AgentAvatar agentId="site-builder" size={40} state={building ? "working" : site.status === "failed" ? "alert" : "idle"} title="Lara · Branding & Website" />
+        <AgentAvatar agentId="site-builder" size={40} state={building ? "working" : site.status === "failed" ? "alert" : "idle"} title={`${agentName("site-builder")} · Branding & Website`} />
         <div className="min-w-0 flex-1 text-[11.5px] text-muted">
-          {site.status === "none" && "Lara prüft, ob es die Marke schon gibt, entwirft sonst ein Branding und schreibt die ganze Seite. Tolga stellt sie danach als Vorschau-Link online."}
-          {building && "Lara arbeitet: Markenprüfung, Branding, Texte …"}
+          {site.status === "none" && `${agentName("site-builder")} prüft, ob es die Marke schon gibt, entwirft sonst ein Branding und schreibt die ganze Seite. ${agentName("deployment")} stellt sie danach als Vorschau-Link online.`}
+          {building && `${agentName("site-builder")} arbeitet: Markenprüfung, Branding, Texte …`}
           {site.status === "failed" && <span className="text-rose-600">{site.lastError ?? "Fehlgeschlagen."}</span>}
           {site.status === "ready" && `Fertig${site.updatedAt ? ` · ${formatDateTime(site.updatedAt)}` : ""}.`}
         </div>
@@ -187,7 +188,7 @@ export function SitePanel({ vorgangId, site }: { vorgangId: string; site: SiteSt
       {content && (
         <div className="card flex flex-col gap-2 p-3 text-[11.5px]">
           <div className="flex flex-wrap items-center gap-2">
-            <AgentAvatar agentId="deployment" size={30} state={site.isPublished ? "idle" : "off"} title="Tolga · Deployment" />
+            <AgentAvatar agentId="deployment" size={30} state={site.isPublished ? "idle" : "off"} title={`${agentName("deployment")} · Deployment`} />
             <p className="min-w-0 flex-1">
               {site.isPublished ? (
                 <>

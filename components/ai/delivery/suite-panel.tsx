@@ -9,6 +9,7 @@ import { formatDateTime } from "@/lib/format";
 import type { SuiteAction, SuiteDocument, SuiteState } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { IconExternal } from "@/components/ui/icons";
+import { agentName, agentGenitive } from "@/lib/agent-personas";
 
 const STATUS_LABELS: Record<string, string> = {
   Draft: "Entwurf",
@@ -28,9 +29,9 @@ const PAYMENT_LABELS: Record<string, string> = {
 };
 
 const CONFIRM: Record<SuiteAction, string> = {
-  quote: "Can legt jetzt ein Angebot als Entwurf in GentleSuite an. Der Kunde bekommt noch nichts.",
+  get quote() { return `${agentName("offer-contract")} legt jetzt ein Angebot als Entwurf in GentleSuite an. Der Kunde bekommt noch nichts.`; },
   send: "GentleSuite schickt das Angebot jetzt per E-Mail mit Unterschriftslink an den Kunden. Das lässt sich nicht zurückholen.",
-  contract: "Can legt jetzt einen Vertragsentwurf aus dem Angebot in GentleSuite an. Unterschrift und Versand machst du in GentleSuite.",
+  get contract() { return `${agentName("offer-contract")} legt jetzt einen Vertragsentwurf aus dem Angebot in GentleSuite an. Unterschrift und Versand machst du in GentleSuite.`; },
   order: "Das angenommene Angebot wird in GentleSuite als Auftrag bestätigt.",
 };
 
@@ -47,7 +48,7 @@ export function SuitePanel({ vorgangId, suite, estimateApproved }: { vorgangId: 
   if (!suite.configured) {
     return (
       <p className="rounded-lg border border-dashed border-line px-3 py-2 text-[11.5px] text-muted">
-        Can und Melis brauchen ein eigenes GentleSuite-Servicekonto. Sobald es in den Server-Einstellungen hinterlegt und eingeschaltet ist, erscheinen hier Angebot, Versand, Vertrag und der Stand bis zur Rechnung.
+        {agentName("offer-contract")} und {agentName("billing")} brauchen ein eigenes GentleSuite-Servicekonto. Sobald es in den Server-Einstellungen hinterlegt und eingeschaltet ist, erscheinen hier Angebot, Versand, Vertrag und der Stand bis zur Rechnung.
       </p>
     );
   }
@@ -74,7 +75,7 @@ export function SuitePanel({ vorgangId, suite, estimateApproved }: { vorgangId: 
       label: "Angebot in GentleSuite anlegen",
       done: quoteReady ? docLine(quote) : null,
       link: quote?.url,
-      hint: !estimateApproved ? "Erst Emres Schätzung freigeben." : !suite.customerId ? "Erst den Kunden in der E-Mail GentleSuite zuordnen." : null,
+      hint: !estimateApproved ? `Erst ${agentGenitive("estimation")} Schätzung freigeben.` : !suite.customerId ? "Erst den Kunden in der E-Mail GentleSuite zuordnen." : null,
     },
     {
       action: "send",
@@ -116,7 +117,7 @@ export function SuitePanel({ vorgangId, suite, estimateApproved }: { vorgangId: 
           return (
             <li key={step.action} className={cn("card flex flex-col gap-2 p-3", step.done && "border-emerald-200")}>
               <div className="flex items-center gap-3">
-                <AgentAvatar agentId="offer-contract" size={34} state={step.done ? "idle" : "off"} title="Can · Angebot & Vertrag" />
+                <AgentAvatar agentId="offer-contract" size={34} state={step.done ? "idle" : "off"} title={`${agentName("offer-contract")} · Angebot & Vertrag`} />
                 <div className="min-w-0 flex-1">
                   <p className="text-[12px] font-semibold text-ink">{step.label}</p>
                   <p className={cn("flex flex-wrap items-center gap-x-2 text-[10.5px]", step.done ? "text-emerald-700" : "text-muted")}>
@@ -160,9 +161,9 @@ export function SuitePanel({ vorgangId, suite, estimateApproved }: { vorgangId: 
         })}
 
         <li className={cn("card flex items-center gap-3 p-3", quote?.transferredAt && "border-emerald-200")}>
-          <AgentAvatar agentId="billing" size={34} state={quote?.transferredAt ? "idle" : "off"} title="Melis · Abrechnung" />
+          <AgentAvatar agentId="billing" size={34} state={quote?.transferredAt ? "idle" : "off"} title={`${agentName("billing")} · Abrechnung`} />
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-semibold text-ink">Rechnung (Melis)</p>
+            <p className="text-[12px] font-semibold text-ink">Rechnung ({agentName("billing")})</p>
             <p className={cn("flex flex-wrap items-center gap-x-2 text-[10.5px]", quote?.transferredAt ? "text-emerald-700" : "text-muted")}>
               <span>{billingText(quote)}</span>
               {quote?.url && quote.signatureStatus === "Signed" && !quote.transferredAt && <SuiteLink href={quote.url} label="In GentleSuite überführen" />}

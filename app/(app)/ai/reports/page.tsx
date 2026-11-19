@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { ReportList } from "@/components/ai/report-list";
 import { IconActivity } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Kundenberichte" };
 
@@ -15,12 +16,12 @@ export default async function ReportsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-4">
-        <AgentAvatar agentId="customer-report" size={88} title="Aylin · Kundenberichte" className="hidden sm:block" />
+        <AgentAvatar agentId="customer-report" size={88} title={`${agentName("customer-report")} · Kundenberichte`} className="hidden sm:block" />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="AI Operations"
             title="Kundenberichte"
-            description={`Aylin schreibt euren Kunden einen Monatsbericht: Erreichbarkeit, Antwortzeit, SSL und Support-Anfragen der Website, mit kurzer Einordnung. Projekte mit dem Tag „wartung“ (${maintenance}) bekommen ihn zum Monatsanfang automatisch als Entwurf; gesendet wird erst nach deiner Freigabe.`}
+            description={`${agentName("customer-report")} schreibt euren Kunden einen Monatsbericht: Erreichbarkeit, Antwortzeit, SSL und Support-Anfragen der Website, mit kurzer Einordnung. Projekte mit dem Tag „wartung“ (${maintenance}) bekommen ihn zum Monatsanfang automatisch als Entwurf; gesendet wird erst nach deiner Freigabe.`}
           />
         </div>
       </div>

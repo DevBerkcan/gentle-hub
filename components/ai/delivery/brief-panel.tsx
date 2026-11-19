@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { requestBriefsAction } from "@/app/actions";
 import { cn } from "@/lib/cn";
 import { formatRelative } from "@/lib/format";
-import { persona, personaLabel } from "@/lib/agent-personas";
+import { persona, personaLabel, agentName } from "@/lib/agent-personas";
 import type { BriefKind, BuildBrief } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { CopyButton } from "@/components/ui/copy-button";
@@ -45,7 +45,7 @@ export function BriefPanel({ vorgangId, briefs }: { vorgangId: string; briefs: B
         <button type="button" className="btn btn-primary" disabled={pending || working} onClick={() => start(["frontend", "backend", "deployment"])}>
           {briefs.length > 0 ? "Alle neu planen" : "Bauauftrag erstellen"}
         </button>
-        <span className="text-[11px] text-muted">Tolga wartet kurz, damit er die Pläne von Baran und Onur kennt.</span>
+        <span className="text-[11px] text-muted">{agentName("deployment")} wartet kurz, damit er die Pläne von {agentName("frontend-plan")} und {agentName("backend-plan")} kennt.</span>
       </div>
       {error && <p className="text-[11.5px] text-rose-600">{error}</p>}
 
@@ -122,7 +122,7 @@ function BriefContent({ kind, brief }: { kind: BriefKind; brief: BuildBrief }) {
         </Block>
       )}
 
-      {kind === "backend" && c.needed === false && <p className="text-muted">Onur: Für dieses Projekt ist kein eigenes Backend nötig.</p>}
+      {kind === "backend" && c.needed === false && <p className="text-muted">{agentName("backend-plan")}: Für dieses Projekt ist kein eigenes Backend nötig.</p>}
       {kind === "backend" && (c.dataModel ?? []).length > 0 && (
         <Block title="Datenmodell">
           <ul className="flex flex-col gap-1">

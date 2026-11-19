@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { SupportTicketCard } from "@/components/ai/support-tickets";
 import { IconCheck } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Support" };
 
@@ -33,14 +34,14 @@ export default async function SupportPage({ searchParams }: { searchParams: Prom
           agentId="support-triage"
           size={88}
           state={critical > 0 ? "alert" : active > 0 ? "working" : "idle"}
-          title="Mert · Support-Agent"
+          title={`${agentName("support-triage")} · Support-Agent`}
           className="hidden sm:block"
         />
         <div className="min-w-0 flex-1">
           <PageHeader
             eyebrow="AI Operations"
             title="Support"
-            description="Mert, unser Support-Agent, sortiert Mails von Bestandskunden in Tickets: Ausfall, Fehler, Änderungswunsch oder Frage, mit Dringlichkeit und Projekt. Notfälle kommen sofort per Telegram, Änderungswünsche laufen in die Schätzung."
+            description={`${agentName("support-triage")}, unser Support-Agent, sortiert Mails von Bestandskunden in Tickets: Ausfall, Fehler, Änderungswunsch oder Frage, mit Dringlichkeit und Projekt. Notfälle kommen sofort per Telegram, Änderungswünsche laufen in die Schätzung.`}
           />
         </div>
       </div>

@@ -13,6 +13,7 @@ import { SuitePanel } from "@/components/ai/delivery/suite-panel";
 import { SitePanel } from "@/components/ai/delivery/site-panel";
 import { GoLiveForm, GoLiveResult } from "@/components/ai/delivery/golive-form";
 import { IconChevronLeft, IconMail } from "@/components/ui/icons";
+import { agentName, agentGenitive } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Vorgang" };
 
@@ -55,10 +56,10 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
           <section className="flex flex-col gap-3" aria-labelledby="site-heading">
             <div>
               <h2 id="site-heading" className="text-[13px] font-semibold text-ink">
-                Website (Lara und Tolga)
+                Website ({agentName("site-builder")} und {agentName("deployment")})
               </h2>
               <p className="text-[11.5px] text-muted">
-                Aus dem Gentle-Baukasten: Lara übernimmt ein vorhandenes Branding oder entwirft eins, schreibt alle Texte und erfindet keine Fakten. Tolga stellt die Seite als Vorschau-Link online (nicht in Google, Impressum und Datenschutz als Platzhalter). Auf die Domain der Kundin kommt sie erst nach deiner Freigabe.
+                Aus dem Gentle-Baukasten: {agentName("site-builder")} übernimmt ein vorhandenes Branding oder entwirft eins, schreibt alle Texte und erfindet keine Fakten. {agentName("deployment")} stellt die Seite als Vorschau-Link online (nicht in Google, Impressum und Datenschutz als Platzhalter). Auf die Domain der Kundin kommt sie erst nach deiner Freigabe.
               </p>
             </div>
             <SitePanel vorgangId={vorgang.id} site={site} />
@@ -70,7 +71,7 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
                 Angebot, Vertrag, Rechnung (GentleSuite)
               </h2>
               <p className="text-[11.5px] text-muted">
-                Can übernimmt Emres freigegebene Schätzung 1:1 als Angebot und legt den Vertragsentwurf an. Jeder Schritt schreibt in GentleSuite und läuft nur nach deiner Bestätigung. Melis verfolgt das Angebot bis zur Rechnung; die entsteht in GentleSuite über „Überführen“.
+                {agentName("offer-contract")} übernimmt {agentGenitive("estimation")} freigegebene Schätzung 1:1 als Angebot und legt den Vertragsentwurf an. Jeder Schritt schreibt in GentleSuite und läuft nur nach deiner Bestätigung. {agentName("billing")} verfolgt das Angebot bis zur Rechnung; die entsteht in GentleSuite über „Überführen“.
               </p>
             </div>
             <SuitePanel vorgangId={vorgang.id} suite={suite} estimateApproved={estimate?.status === "approved"} />
@@ -82,13 +83,13 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
                 Bauauftrag
               </h2>
               <p className="text-[11.5px] text-muted">
-                Baran, Onur und Tolga planen aus Anforderungen und Schätzung. Sie schreiben keinen Code und deployen nichts. Den Prompt kopierst du in Claude Code, Zugangsdaten trägst du selbst ein.
+                {agentName("frontend-plan")}, {agentName("backend-plan")} und {agentName("deployment")} planen aus Anforderungen und Schätzung. Sie schreiben keinen Code und deployen nichts. Den Prompt kopierst du in Claude Code, Zugangsdaten trägst du selbst ein.
               </p>
             </div>
             {requirements ? (
               <BriefPanel vorgangId={vorgang.id} briefs={briefs} />
             ) : (
-              <p className="text-[11.5px] text-muted">Erst wenn Defne die Anforderungen geschrieben hat, kann geplant werden.</p>
+              <p className="text-[11.5px] text-muted">Erst wenn {agentName("project-notes")} die Anforderungen geschrieben hat, kann geplant werden.</p>
             )}
           </section>
 
@@ -105,7 +106,7 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
           {estimate && (
             <section className="card flex flex-col gap-2 p-4" aria-labelledby="estimate-heading">
               <h2 id="estimate-heading" className="text-[12.5px] font-semibold text-ink">
-                Schätzung (Emre)
+                Schätzung ({agentName("estimation")})
               </h2>
               <p className="text-[18px] font-semibold tabular-nums text-ink">
                 {formatEur(estimate.totals.totalNetEur)} <span className="text-[11px] font-medium text-muted">netto</span>
@@ -136,7 +137,7 @@ export default async function VorgangPage({ params }: { params: Promise<{ id: st
           {requirements && (
             <section className="card flex flex-col gap-3 p-4" aria-labelledby="req-heading">
               <h2 id="req-heading" className="text-[12.5px] font-semibold text-ink">
-                Anforderungen (Defne)
+                Anforderungen ({agentName("project-notes")})
               </h2>
               <RequirementsView content={requirements} compact />
             </section>

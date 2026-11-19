@@ -1,5 +1,5 @@
 import type { OfficeAgent, OfficeFlow, OfficeRoom } from "@/components/ai/office/office-scene";
-import { persona } from "@/lib/agent-personas";
+import { persona, agentName } from "@/lib/agent-personas";
 import type { AiOverview, ApprovalListItem, MonitorOverview, SupportTicket } from "@/lib/types";
 
 /** An agent counts as working if it ran within this window. */
@@ -40,7 +40,7 @@ export function buildOffice(
 
   const monitor: OfficeAgent = {
     id: "website-monitor",
-    name: "Kaan · Website-Wächter",
+    name: `${agentName("website-monitor")} · Website-Wächter`,
     enabled: summary.total > 0,
     // A check round takes well under a minute; right after one it counts as working.
     working: Boolean(summary.lastRunAt) && now - new Date(summary.lastRunAt!).getTime() < 90_000,

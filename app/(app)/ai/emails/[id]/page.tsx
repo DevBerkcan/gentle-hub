@@ -17,6 +17,7 @@ import { SupportTicketCard } from "@/components/ai/support-tickets";
 import { LeadCheckCard } from "@/components/ai/lead-check-card";
 import { APPROVAL_STATUS, formatEur } from "@/lib/ai-format";
 import { IconAlert, IconChevronLeft } from "@/components/ui/icons";
+import { agentGenitive } from "@/lib/agent-personas";
 
 type PageParams = { params: Promise<{ id: string }> };
 
@@ -159,7 +160,7 @@ export default async function AiEmailPage({ params }: PageParams) {
                 isOlderThanMinutes(work.note.createdAt, 3) ? (
                   <>
                     <p className="text-[12px] text-muted">
-                      Projektnotiz ist da, aber Emres Schätzung fehlt (wahrscheinlich fehlgeschlagen, Details beim Agenten). Erneut starten nutzt die vorhandene Notiz:
+                      Projektnotiz ist da, aber {agentGenitive("estimation")} Schätzung fehlt (wahrscheinlich fehlgeschlagen, Details beim Agenten). Erneut starten nutzt die vorhandene Notiz:
                     </p>
                     <StartEstimateButton emailId={email.id} label="Schätzung erneut starten" />
                   </>

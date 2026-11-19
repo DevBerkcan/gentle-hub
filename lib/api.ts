@@ -618,4 +618,10 @@ export const api = {
 
   saveTenderSettings: (token: string, settings: TenderSettings) =>
     request<{ settings: TenderSettings }>("/api/ai/tenders/settings", { method: "PUT", token, body: settings }),
+
+  agentNames: (token: string) =>
+    request<{ names: Record<string, string>; defaults: Record<string, string> }>("/api/ai/agent-names", { token }),
+
+  saveAgentNames: (token: string, names: Record<string, string>) =>
+    request<{ names: Record<string, string>; defaults: Record<string, string> }>("/api/ai/agent-names", { method: "PUT", token, body: { names } }),
 };

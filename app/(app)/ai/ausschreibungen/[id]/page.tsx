@@ -12,6 +12,7 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { RequirementList } from "@/components/ai/requirements-view";
 import { TenderActions } from "@/components/ai/tenders/tender-actions";
 import { IconChevronLeft, IconExternal } from "@/components/ui/icons";
+import { agentName, agentGenitive } from "@/lib/agent-personas";
 
 export const metadata: Metadata = { title: "Ausschreibung" };
 
@@ -47,11 +48,11 @@ export default async function TenderPage({ params }: { params: Promise<{ id: str
               <span className={cn("rounded-[6px] px-2 py-1 text-[16px] font-semibold tabular-nums", fitClass(tender.fit))}>{tender.fit ?? "…"}</span>
               <div>
                 <h2 id="nora-heading" className="text-[13px] font-semibold text-ink">
-                  Noras Einschätzung
+                  {agentGenitive("tender-scout")} Einschätzung
                 </h2>
                 <p className="text-[11.5px] text-muted">
                   {tender.status === "scoring" || tender.status === "new"
-                    ? "Nora prüft die Ausschreibung gerade."
+                    ? `${agentName("tender-scout")} prüft die Ausschreibung gerade.`
                     : tender.status === "failed"
                       ? tender.lastError ?? "Bewertung fehlgeschlagen."
                       : tender.recommendation === "bid"

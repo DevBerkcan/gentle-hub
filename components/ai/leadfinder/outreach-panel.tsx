@@ -5,6 +5,7 @@ import { outreachAction, startOutreachAction } from "@/app/actions";
 import type { CallScript, OutreachDraft, OutreachState } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { IconCheck, IconCopy, IconLoader, IconSparkles } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 function scriptText(script: CallScript) {
   const parts = [
@@ -104,7 +105,7 @@ export function OutreachPanel({ prospectId }: { prospectId: string }) {
   return (
     <div className="flex flex-col gap-3 rounded-[10px] border border-line bg-surface-2/40 p-3">
       <div className="flex flex-wrap items-center gap-2">
-        <AgentAvatar agentId="outreach" size={32} state={waiting || pending ? "working" : "idle"} title="Cem · Ansprache" />
+        <AgentAvatar agentId="outreach" size={32} state={waiting || pending ? "working" : "idle"} title={`${agentName("outreach")} · Ansprache`} />
         <span className="text-[12px] font-semibold text-ink">Ansprache vorbereiten</span>
         <select
           className="input h-8 w-auto py-0 text-[11.5px]"
@@ -127,11 +128,11 @@ export function OutreachPanel({ prospectId }: { prospectId: string }) {
       </div>
       {product && !product.url && product.kind !== "service" && (
         <p className="text-[10.5px] text-amber-700 dark:text-amber-300">
-          Für {product.name} ist noch kein Test-Link hinterlegt. Cem bietet stattdessen eine kurze Vorführung an. Link im Produktkatalog oben ergänzen.
+          Für {product.name} ist noch kein Test-Link hinterlegt. {agentName("outreach")} bietet stattdessen eine kurze Vorführung an. Link im Produktkatalog oben ergänzen.
         </p>
       )}
       {error && <p className="text-[11px] text-rose-600">{error}</p>}
-      {waiting && <p className="text-[11.5px] text-muted">Cem schreibt Leitfaden und Brief für {latest?.productName} …</p>}
+      {waiting && <p className="text-[11.5px] text-muted">{agentName("outreach")} schreibt Leitfaden und Brief für {latest?.productName} …</p>}
       {latest?.status === "failed" && <p className="text-[11px] text-rose-600">{latest.lastError ?? "Das hat nicht geklappt."}</p>}
 
       {latest?.status === "done" && (

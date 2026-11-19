@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import { formatDateTime } from "@/lib/format";
 import type { VoiceNote } from "@/lib/types";
 import { IconCheck, IconLoader } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const KIND: Record<string, string> = { meeting: "Termin", task: "Aufgaben", idea: "Idee", lead: "Interessent", other: "Notiz" };
 
@@ -40,7 +41,7 @@ export function VoiceNoteCard({ note, highlight }: { note: VoiceNote; highlight?
         </span>
       </div>
 
-      {note.status === "processing" && <p className="text-[12px] text-muted">Deniz arbeitet noch an dieser Notiz …</p>}
+      {note.status === "processing" && <p className="text-[12px] text-muted">{agentName("voice-notes")} arbeitet noch an dieser Notiz …</p>}
       {note.status === "failed" && <p className="text-[12px] text-rose-600">Nicht verarbeitet: {note.error}</p>}
 
       {note.title && <h3 className={cn("text-[13.5px] font-semibold text-ink", note.isDone && "line-through")}>{note.title}</h3>}

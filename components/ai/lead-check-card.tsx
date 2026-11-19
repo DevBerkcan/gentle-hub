@@ -8,6 +8,7 @@ import { shortUrl } from "@/lib/format";
 import type { LeadCheck } from "@/lib/types";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
 import { IconExternal, IconLoader, IconRefresh } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 function Signal({ ok, label }: { ok: boolean; label: string }) {
   return (
@@ -58,11 +59,11 @@ export function LeadCheckCard({ emailId, check }: { emailId: string; check: Lead
   return (
     <section className="card flex flex-col gap-3 p-4" aria-labelledby="lead-heading">
       <div className="flex items-center gap-2.5">
-        <AgentAvatar agentId="lead-check" size={40} state={pending ? "working" : "idle"} title="Selin · Lead-Check" />
+        <AgentAvatar agentId="lead-check" size={40} state={pending ? "working" : "idle"} title={`${agentName("lead-check")} · Lead-Check`} />
         <div className="min-w-0 flex-1">
           <h2 id="lead-heading" className="text-[12.5px] font-semibold text-ink">
             Website des Interessenten
-            <span className="ml-1.5 font-normal text-muted">geprüft von Selin</span>
+            <span className="ml-1.5 font-normal text-muted">geprüft von {agentName("lead-check")}</span>
           </h2>
           {(check?.finalUrl ?? check?.url) && (
             <a

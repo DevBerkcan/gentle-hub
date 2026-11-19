@@ -8,11 +8,12 @@ import type { FieldErrors } from "@/lib/action-types";
 import type { ReplySettings, SignatureMode, SignaturePreview, SignatureProfile } from "@/lib/types";
 import { FormError, SuccessNote } from "@/components/ui/field";
 import { IconCheck, IconLoader, IconMoon, IconSun } from "@/components/ui/icons";
+import { agentName } from "@/lib/agent-personas";
 
 const PREVIEW_AGENTS = [
-  { id: "reply-drafter", label: "Marie · Antwort" },
-  { id: "follow-up", label: "Burak · Nachfassen" },
-  { id: "customer-report", label: "Aylin · Bericht" },
+  { id: "reply-drafter", get label() { return `${agentName("reply-drafter")} · Antwort`; } },
+  { id: "follow-up", get label() { return `${agentName("follow-up")} · Nachfassen`; } },
+  { id: "customer-report", get label() { return `${agentName("customer-report")} · Bericht`; } },
 ] as const;
 
 const BRAND_FIELDS: { key: keyof SignatureProfile; label: string; max: number; placeholder?: string; hint?: string }[] = [
@@ -67,7 +68,7 @@ export function ReplySettingsForm({ settings }: { settings: ReplySettings }) {
           Antworten an Kunden
         </h2>
         <p className="mt-0.5 text-[11px] leading-relaxed text-muted">
-          Absendername und Signatur für Mails von Marie, Burak und Aylin. Gesendet wird immer über das passende Postfach und
+          Absendername und Signatur für Mails von {agentName("reply-drafter")}, {agentName("follow-up")} und {agentName("customer-report")}. Gesendet wird immer über das passende Postfach und
           nur nach deiner Freigabe.
         </p>
       </div>
@@ -175,7 +176,7 @@ function BrandEditor({
       </label>
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-ink">
-        <Check label="Agentennamen zeigen (z. B. „Marie · Digitaler Kundenservice“)" checked={brand.showAgent} onChange={(v) => update("showAgent", v)} />
+        <Check label={`Agentennamen zeigen (z. B. „${agentName("reply-drafter")} · Digitaler Kundenservice“)`} checked={brand.showAgent} onChange={(v) => update("showAgent", v)} />
         <Check label="HTML-Signatur mit Logo" checked={brand.html} onChange={(v) => update("html", v)} />
         <Check label="Animiertes Logo" checked={brand.animatedLogo} disabled={!brand.html} onChange={(v) => update("animatedLogo", v)} />
       </div>

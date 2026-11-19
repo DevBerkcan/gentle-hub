@@ -4,10 +4,11 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createManualVorgangAction } from "@/app/actions";
 import type { SiteIntake } from "@/lib/types";
+import { agentName } from "@/lib/agent-personas";
 
 const FIELDS: { key: keyof SiteIntake; label: string; placeholder?: string; type?: string; required?: boolean }[] = [
   { key: "niche", label: "Branche", placeholder: "z. B. Kosmetikstudio", required: true },
-  { key: "businessName", label: "Name (falls vorhanden)", placeholder: "leer lassen = Lara schlägt Namen vor" },
+  { key: "businessName", label: "Name (falls vorhanden)", get placeholder() { return `leer lassen = ${agentName("site-builder")} schlägt Namen vor`; } },
   { key: "city", label: "Stadt", placeholder: "z. B. Wuppertal" },
   { key: "instagram", label: "Instagram", placeholder: "studio.muster" },
   { key: "contactName", label: "Ansprechpartnerin" },

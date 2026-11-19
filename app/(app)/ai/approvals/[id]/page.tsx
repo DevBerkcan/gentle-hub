@@ -16,7 +16,7 @@ import { CounterOfferForm, CounterOfferHistory } from "@/components/ai/counter-o
 import { ReplyReview } from "@/components/ai/reply-review";
 import { LeadCheckCard } from "@/components/ai/lead-check-card";
 import { AgentAvatar } from "@/components/ai/agent-avatar";
-import { personaLabel } from "@/lib/agent-personas";
+import { personaLabel, agentName } from "@/lib/agent-personas";
 import { IconChevronLeft, IconMail } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Freigabe" };
@@ -111,7 +111,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
                   Weiter in GentleSuite
                 </h2>
                 <p className="text-[11.5px] text-muted">
-                  Kein Word-Dokument: Can legt aus dieser freigegebenen Schätzung das Angebot direkt in GentleSuite an ({formatEur(estimate?.totals.totalNetEur)} netto).
+                  Kein Word-Dokument: {agentName("offer-contract")} legt aus dieser freigegebenen Schätzung das Angebot direkt in GentleSuite an ({formatEur(estimate?.totals.totalNetEur)} netto).
                   Jeder Schritt läuft erst nach deiner Bestätigung, verschickt wird nichts automatisch.
                 </p>
               </div>
@@ -169,7 +169,7 @@ export default async function AiApprovalPage({ params }: PageParams) {
           {note && (
             <section className="card flex flex-col gap-3 p-4" aria-labelledby="note-heading">
               <h2 id="note-heading" className="text-[12.5px] font-semibold text-ink">
-                Anforderungen (Defne)
+                Anforderungen ({agentName("project-notes")})
               </h2>
               <RequirementsView content={noteContent} compact />
             </section>
