@@ -624,4 +624,10 @@ export const api = {
 
   saveAgentNames: (token: string, names: Record<string, string>) =>
     request<{ names: Record<string, string>; defaults: Record<string, string> }>("/api/ai/agent-names", { method: "PUT", token, body: { names } }),
+
+  pairWhatsApp: (token: string) =>
+    request<PairingCode>("/api/ai/messenger/whatsapp/pair", { method: "POST", token, body: {} }),
+
+  sendWhatsAppTest: (token: string) =>
+    request<{ ok: boolean }>("/api/ai/messenger/whatsapp/test", { method: "POST", token, body: {} }),
 };

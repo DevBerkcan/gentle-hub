@@ -1154,3 +1154,27 @@ export async function saveAgentNamesAction(names: Record<string, string>): Promi
     return toFailure(error);
   }
 }
+
+export async function pairWhatsAppAction(): Promise<ActionResult<{ pairing: PairingCode }>> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    const pairing = await api.pairWhatsApp(token);
+    return { ok: true, pairing };
+  } catch (error) {
+    return toFailure(error);
+  }
+}
+
+export async function sendWhatsAppTestAction(): Promise<ActionResult> {
+  const token = await getSessionToken();
+  if (!token) return noSession();
+
+  try {
+    await api.sendWhatsAppTest(token);
+    return { ok: true };
+  } catch (error) {
+    return toFailure(error);
+  }
+}

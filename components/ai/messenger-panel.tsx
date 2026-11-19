@@ -4,8 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   pairTelegramAction,
+  pairWhatsAppAction,
   revokeMessengerAction,
   sendTelegramTestAction,
+  sendWhatsAppTestAction,
   updateMessengerPreferencesAction,
 } from "@/app/actions";
 import { formatDateTime } from "@/lib/format";
@@ -25,12 +27,13 @@ const PREFERENCE_LABELS: { key: keyof NotificationPreferences; label: string }[]
 
 export function MessengerPanel({ status }: { status: MessengerStatus }) {
   const telegram = status.links.find((link) => link.channel === "telegram");
+  const whatsApp = status.links.find((link) => link.channel === "whatsapp");
 
   return (
     <section className="card flex flex-col gap-4 p-5" aria-labelledby="messenger-heading">
       <div>
         <h2 id="messenger-heading" className="text-[13.5px] font-semibold text-ink">
-          Telegram
+          Telegram und WhatsApp
         </h2>
         <p className="mt-0.5 text-[11.5px] text-muted">
           Hinweise aufs Handy: neue Anfragen, Freigaben, Fehler. Nachrichten enthalten nie vertrauliche Inhalte; Entscheidungen
@@ -43,7 +46,7 @@ export function MessengerPanel({ status }: { status: MessengerStatus }) {
           Auf dem Server ist noch kein Telegram-Bot hinterlegt (Telegram:BotToken).
         </p>
       ) : telegram ? (
-        <LinkedTelegram link={telegram} />
+        <LinkedChat link={telegram} channel="telegram" />
       ) : (
         <PairTelegram botUsername={status.telegramBotUsername} mode={status.telegramMode} />
       )}
@@ -73,14 +76,102 @@ export function MessengerPanel({ status }: { status: MessengerStatus }) {
         </details>
       )}
 
-      <div className="border-t border-line pt-3">
-        <h3 className="text-[12px] font-semibold text-ink">WhatsApp</h3>
-        <p className="mt-0.5 text-[11px] text-muted">
-          Vorbereitet über die offizielle WhatsApp Business Platform. Benötigt ein verifiziertes Meta-Business-Konto,
-          freigegebene Nachrichtenvorlagen und eine Einwilligung; Nachrichten außerhalb von 24 Stunden sind kostenpflichtig.
-        </p>
+      <div className="flex flex-col gap-3 border-t border-line pt-4">
+        <div>
+          <h3 className="text-[13px] font-semibold text-ink">WhatsApp</h3>
+          <p className="mt-0.5 text-[11px] text-muted">
+            Über die offizielle WhatsApp Business Platform. Schreibst du der Nummer, sind Nachrichten und Knöpfe 24 Stunden lang kostenlos. Danach
+            schickt GentleHub nur die freigegebene Vorlage, die Meta pro Nachricht berechnet.
+          </p>
+        </div>
+        {!status.whatsAppConfigured ? (
+          <WhatsAppSetup />
+        ) : whatsApp ? (
+          <LinkedChat link={whatsApp} channel="whatsapp" />
+        ) : (
+          <PairWhatsApp number={status.whatsAppNumber} />
+        )}
       </div>
     </section>
+  );
+}
+
+const TEMPLATE_TEXT = "GentleHub: {{1}}\n\n{{2}}\n\nÖffnen: {{3}}\n\nDiese Nachricht kommt automatisch aus GentleHub.";
+
+/** What the owner does at Meta before WhatsApp can be switched on. */
+function WhatsAppSetup() {
+  return (
+    <div className="flex flex-col gap-2 rounded-[10px] border border-amber-200 bg-amber-50/60 p-3 text-[11.5px] text-ink dark:bg-amber-950/20">
+      <p className="font-semibold">Noch nicht eingerichtet. So geht es:</p>
+      <ol className="flex list-decimal flex-col gap-1.5 pl-4">
+        <li>Meta-Business-Konto für Gentle Group anlegen (business.facebook.com), am besten verifizieren.</li>
+        <li>Im Meta-Entwicklerbereich eine App mit „WhatsApp“ anlegen und eine eigene Telefonnummer hinzufügen (nicht die aus der normalen WhatsApp-App).</li>
+        <li>
+          Nachrichtenvorlage anlegen: Name <code className="rounded bg-surface px-1">gentlehub_hinweis</code>, Kategorie „Dienstprogramm“ (Utility), Sprache Deutsch, Text:
+          <pre className="mt-1 whitespace-pre-wrap rounded bg-surface p-2 font-mono text-[10.5px]">{TEMPLATE_TEXT}</pre>
+          <CopyButton value={TEMPLATE_TEXT} label="Vorlagentext kopieren" showLabel />
+        </li>
+        <li>
+          Webhook in der App eintragen: <code className="rounded bg-surface px-1">https://gentlehub.runasp.net/api/whatsapp/webhook</code>, Feld „messages“ abonnieren.
+        </li>
+        <li>
+          In <code className="rounded bg-surface px-1">deploy-secrets\appsettings.secrets.local.json</code> eintragen: WhatsApp:Enabled = true, PhoneNumberId, Number,
+          AccessToken (dauerhafter System-User-Token), AppSecret und ein selbst gewählter VerifyToken (mind. 16 Zeichen, derselbe wie beim Webhook). Dann deployen.
+        </li>
+      </ol>
+    </div>
+  );
+}
+
+function PairWhatsApp({ number }: { number?: string | null }) {
+  const router = useRouter();
+  const [pairing, setPairing] = useState<PairingCode | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  function start() {
+    setError(null);
+    startTransition(async () => {
+      const result = await pairWhatsAppAction();
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      setPairing(result.pairing);
+    });
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <FormError message={error} />
+      {!pairing ? (
+        <button type="button" onClick={start} disabled={pending} className="btn btn-primary w-fit">
+          {pending ? <IconLoader className="h-3.5 w-3.5" /> : <IconExternal className="h-3.5 w-3.5" />}
+          WhatsApp verbinden
+        </button>
+      ) : (
+        <ol className="flex list-decimal flex-col gap-2 pl-4 text-[12px] text-ink">
+          <li>
+            <a href={pairing.deepLink} target="_blank" rel="noopener noreferrer" className="font-semibold text-accent underline">
+              WhatsApp öffnen
+            </a>{" "}
+            (auf dem Handy) und die vorbereitete Nachricht absenden.
+          </li>
+          <li>
+            Oder an {number ? `+${number}` : "die GentleHub-Nummer"} schreiben:{" "}
+            <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[11.5px]">start {pairing.code}</code>
+            <CopyButton value={`start ${pairing.code}`} label="Text kopieren" />
+          </li>
+          <li>
+            Gültig bis {formatDateTime(pairing.expiresAt)}, nur einmal verwendbar.{" "}
+            <button type="button" onClick={() => router.refresh()} className="inline-flex items-center gap-1 font-semibold text-accent">
+              <IconRefresh className="h-3 w-3" />
+              Status aktualisieren
+            </button>
+          </li>
+        </ol>
+      )}
+    </div>
   );
 }
 
@@ -139,7 +230,7 @@ function PairTelegram({ botUsername, mode }: { botUsername?: string | null; mode
   );
 }
 
-function LinkedTelegram({ link }: { link: MessengerLink }) {
+function LinkedChat({ link, channel }: { link: MessengerLink; channel: "telegram" | "whatsapp" }) {
   const router = useRouter();
   const [preferences, setPreferences] = useState<NotificationPreferences>(link.preferences);
   const [quietFrom, setQuietFrom] = useState(link.quietFrom ?? "");
@@ -166,7 +257,7 @@ function LinkedTelegram({ link }: { link: MessengerLink }) {
     <div className="flex flex-col gap-3">
       <p className="flex items-center gap-2 text-[12px] text-ink">
         <span className="rounded-[5px] bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">Verbunden</span>
-        {link.externalName ?? "Telegram-Chat"} · seit {formatDateTime(link.linkedAt)}
+        {link.externalName ?? (channel === "whatsapp" ? "WhatsApp-Chat" : "Telegram-Chat")} · seit {formatDateTime(link.linkedAt)}
       </p>
       <FormError message={error} />
       <SuccessNote message={message} />
@@ -211,7 +302,7 @@ function LinkedTelegram({ link }: { link: MessengerLink }) {
         <button
           type="button"
           disabled={pending}
-          onClick={() => run(() => sendTelegramTestAction(), "Testnachricht gesendet.")}
+          onClick={() => run(() => (channel === "whatsapp" ? sendWhatsAppTestAction() : sendTelegramTestAction()), "Testnachricht gesendet.")}
           className="btn btn-secondary h-8 text-[11.5px]"
         >
           Testnachricht senden

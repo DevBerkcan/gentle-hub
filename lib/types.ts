@@ -547,6 +547,7 @@ export type MessengerStatus = {
   telegramBotUsername?: string | null;
   telegramMode: "webhook" | "polling";
   whatsAppConfigured: boolean;
+  whatsAppNumber?: string | null;
   links: MessengerLink[];
   recent: NotificationItem[];
 };
